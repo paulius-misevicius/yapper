@@ -8,6 +8,8 @@ export default function Home() {
 
     const [searchValue, setSearchValue] = useState("")
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    
+    const isLoggedIn = false
 
     const filteredBoards = searchValue !== "" 
         ?   boards.filter(item => item.name.includes(searchValue))
@@ -112,12 +114,34 @@ export default function Home() {
                     <Menu className="size-4.5 text-(--text-secondary)"/>
                 </button>
                 <h3>Yapper logo</h3>
-                <div className="items-center gap-3 hidden lg:flex">
-                    <div className="text-right">
-                        <p className="font-medium text-(--text-primary)!">{currentUser.username}</p>
-                        <p className="text-xs! text-(--text-muted)!">{currentUser.karma} karma</p>
-                    </div>
-                    <div className="size-9 bg-black rounded-4xl" />
+                <div className="hidden lg:block">
+                    {isLoggedIn
+                        ?
+                            <div className="items-center gap-3 flex">
+                                <div className="text-right">
+                                    <p className="font-medium text-(--text-primary)!">{currentUser.username}</p>
+                                    <p className="text-xs! text-(--text-muted)!">{currentUser.karma} karma</p>
+                                </div>
+                                <div className="size-9 bg-black rounded-4xl" />
+                            </div>
+                        :
+                            <div className="flex gap-3">
+                                <Link 
+                                    to="/"
+                                    aria-label="Log into existing account"
+                                    className="action-btn border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
+                                >
+                                    Log in
+                                </Link>
+                                <Link 
+                                    to="/"
+                                    aria-label="Create a new account"
+                                    className="action-btn bg-(--primary-btn) text-(--primary-btn-text) active:bg-(--accent) lg:hover:bg-(--accent)"
+                                >
+                                    Sign up
+                                </Link>
+                            </div>
+                    }
                 </div>
                 <div className="size-4.5 lg:hidden" />
             </header>
@@ -136,13 +160,18 @@ export default function Home() {
                 >
                     <section className={`${isMenuOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out lg:translate-x-0 lg:mt-(--header-height) bg-(--surface-1) lg:block w-(--sidebar-width) z-20 lg:z-10 fixed px-5 lg:px-6 py-5 lg:py-8 border-r border-(--border) h-full`}>
                         <div className="flex justify-between lg:hidden border-b border-(--border) pb-5 mb-5">
-                            <div className="flex items-center gap-3">
-                                <div className="size-9 bg-black rounded-4xl" />
-                                <div className="">
-                                    <p className="font-medium text-(--text-primary)!">{currentUser.username}</p>
-                                    <p className="text-xs! text-(--text-muted)!">{currentUser.karma} karma</p>
-                                </div>
-                            </div>
+                            {isLoggedIn
+                                ?
+                                    <div className="flex items-center gap-3">
+                                        <div className="size-9 bg-black rounded-4xl" />
+                                        <div className="">
+                                            <p className="font-medium text-(--text-primary)!">{currentUser.username}</p>
+                                            <p className="text-xs! text-(--text-muted)!">{currentUser.karma} karma</p>
+                                        </div>
+                                    </div>
+                                :
+                                    <h3>Yapper logo</h3>
+                            }
                             <button
                                 onClick={() => setIsMenuOpen(false)}
                             >
@@ -160,26 +189,53 @@ export default function Home() {
                                 <House />
                                 Home
                             </NavLink>
-                            <NavLink
-                                to="/u/123"
-                                aria-label="My profile"
-                            >
-                                <UserRound />
-                                My profile
-                            </NavLink>
+                            {isLoggedIn &&
+                                <NavLink
+                                    to="/u/123"
+                                    aria-label="My profile"
+                                >
+                                    <UserRound />
+                                    My profile
+                                </NavLink>
+                            }
                         </nav>
-                        <nav
-                            className="mt-7 flex flex-col gap-1"
-                            aria-labelledby="board-nav-label"
-                        >
-                            <h4
-                                id="board-nav-label"
-                                className="text-(--text-muted)! text-(length:--font-size-xs) font-bold tracking-wider mb-1"
-                            >
-                                MY BOARDS
-                            </h4>
-                            {myBoardCollection}
-                        </nav>
+                        {isLoggedIn
+                            ?
+                                <nav
+                                    className="mt-7 flex flex-col gap-1"
+                                    aria-labelledby="board-nav-label"
+                                >
+                                    <h4
+                                        id="board-nav-label"
+                                        className="text-(--text-muted)! text-(length:--font-size-xs) font-bold tracking-wider mb-1"
+                                    >
+                                        MY BOARDS
+                                    </h4>
+                                    {myBoardCollection}
+                                </nav>
+                            :
+                                <div className="bg-(--accent) mt-5 py-3 px-4 rounded-xl">
+                                    <p className="text-(--accent-text)!">
+                                        Sign in to join boards, post, and track your karma.
+                                    </p>
+                                    <div className="flex flex-col gap-3 mt-3">
+                                        <Link 
+                                            to="/"
+                                            aria-label="Create a new account"
+                                            className="action-btn text-center bg-(--primary-btn) text-(--primary-btn-text) active:bg-(--accent) lg:hover:bg-(--accent)"
+                                        >
+                                            Sign up
+                                        </Link>
+                                        <Link 
+                                            to="/"
+                                            aria-label="Log into existing account"
+                                            className="bg-white action-btn text-center border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
+                                        >
+                                            Log in
+                                        </Link>
+                                    </div>
+                                </div>
+                        }
                     </section>
                 </FocusTrap>
                 <section className="flex flex-1 px-5 lg:px-10 py-5 lg:ml-(--sidebar-width) md:mr-(--recent-posts-width) mt-(--header-height)">
