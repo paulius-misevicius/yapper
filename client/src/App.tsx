@@ -1,12 +1,20 @@
 import { createBrowserRouter, RouterProvider } from "react-router"
+import { createContext } from "react"
 import Home from "./pages/Home"
+import AppLayout from "./components/AppLayout"
+
+interface GlobalContextValue {
+  isLoggedIn: boolean
+}
+
+export const GlobalContext = createContext<GlobalContextValue | null>(null)
 
 export default function App() {
 
+  const isLoggedIn = true
+
   const router = createBrowserRouter([
-    {
-      path: "/",
-      children: [
+    { path: "/", Component: AppLayout, children: [
         { index: true, Component: Home },
         { path: "b/:board", 
           children: [
@@ -19,6 +27,8 @@ export default function App() {
   ])
 
   return (
-    <RouterProvider router={router} />
+    <GlobalContext.Provider value={{isLoggedIn}}>
+      <RouterProvider router={router} />
+    </GlobalContext.Provider>
   )
 }
