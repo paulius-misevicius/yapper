@@ -5,6 +5,7 @@ export interface Board {
     memberCount: number
     postCount: number
     joined: boolean
+    createdAt: string
     colorClass: string
     dotColorClass: string
 }
@@ -15,6 +16,7 @@ export const boards: Board[] = [
     description: "Hardware, software, gadgets, and the future of computing. Join to discuss the latest in tech.",
     memberCount: 241,
     postCount: 843,
+    createdAt: "Jan 12, 2023",
     joined: false,
     colorClass: "bg-blue-100 text-blue-700",
     dotColorClass: "bg-blue-700"
@@ -25,6 +27,7 @@ export const boards: Board[] = [
     description: "Discoveries, research, and the wonders of the natural world. Share findings and ask questions.",
     memberCount: 187,
     postCount: 621,
+    createdAt: "Jun 13, 2026",
     joined: false,
     colorClass: "bg-green-100 text-green-700",
     dotColorClass: "bg-green-700"
@@ -35,6 +38,7 @@ export const boards: Board[] = [
     description: "Video games, board games, retro classics and new releases. All platforms welcome here.",
     memberCount: 312,
     postCount: 1490,
+    createdAt: "Jul 18, 2021",
     joined: false,
     colorClass: "bg-purple-100 text-purple-700",
     dotColorClass: "bg-purple-700"
@@ -45,6 +49,7 @@ export const boards: Board[] = [
     description: "Fiction, nonfiction, reading lists, and literary discussion for avid readers everywhere.",
     memberCount: 114,
     postCount: 432,
+    createdAt: "May 7, 2022",
     joined: false,
     colorClass: "bg-red-100 text-red-700",
     dotColorClass: "bg-red-700"
@@ -55,6 +60,7 @@ export const boards: Board[] = [
     description: "Recipes, techniques, kitchen gear, and food culture from home cooks and professionals.",
     memberCount: 98,
     postCount: 511,
+    createdAt: "Apr 30, 2023",
     joined: false,
     colorClass: "bg-orange-100 text-orange-700",
     dotColorClass: "bg-orange-700"
@@ -65,6 +71,7 @@ export const boards: Board[] = [
     description: "Strange events, unexplained phenomena, and the mysteries that science hasn't solved yet.",
     memberCount: 54,
     postCount: 208,
+    createdAt: "Sep 26, 2020",
     joined: true,
     colorClass: "bg-gray-200 text-gray-700",
     dotColorClass: "bg-gray-700"
@@ -75,6 +82,7 @@ export const boards: Board[] = [
     description: "Programming languages, frameworks, tools, and debugging war stories.",
     memberCount: 176,
     postCount: 733,
+    createdAt: "Dec 24, 2025",
     joined: true,
     colorClass: "bg-green-100 text-green-700",
     dotColorClass: "bg-green-700"
@@ -85,6 +93,7 @@ export const boards: Board[] = [
     description: "News, culture, and everyday life in and around Lithuania.",
     memberCount: 63,
     postCount: 149,
+    createdAt: "Aug 2, 2024",
     joined: true,
     colorClass: "bg-orange-100 text-orange-700",
     dotColorClass: "bg-orange-700"
@@ -154,7 +163,7 @@ export const currentUser: UserProfile = {
     id: 1,
     username: "paulius",
     bio: "learning to build things",
-    profilePictureUrl: "string",
+    profilePictureUrl: "",
     joinedAt: "2026-06-01T09:30:00Z",
     postCount: 5,
     commentCount: 8,
@@ -245,5 +254,73 @@ export const boardRules: Record<string, string[]> = {
     "No spam, self-promotion, or affiliate links.",
     "Cite sources for factual claims.",
     "Mark NSFW content appropriately.",
+    "No duplicate posts — search before submitting.",
+    "Rumors and leaks must be labeled as unconfirmed.",
+    "No piracy, cracked software, or license key sharing.",
+    "Product reviews should disclose any affiliation with the maker.",
+    "Political posts are allowed only if directly tech-policy related.",
+  ],
+  science: [
+    "Be respectful and civil to other members.",
+    "Stay on topic — posts must relate to science.",
+    "Back claims with credible, linkable sources.",
+    "No pseudoscience presented as established fact.",
+    "Clearly label speculation or personal opinion.",
+    "Peer-reviewed sources are preferred over press releases.",
+    "No medical advice — general discussion only.",
+    "Preprints must be marked as not yet peer-reviewed.",
+  ],
+  gaming: [
+    "Be respectful and civil to other members.",
+    "Use spoiler tags for releases under 30 days old.",
+    "No piracy links or cheat distribution.",
+    "No spam, self-promotion, or affiliate links.",
+    "Console wars and flame bait will be removed.",
+    "Trade and sale posts belong in the weekly megathread.",
+    "Cheating accusations require evidence.",
+    "Fan art is welcome but must be your own work.",
+    "No leaked or NDA-protected content.",
+    "Livestream self-promotion limited to once per week.",
+    "Mod tools and cracked clients are not allowed.",
+    "Keep review-bombing campaigns out of the board.",
+  ],
+  books: [
+    "Be respectful and civil to other members.",
+    "Use spoiler tags when discussing plot details.",
+    "No spam, self-promotion, or affiliate links.",
+    "Credit the author and title when sharing excerpts.",
+  ],
+  cooking: [
+    "Be respectful and civil to other members.",
+    "Include ingredients and rough steps when sharing a recipe.",
+    "No spam, self-promotion, or affiliate links.",
+    "Credit original recipe sources when known.",
+    "Food safety claims should be accurate — no dangerous advice.",
+    "Diet-shaming or judging others' food choices isn't allowed.",
+  ],
+  paranormal: [
+    "Be respectful and civil to other members.",
+    "Skepticism is welcome, but keep it constructive.",
+    "No spam, self-promotion, or affiliate links.",
+    "Clearly label staged, fictional, or AI-generated content.",
+    "Personal experience posts should note date and location.",
+    "No harassment of posters who share sightings or experiences.",
+    "Debunking is fine — mockery isn't.",
+  ],
+  coding: [
+    "Be respectful and civil to other members.",
+    "Use code blocks when sharing code.",
+    "No spam, self-promotion, or affiliate links.",
+    "Search before posting — avoid duplicate questions.",
+    "Include language and error messages when asking for help.",
+    "No unsolicited job or recruiting posts.",
+    "Homework-style questions need an attempted solution shown.",
+    "Don't paste API keys, tokens, or credentials — even in screenshots.",
+    "AI-generated answers should be marked as such.",
+  ],
+  lithuania: [
+    "Be respectful and civil to other members.",
+    "Posts in Lithuanian or English are both welcome.",
+    "Cite sources for news claims.",
   ],
 }

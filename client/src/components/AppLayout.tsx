@@ -11,7 +11,7 @@ export default function AppLayout() {
         <>
             <Header setIsMenuOpen={setIsMenuOpen}/>
             <Sidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-            <main className="relative flex flex-1">
+            <main className="relative mt-(--header-height) flex flex-1 lg:ml-(--sidebar-nav-width) px-5 lg:px-10">
                 <Outlet />
             </main>
         </>

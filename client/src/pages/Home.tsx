@@ -52,14 +52,17 @@ export default function Home() {
     })
 
     const homeBoardCollection = filteredBoards.map(item => 
-        <button 
+        <Link 
+            to={item.name}
             key={item.id}
             aria-label={`Go to ${item.name}`}
             className="active:bg-(--accent-hover-light) active:border-(--border-strong) lg:hover:bg-(--accent-hover-light) lg:hover:border-(--border-strong) bg-(--surface-1) text-left flex flex-col gap-4 p-5 border border-(--border) rounded-2xl"
         >
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                    <span className={`size-10 font-bold flex items-center justify-center rounded-lg ${item.colorClass}`}>{item.name.charAt(2).toUpperCase()}</span>
+                    <span className={`size-10 font-bold flex items-center justify-center rounded-lg ${item.colorClass}`}>
+                        {item.name.charAt(2).toUpperCase()}
+                    </span>
                     <h2>{item.name}</h2>
                 </div>
                 {isLoggedIn && currentUser.joinedBoardNames.includes(item.name) &&
@@ -83,12 +86,12 @@ export default function Home() {
                     </p>
                 </div>
             </div>
-        </button>
+        </Link>
     )
 
     return (
         <>
-            <section className="flex flex-1 px-5 lg:px-10 py-5 lg:ml-(--sidebar-width) md:mr-(--recent-posts-width) mt-(--header-height)">
+            <section className="flex flex-1 md:mr-(--sidebar-right-width) py-5">
                 <div className="flex-1">
                     <div className="flex flex-col xs:flex-row justify-between items-center mb-5">
                         <h1 className="whitespace-nowrap self-start mb-3 xs:mb-0">All boards</h1>
@@ -127,7 +130,7 @@ export default function Home() {
                     }
                 </div>
             </section>
-            <section className="hidden md:block fixed z-10 px-6 py-8 right-0 w-(--recent-posts-width) border-l border-(--border) h-full mt-(--header-height)">
+            <section className="hidden md:block fixed z-10 px-6 right-0 w-(--sidebar-right-width) border-l border-(--border) h-[calc(100%-var(--header-height))] py-5">
                 <h2>Recent posts</h2>
                 <div className="flex flex-col gap-5 mt-5">
                     {recentPostsCollection}

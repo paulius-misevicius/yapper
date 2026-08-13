@@ -3,6 +3,7 @@ import { currentUser, boards } from "../../data"
 import { FocusTrap } from "focus-trap-react"
 import { UserRound, House, X } from "lucide-react"
 import { useGlobalContext } from "../utils"
+import ProfilePicture from "./ProfilePicture"
 
 interface SidebarProps {
     isMenuOpen: boolean
@@ -42,12 +43,12 @@ export default function Sidebar({isMenuOpen, setIsMenuOpen}: SidebarProps) {
                     onDeactivate: () => setIsMenuOpen(false),
                 }}
             >
-                <section className={`${isMenuOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out lg:translate-x-0 lg:mt-(--header-height) bg-(--surface-1) lg:block w-(--sidebar-width) z-20 lg:z-10 fixed px-5 lg:px-6 py-5 lg:py-8 border-r border-(--border) h-full`}>
+                <section className={`${isMenuOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out lg:translate-x-0 lg:mt-(--header-height) bg-(--surface-1) lg:block w-(--sidebar-nav-width) z-20 lg:z-10 fixed px-5 lg:px-6 py-5 lg:py-8 border-r border-(--border) h-full`}>
                     <div className="flex justify-between lg:hidden border-b border-(--border) pb-5 mb-5">
                         {isLoggedIn
                             ?
                                 <div className="flex items-center gap-3">
-                                    <div className="size-9 bg-black rounded-4xl" />
+                                    <ProfilePicture size="size-11" />
                                     <div className="">
                                         <p className="font-medium text-(--text-primary)!">{currentUser.username}</p>
                                         <p className="text-xs! text-(--text-muted)!">{currentUser.karma} karma</p>

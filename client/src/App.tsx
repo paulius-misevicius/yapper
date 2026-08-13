@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router"
 import { createContext } from "react"
 import Home from "./pages/Home"
 import AppLayout from "./components/AppLayout"
+import Board from "./pages/Board"
 
 interface GlobalContextValue {
   isLoggedIn: boolean
@@ -16,8 +17,7 @@ export default function App() {
   const router = createBrowserRouter([
     { path: "/", Component: AppLayout, children: [
         { index: true, Component: Home },
-        { path: "b/:board", 
-          children: [
+        { path: "b/:board", Component: Board, children: [
             { path: ":postId" },
             { path: "create" }
           ] },

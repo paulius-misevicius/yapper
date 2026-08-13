@@ -2,6 +2,7 @@ import { Link } from "react-router"
 import { currentUser } from "../../data"
 import { useGlobalContext } from "../utils"
 import { Menu } from "lucide-react"
+import ProfilePicture from "./ProfilePicture"
 
 interface HeaderProps {
     setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -29,7 +30,7 @@ export default function Header({setIsMenuOpen}: HeaderProps) {
                                 <p className="font-medium text-(--text-primary)!">{currentUser.username}</p>
                                 <p className="text-xs! text-(--text-muted)!">{currentUser.karma} karma</p>
                             </div>
-                            <div className="size-9 bg-black rounded-4xl" />
+                            <ProfilePicture size="size-11" />
                         </div>
                     :
                         <div className="flex gap-3">
