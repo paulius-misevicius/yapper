@@ -175,7 +175,7 @@ export type Flair = "Discussion" | "News" | "PSA" | "Review" | "Question"
 
 export interface BoardPost {
   id: number
-  boardSlug: string
+  boardName: string
   authorUsername: string
   flair: Flair
   title: string
@@ -187,7 +187,7 @@ export interface BoardPost {
 export const posts: BoardPost[] = [
   {
     id: 1,
-    boardSlug: "technology",
+    boardName: "b/technology",
     authorUsername: "devjordan_",
     flair: "Discussion",
     title: "What's everyone's go-to laptop for software development in 2024?",
@@ -199,7 +199,7 @@ export const posts: BoardPost[] = [
   },
   {
     id: 2,
-    boardSlug: "technology",
+    boardName: "b/technology",
     authorUsername: "llm_watcher",
     flair: "News",
     title: "Google just open-sourced their new on-device AI model — runs on 4GB RAM",
@@ -211,7 +211,7 @@ export const posts: BoardPost[] = [
   },
   {
     id: 3,
-    boardSlug: "technology",
+    boardName: "b/technology",
     authorUsername: "privacyfirst99",
     flair: "PSA",
     title: "PSA: the new Chrome update silently re-enables third-party cookies for some users",
@@ -223,7 +223,7 @@ export const posts: BoardPost[] = [
   },
   {
     id: 4,
-    boardSlug: "technology",
+    boardName: "b/technology",
     authorUsername: "cables_and_chaos",
     flair: "Discussion",
     title: "Anyone else notice USB-C cable quality has gotten dramatically worse?",
@@ -235,7 +235,7 @@ export const posts: BoardPost[] = [
   },
   {
     id: 5,
-    boardSlug: "technology",
+    boardName: "b/technology",
     authorUsername: "repairability_nerd",
     flair: "Review",
     title: "Framework 16 after 6 months: a real-world review from a daily driver",

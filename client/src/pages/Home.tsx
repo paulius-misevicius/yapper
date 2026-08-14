@@ -17,7 +17,7 @@ export default function Home() {
         return (
             <div 
                 key={item.id}
-                className="flex flex-col gap-2 border-b border-(--border) pb-5"
+                className="flex flex-col gap-2 border-b border-(--border) last:border-0 pb-5"
             >
                 <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
