@@ -1,7 +1,7 @@
 import { Outlet } from "react-router"
 import { boards, boardRules } from "../../data"
 import { useParams } from "react-router"
-import BoardSidebar from "./BoardSidebar"
+import BoardAbout from "./BoardAbout"
 
 export default function BoardLayout() {
     
@@ -15,9 +15,9 @@ export default function BoardLayout() {
     return (
         <>
             <section className="flex min-w-0 flex-col flex-1 md:mr-(--sidebar-right-width) py-5 md:pr-5 lg:pr-10">
-                <Outlet context={{boardInfo: boardInfo, board: board}} />
+                <Outlet context={{boardInfo: boardInfo, board: board, rules: rules}} />
             </section>
-            <BoardSidebar boardInfo={boardInfo} board={board} rules={rules}/>
+            <BoardAbout boardInfo={boardInfo} board={board} rules={rules} sidebar/>
         </>
     )
 }

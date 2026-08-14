@@ -2,28 +2,29 @@ import { currentUser } from "../../data"
 import { useGlobalContext } from "../utils"
 import type { Board } from "../../data"
 
-interface BoardSidebarProps {
+interface BoardAboutProps {
     boardInfo: Board | undefined
     board: string | undefined
     rules: string[]
+    sidebar?: boolean
 }
 
-export default function BoardSidebar({boardInfo, board, rules}: BoardSidebarProps) {
+export default function BoardAbout({boardInfo, board, rules, sidebar}: BoardAboutProps) {
 
     const { isLoggedIn } = useGlobalContext()
 
     return (
-        <section className="hidden md:flex md:flex-col fixed z-10 my-5 mr-5 lg:mr-10 right-0 w-(--sidebar-right-width) top-(--header-height) bottom-0 bg-(--surface-1) border border-(--border) rounded-2xl overflow-hidden shrink-0">
+        <section className={sidebar ? "hidden md:flex md:flex-col fixed z-10 my-5 mr-5 lg:mr-10 right-0 w-(--sidebar-right-width) top-(--header-height) bottom-0 bg-(--surface-1) border border-(--border) rounded-2xl overflow-hidden shrink-0" : "mt-5 bg-(--surface-1) border border-(--border) rounded-2xl overflow-hidden md:hidden"}>
             <div className="bg-(--accent) py-4 px-5 shrink-0">
                 <span className={`size-10 font-bold flex items-center justify-center rounded-lg ${boardInfo?.colorClass}`}>
                     {board?.charAt(0).toUpperCase()}
                 </span>
             </div>
-            <div className="py-4 px-5 flex-1 flex flex-col min-h-0">
+            <div className={sidebar ? "py-4 px-5 flex-1 flex flex-col min-h-0" : "py-4 px-5"}>
                 <div className="shrink-0">
                     <h2 className="font-bold">b/{boardInfo?.name}</h2>
                     <p className="mt-2">{boardInfo?.description}</p>
-                    <div className="flex items-center justify-between mt-4">
+                    <div className={sidebar ? "flex items-center justify-between mt-4" : "flex items-center justify-between xs:justify-around sm:justify-evenly mt-4"}>
                         <div className="flex flex-col gap-0">
                             <p className="font-bold">{boardInfo?.memberCount}</p>
                             <p className="text-xs!">Members</p>

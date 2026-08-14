@@ -5,13 +5,16 @@ import { Bookmark, ChartNoAxesColumn, ChevronDown, ChevronUp, Hourglass, Message
 import ProfilePicture from "../components/ProfilePicture"
 import type { Board } from "../../data"
 import BoardMobileSettings from "../components/BoardMobileSettings"
+import BoardAbout from "../components/BoardAbout"
 
 export type Filter = "today" | "this week" | "this month" | "this year" | "all time"
 export type Sort = "new" | "top"
+type MobileTab = "feed" | "about"
 
 interface BoardProps {
     boardInfo: Board
     board: string
+    rules: string[]
 }
 
 export default function Board() {
@@ -19,8 +22,9 @@ export default function Board() {
     const [filter, setFilter] = useState<Filter>("all time")
     const [sort, setSort] = useState<Sort>("top")
     const [isMobileSettingsOpen, setIsMobileSettingsOpen] = useState(false)
+    const [mobileTab, setMobileTab] = useState<MobileTab>("feed")
 
-    const { boardInfo, board } = useOutletContext<BoardProps>()
+    const { boardInfo, board, rules } = useOutletContext<BoardProps>()
     const [hoveredItemId, setHoveredItemId] = useState<number | null>(null)
 
     const boardPosts = posts.filter(item => item.boardName === board)
@@ -36,7 +40,7 @@ export default function Board() {
             }
             <h1>b/{boardInfo?.name}</h1>
             <div className="flex flex-wrap min-w-0 items-center gap-4 py-2 px-3 bg-(--surface-1) border border-(--border) rounded-2xl mt-4">
-                <ProfilePicture size="size-10"/>
+                <ProfilePicture size="size-9"/>
                 <Link 
                     to="create"
                     className="text-xs font-medium text-(--text-muted) bg-(--surface-2) flex-1 text-left py-2 px-4 border border-(--border) rounded-md truncate min-w-0"
@@ -89,65 +93,41 @@ export default function Board() {
                     <SlidersVertical className="size-5"/>
                 </button>
             </div>
-            <div className="flex flex-col gap-4 mt-5">
-                {boardPosts.map(item =>
-                    <div 
-                        key={item.id}
-                        className={`
-                            ${hoveredItemId === item.id ? "bg-(--accent-hover-light)! border-(--border-strong)!" : ""} 
-                            flex bg-(--surface-1) gap-5 p-5 border border-(--border) rounded-2xl transition-colors duration-100`
-                        }
-                    >
-                        <div className="hidden xs:flex flex-col gap-1 items-center">
-                            <button 
-                                onClick={() => console.log("Upvoted")}
-                                aria-label={`Upvote post ${item.title}`} 
-                                className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
+            <div className="flex gap-5 mt-4 md:hidden items-center border-b border-(--border)">
+                <button
+                    onClick={() => setMobileTab("feed")}
+                    className={`
+                        font-medium text-sm text-(--text-muted) pb-1 border-b-2 border-transparent px-1
+                        ${mobileTab === "feed" ? "text-(--text-secondary) border-(--text-secondary)!" : ""}
+                    `}
+                >
+                    Feed
+                </button>
+                <button
+                    onClick={() => setMobileTab("about")}
+                    className={`
+                        font-medium text-sm text-(--text-muted) pb-1 border-b-2 border-transparent px-1
+                        ${mobileTab === "about" ? "text-(--text-secondary) border-(--text-secondary)!" : ""}
+                    `}
+                >
+                    About
+                </button>
+            </div>
+
+            {mobileTab === "feed" 
+                ?
+                    <div className="flex flex-col gap-4 mt-5">
+                        {boardPosts.map(item =>
+                            <div 
+                                key={item.id}
+                                className={`
+                                    ${hoveredItemId === item.id ? "bg-(--accent-hover-light)! border-(--border-strong)!" : ""} 
+                                    flex bg-(--surface-1) gap-5 p-5 border border-(--border) rounded-2xl transition-colors duration-100`
+                                }
                             >
-                                <ChevronUp className="size-5"/>
-                            </button>
-                            <p className="font-medium">
-                                {item.score}
-                            </p>
-                            <button 
-                                onClick={() => console.log("Downvoted")}
-                                aria-label={`Downvote post ${item.title}`} 
-                                className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
-                            >
-                                <ChevronDown className="size-5"/>
-                            </button>
-                        </div>
-                        <div>
-                            <Link 
-                                to={item.id.toString()}
-                                onMouseEnter={() => setHoveredItemId(item.id)}
-                                onMouseDown={() => setHoveredItemId(item.id)}
-                                onMouseLeave={() => setHoveredItemId(null)}
-                            >
-                                <div className="flex items-center gap-3">
-                                    <span className="hidden xs:block bg-(--accent) text-(--accent-text) text-xs px-3 py-0.5 font-medium rounded-sm">
-                                        {item.flair}
-                                    </span>
-                                    <p className="text-xs!">
-                                        Posted by <b>{item.authorUsername}</b>
-                                    </p>
-                                    <p className="text-xs! text-(--text-muted)!">
-                                        {item.timeAgo}
-                                    </p>
-                                </div>
-                                <div className="mt-2">
-                                    <h3 className="line-clamp-3">
-                                        {item.title}
-                                    </h3>
-                                    <p className="mt-2 line-clamp-2">
-                                        {item.excerpt}
-                                    </p>
-                                </div>
-                            </Link>
-                            <div className="flex mt-3 gap-4 items-center">
-                                <div className="flex items-center gap-1.5 xs:hidden">
+                                <div className="hidden xs:flex flex-col gap-1 items-center">
                                     <button 
-                                        onClick={() => console.log("Downvoted")}
+                                        onClick={() => console.log("Upvoted")}
                                         aria-label={`Upvote post ${item.title}`} 
                                         className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                                     >
@@ -164,28 +144,78 @@ export default function Board() {
                                         <ChevronDown className="size-5"/>
                                     </button>
                                 </div>
-                                <Link 
-                                    to={item.id.toString()}
-                                    onMouseEnter={() => setHoveredItemId(item.id)}
-                                    onMouseDown={() => setHoveredItemId(item.id)}
-                                    onMouseLeave={() => setHoveredItemId(null)}
-                                    className="text-(--text-muted) text-sm flex items-center gap-2 active:text-(--text-secondary) lg:hover:text-(--text-secondary)"
-                                >
-                                    <MessageSquare className="size-4"/>
-                                    {item.commentCount} comments
-                                </Link>
-                                <button 
-                                    onClick={() => console.log("Saved")}
-                                    className="group text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) flex items-center gap-2 text-sm ml-auto xs:ml-0"
-                                >
-                                    <Bookmark className="size-4"/>
-                                    <p className="transition-colors duration-100 hidden xs:block text-(--text-muted)! lg:group-hover:text-(--text-secondary)!">Save</p>
-                                </button>
+                                <div>
+                                    <Link 
+                                        to={item.id.toString()}
+                                        onMouseEnter={() => setHoveredItemId(item.id)}
+                                        onMouseDown={() => setHoveredItemId(item.id)}
+                                        onMouseLeave={() => setHoveredItemId(null)}
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <span className="hidden xs:block bg-(--accent) text-(--accent-text) text-xs px-3 py-0.5 font-medium rounded-sm">
+                                                {item.flair}
+                                            </span>
+                                            <p className="text-xs!">
+                                                Posted by <b>{item.authorUsername}</b>
+                                            </p>
+                                            <p className="text-xs! text-(--text-muted)!">
+                                                {item.timeAgo}
+                                            </p>
+                                        </div>
+                                        <div className="mt-2">
+                                            <h3 className="line-clamp-3">
+                                                {item.title}
+                                            </h3>
+                                            <p className="mt-2 line-clamp-2">
+                                                {item.excerpt}
+                                            </p>
+                                        </div>
+                                    </Link>
+                                    <div className="flex mt-3 gap-4 items-center">
+                                        <div className="flex items-center gap-1.5 xs:hidden">
+                                            <button 
+                                                onClick={() => console.log("Downvoted")}
+                                                aria-label={`Upvote post ${item.title}`} 
+                                                className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
+                                            >
+                                                <ChevronUp className="size-5"/>
+                                            </button>
+                                            <p className="font-medium">
+                                                {item.score}
+                                            </p>
+                                            <button 
+                                                onClick={() => console.log("Downvoted")}
+                                                aria-label={`Downvote post ${item.title}`} 
+                                                className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
+                                            >
+                                                <ChevronDown className="size-5"/>
+                                            </button>
+                                        </div>
+                                        <Link 
+                                            to={item.id.toString()}
+                                            onMouseEnter={() => setHoveredItemId(item.id)}
+                                            onMouseDown={() => setHoveredItemId(item.id)}
+                                            onMouseLeave={() => setHoveredItemId(null)}
+                                            className="text-(--text-muted) text-sm flex items-center gap-2 active:text-(--text-secondary) lg:hover:text-(--text-secondary)"
+                                        >
+                                            <MessageSquare className="size-4"/>
+                                            {item.commentCount} comments
+                                        </Link>
+                                        <button 
+                                            onClick={() => console.log("Saved")}
+                                            className="group text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) flex items-center gap-2 text-sm ml-auto xs:ml-0"
+                                        >
+                                            <Bookmark className="size-4"/>
+                                            <p className="transition-colors duration-100 hidden xs:block text-(--text-muted)! lg:group-hover:text-(--text-secondary)!">Save</p>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
-                )}
-            </div>
+                :
+                    <BoardAbout board={board} boardInfo={boardInfo} rules={rules} />
+            }
         </>
     )
 }
