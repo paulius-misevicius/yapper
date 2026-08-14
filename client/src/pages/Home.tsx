@@ -22,9 +22,12 @@ export default function Home() {
                 <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
                         <div className={`${item.dotColorClass} rounded-full size-2.25`}/>
-                        <h3 className="text-sm text-(--text-muted)! font-medium!">
+                        <Link 
+                            to={`b/${item.boardName}`}
+                            className="text-sm text-(--text-muted)! font-medium! hover:text-(--text-secondary)!"
+                        >
                             b/{item.boardName}
-                        </h3>
+                        </Link>
                     </div>
                     <p className="text-(--text-muted)! text-xs!">
                         {item.timeAgo}

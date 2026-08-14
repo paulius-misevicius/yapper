@@ -6,6 +6,7 @@ import ProfilePicture from "../components/ProfilePicture"
 import type { Board } from "../../data"
 import BoardMobileSettings from "../components/BoardMobileSettings"
 import BoardAbout from "../components/BoardAbout"
+import { getTimeAgo } from "../utils"
 
 export type Filter = "today" | "this week" | "this month" | "this year" | "all time"
 export type Sort = "new" | "top"
@@ -23,11 +24,13 @@ export default function Board() {
     const [sort, setSort] = useState<Sort>("top")
     const [isMobileSettingsOpen, setIsMobileSettingsOpen] = useState(false)
     const [mobileTab, setMobileTab] = useState<MobileTab>("feed")
-
     const { boardInfo, board, rules } = useOutletContext<BoardProps>()
     const [hoveredItemId, setHoveredItemId] = useState<number | null>(null)
 
     const boardPosts = posts.filter(item => item.boardName === board)
+    const sortedPosts = sort === "top" 
+        ?   [...boardPosts].sort((a, b) => b.score - a.score)
+        :   [...boardPosts].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
     return (
         <>
@@ -117,7 +120,7 @@ export default function Board() {
             {mobileTab === "feed" 
                 ?
                     <div className="flex flex-col gap-4 mt-5">
-                        {boardPosts.map(item =>
+                        {sortedPosts.map(item =>
                             <div 
                                 key={item.id}
                                 className={`
@@ -152,14 +155,14 @@ export default function Board() {
                                         onMouseLeave={() => setHoveredItemId(null)}
                                     >
                                         <div className="flex items-center gap-3">
-                                            <span className="hidden xs:block bg-(--accent) text-(--accent-text) text-xs px-3 py-0.5 font-medium rounded-sm">
+                                            <span className={`hidden xs:block ${boardInfo.colorClass} text-xs px-3 py-0.5 font-medium rounded-sm`}>
                                                 {item.flair}
                                             </span>
                                             <p className="text-xs!">
                                                 Posted by <b>{item.authorUsername}</b>
                                             </p>
                                             <p className="text-xs! text-(--text-muted)!">
-                                                {item.timeAgo}
+                                                {getTimeAgo(item.createdAt)}
                                             </p>
                                         </div>
                                         <div className="mt-2">
