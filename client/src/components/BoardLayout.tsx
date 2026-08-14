@@ -3,13 +3,22 @@ import { boards, boardRules } from "../../data"
 import { useParams } from "react-router"
 import BoardAbout from "./BoardAbout"
 
+import type { Board } from "../../data"
+
+export interface BoardContext {
+    boardInfo: Board
+    board: string
+    rules: string[]
+}
+
 export default function BoardLayout() {
     
     const { board } = useParams()
     
-    if (!board) return
-
     const boardInfo = boards.find(item => item.name === `${board}`)
+
+    if (!board || !boardInfo) return
+
     const rules = boardRules[board]
 
     return (

@@ -9,7 +9,9 @@ export function useGlobalContext() {
   return context
 }
 
-export function getTimeAgo(date: string) {
+export function getTimeAgo(date: string | undefined) {
+  if (!date) return
+
   const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
 
   if (seconds < 60) return `${seconds}s ago`;

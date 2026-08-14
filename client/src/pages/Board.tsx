@@ -8,15 +8,11 @@ import BoardMobileSettings from "../components/BoardMobileSettings"
 import BoardAbout from "../components/BoardAbout"
 import { getTimeAgo } from "../utils"
 
+import type { BoardContext } from "../components/BoardLayout"
+
 export type Filter = "today" | "this week" | "this month" | "this year" | "all time"
 export type Sort = "new" | "top"
 type MobileTab = "feed" | "about"
-
-interface BoardProps {
-    boardInfo: Board
-    board: string
-    rules: string[]
-}
 
 export default function Board() {
 
@@ -24,7 +20,7 @@ export default function Board() {
     const [sort, setSort] = useState<Sort>("top")
     const [isMobileSettingsOpen, setIsMobileSettingsOpen] = useState(false)
     const [mobileTab, setMobileTab] = useState<MobileTab>("feed")
-    const { boardInfo, board, rules } = useOutletContext<BoardProps>()
+    const { boardInfo, board, rules } = useOutletContext<BoardContext>()
     const [hoveredItemId, setHoveredItemId] = useState<number | null>(null)
 
     const boardPosts = posts.filter(item => item.boardName === board)
@@ -41,14 +37,14 @@ export default function Board() {
                     filter={filter} setFilter={setFilter}
                 />
             }
-            <h1>b/{boardInfo?.name}</h1>
+            <h1>b/{boardInfo.name}</h1>
             <div className="flex flex-wrap min-w-0 items-center gap-4 py-2 px-3 bg-(--surface-1) border border-(--border) rounded-2xl mt-4">
                 <ProfilePicture size="size-9"/>
                 <Link 
                     to="create"
                     className="text-xs font-medium text-(--text-muted) bg-(--surface-2) flex-1 text-left py-2 px-4 border border-(--border) rounded-md truncate min-w-0"
                 >
-                    Create a post in b/{boardInfo?.name}...
+                    Create a post in b/{boardInfo.name}...
                 </Link>
                 <button 
                     onClick={() => setSort("new")}
@@ -170,7 +166,7 @@ export default function Board() {
                                                 {item.title}
                                             </h3>
                                             <p className="mt-2 line-clamp-2">
-                                                {item.excerpt}
+                                                {item.content}
                                             </p>
                                         </div>
                                     </Link>

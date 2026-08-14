@@ -1,6 +1,7 @@
 import { currentUser } from "../../data"
 import { useGlobalContext } from "../utils"
 import type { Board } from "../../data"
+import { Link } from "react-router"
 
 interface BoardAboutProps {
     boardInfo: Board | undefined
@@ -38,14 +39,16 @@ export default function BoardAbout({boardInfo, board, rules, sidebar}: BoardAbou
                             <p className="text-xs!">Created</p>
                         </div>
                     </div>
-                    <button
-                        className="bg-(--primary-btn) text-(--primary-btn-text) text-sm w-full py-3 rounded-lg mt-4 font-medium active:bg-(--accent) lg:hover:bg-(--accent)"
-                    >
-                        {isLoggedIn && currentUser.joinedBoardNames.find(item => item === boardInfo?.name)
-                            ?   "Leave board"
-                            :   "Join board"
-                        }
-                    </button>
+                    {isLoggedIn &&
+                        <button
+                            className="bg-(--primary-btn) text-(--primary-btn-text) text-sm w-full py-3 rounded-lg mt-4 font-medium active:bg-(--accent) lg:hover:bg-(--accent)"
+                        >
+                            {isLoggedIn && currentUser.joinedBoardNames.find(item => item === boardInfo?.name)
+                                ?   "Leave board"
+                                :   "Join board"
+                            }
+                        </button>
+                    }
                 </div>
                 <div className="flex-1 flex flex-col min-h-0 mt-4">
                     <h2 className="shrink-0">Board rules</h2>
