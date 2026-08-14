@@ -23,7 +23,7 @@ export default function Home() {
                     <div className="flex items-center gap-3">
                         <div className={`${item.dotColorClass} rounded-full size-2.25`}/>
                         <h3 className="text-sm text-(--text-muted)! font-medium!">
-                            {item.boardName}
+                            b/{item.boardName}
                         </h3>
                     </div>
                     <p className="text-(--text-muted)! text-xs!">
@@ -31,7 +31,7 @@ export default function Home() {
                     </p>
                 </div>
                 <Link
-                    to={`${item.boardName}/${item.id}`}
+                    to={`b/${item.boardName}/${item.id}`}
                     title={item.title}
                     className="active:text-(--accent-text) line-clamp-2 text-sm text-(--text-secondary) font-medium lg:hover:text-(--accent-text)"
                 >
@@ -53,19 +53,19 @@ export default function Home() {
 
     const homeBoardCollection = filteredBoards.map(item => 
         <Link 
-            to={item.name}
+            to={`b/${item.name}`}
             key={item.id}
-            aria-label={`Go to ${item.name}`}
+            aria-label={`Go to b/${item.name}`}
             className="active:bg-(--accent-hover-light) active:border-(--border-strong) lg:hover:bg-(--accent-hover-light) lg:hover:border-(--border-strong) bg-(--surface-1) text-left flex flex-col gap-4 p-5 border border-(--border) rounded-2xl"
         >
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
                     <span className={`size-10 font-bold flex items-center justify-center rounded-lg ${item.colorClass}`}>
-                        {item.name.charAt(2).toUpperCase()}
+                        {item.name.charAt(0).toUpperCase()}
                     </span>
-                    <h2>{item.name}</h2>
+                    <h2>b/{item.name}</h2>
                 </div>
-                {isLoggedIn && currentUser.joinedBoardNames.includes(item.name) &&
+                {isLoggedIn && currentUser.joinedBoardNames.find(board => board === item.name) &&
                     <span className="text-xs bg-(--accent) py-1 px-4 rounded-lg font-medium text-(--accent-text)">
                         Joined
                     </span>

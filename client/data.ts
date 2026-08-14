@@ -12,7 +12,7 @@ export interface Board {
 export const boards: Board[] = [
   {
     id: 1,
-    name: "b/technology",
+    name: "technology",
     description: "Hardware, software, gadgets, and the future of computing. Join to discuss the latest in tech.",
     memberCount: 241,
     postCount: 843,
@@ -23,7 +23,7 @@ export const boards: Board[] = [
   },
   {
     id: 2,
-    name: "b/science",
+    name: "science",
     description: "Discoveries, research, and the wonders of the natural world. Share findings and ask questions.",
     memberCount: 187,
     postCount: 621,
@@ -34,7 +34,7 @@ export const boards: Board[] = [
   },
   {
     id: 3,
-    name: "b/gaming",
+    name: "gaming",
     description: "Video games, board games, retro classics and new releases. All platforms welcome here.",
     memberCount: 312,
     postCount: 1490,
@@ -45,7 +45,7 @@ export const boards: Board[] = [
   },
   {
     id: 4,
-    name: "b/books",
+    name: "books",
     description: "Fiction, nonfiction, reading lists, and literary discussion for avid readers everywhere.",
     memberCount: 114,
     postCount: 432,
@@ -56,7 +56,7 @@ export const boards: Board[] = [
   },
   {
     id: 5,
-    name: "b/cooking",
+    name: "cooking",
     description: "Recipes, techniques, kitchen gear, and food culture from home cooks and professionals.",
     memberCount: 98,
     postCount: 511,
@@ -67,7 +67,7 @@ export const boards: Board[] = [
   },
   {
     id: 6,
-    name: "b/paranormal",
+    name: "paranormal",
     description: "Strange events, unexplained phenomena, and the mysteries that science hasn't solved yet.",
     memberCount: 54,
     postCount: 208,
@@ -78,7 +78,7 @@ export const boards: Board[] = [
   },
   {
     id: 7,
-    name: "b/coding",
+    name: "coding",
     description: "Programming languages, frameworks, tools, and debugging war stories.",
     memberCount: 176,
     postCount: 733,
@@ -89,7 +89,7 @@ export const boards: Board[] = [
   },
   {
     id: 8,
-    name: "b/lithuania",
+    name: "lithuania",
     description: "News, culture, and everyday life in and around Lithuania.",
     memberCount: 63,
     postCount: 149,
@@ -112,7 +112,7 @@ export interface RecentPost {
 export const recentPosts: RecentPost[] = [
   {
     id: 2,
-    boardName: "b/science",
+    boardName: "science",
     title: "New findings on deep-sea bioluminescence discussed",
     timeAgo: "8d ago",
     upvotes: 14,
@@ -121,7 +121,7 @@ export const recentPosts: RecentPost[] = [
   },
   {
     id: 3,
-    boardName: "b/coding",
+    boardName: "coding",
     title: "Open source tools I actually use every day. (no, this isn't an ad)",
     timeAgo: "1d ago",
     upvotes: 31,
@@ -130,7 +130,7 @@ export const recentPosts: RecentPost[] = [
   },
   {
     id: 4,
-    boardName: "b/gaming",
+    boardName: "gaming",
     title: "Haven't been outside in 5 days. Is anyone else suffering from a crippling gaming addiction?",
     timeAgo: "1d ago",
     upvotes: 31,
@@ -139,7 +139,7 @@ export const recentPosts: RecentPost[] = [
   },
   {
     id: 5,
-    boardName: "b/books",
+    boardName: "books",
     title: "It's not the beans. This new book on quantum physics revolutionized how I make my coffee.",
     timeAgo: "1d ago",
     upvotes: 31,
@@ -168,7 +168,7 @@ export const currentUser: UserProfile = {
     postCount: 5,
     commentCount: 8,
     karma: 62,
-    joinedBoardNames: ["b/technology", "b/coding", "b/lithuania"]
+    joinedBoardNames: ["technology", "coding", "lithuania"]
 }
 
 export type Flair = "Discussion" | "News" | "PSA" | "Review" | "Question"
@@ -187,7 +187,7 @@ export interface BoardPost {
 export const posts: BoardPost[] = [
   {
     id: 1,
-    boardName: "b/technology",
+    boardName: "technology",
     authorUsername: "devjordan_",
     flair: "Discussion",
     title: "What's everyone's go-to laptop for software development in 2024?",
@@ -199,7 +199,7 @@ export const posts: BoardPost[] = [
   },
   {
     id: 2,
-    boardName: "b/technology",
+    boardName: "technology",
     authorUsername: "llm_watcher",
     flair: "News",
     title: "Google just open-sourced their new on-device AI model — runs on 4GB RAM",
@@ -211,7 +211,7 @@ export const posts: BoardPost[] = [
   },
   {
     id: 3,
-    boardName: "b/technology",
+    boardName: "technology",
     authorUsername: "privacyfirst99",
     flair: "PSA",
     title: "PSA: the new Chrome update silently re-enables third-party cookies for some users",
@@ -223,7 +223,7 @@ export const posts: BoardPost[] = [
   },
   {
     id: 4,
-    boardName: "b/technology",
+    boardName: "technology",
     authorUsername: "cables_and_chaos",
     flair: "Discussion",
     title: "Anyone else notice USB-C cable quality has gotten dramatically worse?",
@@ -235,7 +235,7 @@ export const posts: BoardPost[] = [
   },
   {
     id: 5,
-    boardName: "b/technology",
+    boardName: "technology",
     authorUsername: "repairability_nerd",
     flair: "Review",
     title: "Framework 16 after 6 months: a real-world review from a daily driver",

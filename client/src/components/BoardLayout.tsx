@@ -9,7 +9,7 @@ export default function BoardLayout() {
     
     if (!board) return
 
-    const boardInfo = boards.find(item => item.name === `b/${board}`)
+    const boardInfo = boards.find(item => item.name === `${board}`)
     const rules = boardRules[board]
 
     return (

@@ -5,6 +5,7 @@ import AppLayout from "./components/AppLayout"
 import BoardLayout from "./components/BoardLayout"
 import Board from "./pages/Board"
 import Post from "./pages/Post"
+import CreatePost from "./pages/CreatePost"
 
 interface GlobalContextValue {
   isLoggedIn: boolean
@@ -22,7 +23,7 @@ export default function App() {
         { path: "b/:board", Component: BoardLayout, children: [
           { index: true, Component: Board },
           { path: ":postId", Component: Post },
-          { path: "create" }
+          { path: "create", Component: CreatePost }
         ] },
         { path: "u/:user" }
       ]

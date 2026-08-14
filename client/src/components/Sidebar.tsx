@@ -19,12 +19,12 @@ export default function Sidebar({isMenuOpen, setIsMenuOpen}: SidebarProps) {
 
         return (
             <NavLink 
-                to={item}
+                to={`b/${item}`}
                 key={item}
-                aria-label={`Go to ${item}`}
+                aria-label={`Go to b/${item}`}
             >
                 <div className={`${boardColor} rounded-full size-2.25`}/>
-                {item}
+                b/{item}
             </NavLink>
         )
     })

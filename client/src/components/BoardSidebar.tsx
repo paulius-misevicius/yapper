@@ -21,7 +21,7 @@ export default function BoardSidebar({boardInfo, board, rules}: BoardSidebarProp
             </div>
             <div className="py-4 px-5 flex-1 flex flex-col min-h-0">
                 <div className="shrink-0">
-                    <h2 className="font-bold">{boardInfo?.name}</h2>
+                    <h2 className="font-bold">b/{boardInfo?.name}</h2>
                     <p className="mt-2">{boardInfo?.description}</p>
                     <div className="flex items-center justify-between mt-4">
                         <div className="flex flex-col gap-0">
