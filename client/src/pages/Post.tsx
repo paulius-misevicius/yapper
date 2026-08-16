@@ -1,11 +1,11 @@
-import { Link, useOutletContext, useParams } from "react-router"
+import { Link, useOutletContext, useParams, useNavigate } from "react-router"
 import { posts } from "../../data/board"
 import { currentUser } from "../../data/user"
 import { comments, type Comment } from "../../data/post"
 import { Triangle, MoveLeft, MessageSquare, Bookmark, Hourglass, ChartNoAxesColumn } from "lucide-react"
 import { getTimeAgo } from "../utils"
 import type { BoardContext } from "../components/BoardLayout"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import CommentThread from "../components/CommentThread"
 
 export interface CommentWithReplies extends Comment {
@@ -19,18 +19,23 @@ export default function Post() {
     const { boardInfo } = useOutletContext<BoardContext>()
     const [isCommentBoxActive, setIsCommentBoxActive] = useState(false)
     const [sort, setSort] = useState("top")
+    const [commentTree, setCommentTree] = useState<CommentWithReplies[]>([])
+    const [isNested, setIsNested] = useState(false)
+    const [reset, setReset] = useState(0)
+
+    const navigate = useNavigate()
 
     const postComments = comments.filter(item => item.postId.toString() === postId)
-
-    function buildCommentTree() {
+    
+    useEffect(() => {
         const map = new Map<number, CommentWithReplies>()
         postComments.forEach(item => map.set(item.id, {...item, replies: []}))
-
+        
         const rootComments: CommentWithReplies[] = []
-
+    
         postComments.forEach(item => {
             const comment = map.get(item.id)
-
+    
             if (!comment) {
                 return
             } else if (item.parentCommentId === null) {
@@ -41,18 +46,8 @@ export default function Post() {
             }
         })
 
-        return rootComments.map(item =>
-            <CommentThread 
-                key={item.id}
-                id={item.id}
-                authorUsername={item.authorUsername}
-                createdAt={item.createdAt}
-                score={item.score}
-                body={item.body}
-                replies={item.replies} 
-            />
-        )
-    }
+        setCommentTree(rootComments)
+    }, [reset])
 
     if (!post) return
 
@@ -203,7 +198,33 @@ export default function Post() {
                 </div>
             </div>
             <div className="flex w-full flex-col md:gap-5 mt-3 bg-(--surface-1) p-5 border border-(--border) rounded-2xl">
-                {buildCommentTree()}
+                {isNested &&
+                    <button 
+                        onClick={() => {
+                            setReset(prev => prev + 1)
+                            setIsNested(false)
+                        }}
+                        className="flex items-center gap-2 mb-3 md:mb-0 text-sm text-(--text-muted) underline underline-offset-2 w-fit"
+                    >
+                        <MoveLeft className="size-4"/>
+                        See full discussion
+                    </button>
+                }
+                {commentTree.map(item =>
+                    <CommentThread 
+                        key={item.id}
+                        postId={item.postId}
+                        parentCommentId={item.parentCommentId}
+                        id={item.id}
+                        authorUsername={item.authorUsername}
+                        createdAt={item.createdAt}
+                        score={item.score}
+                        body={item.body}
+                        replies={item.replies}
+                        setCommentTree={setCommentTree}
+                        setIsNested={setIsNested}
+                    />
+                )}
             </div>
         </div>
     )

@@ -1,30 +1,78 @@
 import type { CommentWithReplies } from "../pages/Post"
 import { getTimeAgo } from "../utils"
 import { useState, useEffect } from "react"
-import { Triangle, MessageSquare, Minus, Plus } from "lucide-react"
+import { Triangle, MessageSquare, Minus, Plus, MoveRight } from "lucide-react"
 import ProfilePicture from "./ProfilePicture"
 import { users } from "../../data/user"
 
-interface CommentThreadProps extends Omit<CommentWithReplies, | "postId" | "parentCommentId"> {
+interface CommentThreadProps extends CommentWithReplies {
     depth?: number
+    setIsNested: React.Dispatch<React.SetStateAction<boolean>>
+    setCommentTree: React.Dispatch<React.SetStateAction<CommentWithReplies[]>>
 }
 
-export default function CommentThread({ authorUsername, createdAt, score, body, replies, depth = 0 }: CommentThreadProps) {
+export default function CommentThread({ id, postId, parentCommentId, authorUsername, createdAt, score, body, replies, setCommentTree, setIsNested, depth = 0 }: CommentThreadProps) {
 
     useEffect(() => {
-            function handleResize() {
-                setIsDesktop(window.innerWidth > 768)
-            }
-            
-            window.addEventListener("resize", handleResize)
-            
-            return () => window.removeEventListener("resize", handleResize)
-        }, [])
-    
+        function handleResize() {
+            setIsDesktop(window.innerWidth > 768)
+        }
+        
+        window.addEventListener("resize", handleResize)
+        
+        return () => window.removeEventListener("resize", handleResize)
+    }, [])
+        
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768)
-
     const [isThreadOpen, setIsThreadOpen] = useState<boolean>(depth === 0 || (depth < 4 && score > 4))
     const user = users.find(item => item.username === authorUsername)
+
+    const maxNestDepth = isDesktop ? 5 : 4
+    const nest = depth < maxNestDepth
+        ?   replies.length > 0 && 
+                replies.map(item =>
+                    <CommentThread
+                        key={item.id}
+                        id={item.id}
+                        postId={item.postId}
+                        parentCommentId={item.parentCommentId}
+                        authorUsername={item.authorUsername}
+                        createdAt={item.createdAt}
+                        score={item.score}
+                        body={item.body}
+                        replies={item.replies}
+                        depth={depth + 1}
+                        setCommentTree={setCommentTree}
+                        setIsNested={setIsNested}
+                    />
+                )
+        :   replies.length > 0 &&    
+                <div className={`flex my-3`}>
+                    <div className="border-l border-(--border-strong) pr-4"/>
+                    <button 
+                        onClick={() => {
+                            setCommentTree([
+                                { 
+                                    id,
+                                    postId,
+                                    parentCommentId,
+                                    authorUsername,
+                                    createdAt,
+                                    score,
+                                    body,
+                                    replies
+                                }
+                            ])
+                            setIsNested(true)
+                    }}
+                        aria-label={`Continue thread and open comment of ${authorUsername}`}
+                        className="flex items-center gap-2 text-sm text-(--text-muted) underline underline-offset-2"
+                    >
+                        Continue thread
+                        <MoveRight className="size-4" />
+                    </button>
+                </div>
+        
 
     if (isDesktop) return (
         <details 
@@ -110,19 +158,7 @@ export default function CommentThread({ authorUsername, createdAt, score, body, 
                 </div>
                 <div />
                 <div>
-                    {replies.length > 0 &&
-                        replies.map(item =>
-                            <CommentThread
-                                key={item.id}
-                                id={item.id}
-                                authorUsername={item.authorUsername}
-                                createdAt={item.createdAt}
-                                score={item.score}
-                                body={item.body}
-                                replies={item.replies}
-                                depth={depth + 1}
-                            />
-                    )}
+                    {nest}
                 </div>
             </div>
         </details>
@@ -178,23 +214,10 @@ export default function CommentThread({ authorUsername, createdAt, score, body, 
                     </div>
                 </div>
                 <div>
-                    <div className="">
-                        {replies.length > 0 &&
-                            replies.map(item =>
-                                <CommentThread
-                                    key={item.id}
-                                    id={item.id}
-                                    authorUsername={item.authorUsername}
-                                    createdAt={item.createdAt}
-                                    score={item.score}
-                                    body={item.body}
-                                    replies={item.replies}
-                                    depth={depth + 1}
-                                />
-                        )}
-                    </div>
+                    {nest}
                 </div>
             </details>
         </div>
     )
+
 }
