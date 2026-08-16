@@ -1,9 +1,10 @@
 import { Outlet } from "react-router"
-import { boards, boardRules } from "../../data"
+import { boards } from "../../data/home"
+import { boardRules } from "../../data/board"
 import { useParams } from "react-router"
 import BoardAbout from "./BoardAbout"
 
-import type { Board } from "../../data"
+import type { Board } from "../../data/home"
 
 export interface BoardContext {
     boardInfo: Board

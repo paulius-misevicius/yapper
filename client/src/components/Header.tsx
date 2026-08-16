@@ -1,5 +1,5 @@
 import { Link } from "react-router"
-import { currentUser } from "../../data"
+import { currentUser } from "../../data/user"
 import { useGlobalContext } from "../utils"
 import { Menu } from "lucide-react"
 import ProfilePicture from "./ProfilePicture"

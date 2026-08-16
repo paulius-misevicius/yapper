@@ -132,6 +132,10 @@ nav a svg {
     color: var(--accent-text) !important;
 }
 
+.triangle-down {
+    transform: rotate(180deg);
+}
+
 @media (min-width: 1024px) {
     nav a:hover {
         background-color: var(--accent-hover);

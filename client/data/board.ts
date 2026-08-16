@@ -1,176 +1,3 @@
-export interface Board {
-    id: number
-    name: string
-    description: string
-    memberCount: number
-    postCount: number
-    joined: boolean
-    createdAt: string
-    colorClass: string
-    dotColorClass: string
-}
-export const boards: Board[] = [
-  {
-    id: 1,
-    name: "technology",
-    description: "Hardware, software, gadgets, and the future of computing. Join to discuss the latest in tech.",
-    memberCount: 241,
-    postCount: 843,
-    createdAt: "Jan 12, 2023",
-    joined: false,
-    colorClass: "bg-blue-100 text-blue-700",
-    dotColorClass: "bg-blue-700"
-  },
-  {
-    id: 2,
-    name: "science",
-    description: "Discoveries, research, and the wonders of the natural world. Share findings and ask questions.",
-    memberCount: 187,
-    postCount: 621,
-    createdAt: "Jun 13, 2026",
-    joined: false,
-    colorClass: "bg-green-100 text-green-700",
-    dotColorClass: "bg-green-700"
-  },
-  {
-    id: 3,
-    name: "gaming",
-    description: "Video games, board games, retro classics and new releases. All platforms welcome here.",
-    memberCount: 312,
-    postCount: 1490,
-    createdAt: "Jul 18, 2021",
-    joined: false,
-    colorClass: "bg-purple-100 text-purple-700",
-    dotColorClass: "bg-purple-700"
-  },
-  {
-    id: 4,
-    name: "books",
-    description: "Fiction, nonfiction, reading lists, and literary discussion for avid readers everywhere.",
-    memberCount: 114,
-    postCount: 432,
-    createdAt: "May 7, 2022",
-    joined: false,
-    colorClass: "bg-red-100 text-red-700",
-    dotColorClass: "bg-red-700"
-  },
-  {
-    id: 5,
-    name: "cooking",
-    description: "Recipes, techniques, kitchen gear, and food culture from home cooks and professionals.",
-    memberCount: 98,
-    postCount: 511,
-    createdAt: "Apr 30, 2023",
-    joined: false,
-    colorClass: "bg-orange-100 text-orange-700",
-    dotColorClass: "bg-orange-700"
-  },
-  {
-    id: 6,
-    name: "paranormal",
-    description: "Strange events, unexplained phenomena, and the mysteries that science hasn't solved yet.",
-    memberCount: 54,
-    postCount: 208,
-    createdAt: "Sep 26, 2020",
-    joined: true,
-    colorClass: "bg-gray-200 text-gray-700",
-    dotColorClass: "bg-gray-700"
-  },
-  {
-    id: 7,
-    name: "coding",
-    description: "Programming languages, frameworks, tools, and debugging war stories.",
-    memberCount: 176,
-    postCount: 733,
-    createdAt: "Dec 24, 2025",
-    joined: true,
-    colorClass: "bg-green-100 text-green-700",
-    dotColorClass: "bg-green-700"
-  },
-  {
-    id: 8,
-    name: "lithuania",
-    description: "News, culture, and everyday life in and around Lithuania.",
-    memberCount: 63,
-    postCount: 149,
-    createdAt: "Aug 2, 2024",
-    joined: true,
-    colorClass: "bg-orange-100 text-orange-700",
-    dotColorClass: "bg-orange-700"
-  },
-]
-
-export interface RecentPost {
-  id: number
-  boardName: string
-  title: string
-  timeAgo: string
-  upvotes: number
-  commentCount: number
-  dotColorClass: string
-}
-export const recentPosts: RecentPost[] = [
-  {
-    id: 2,
-    boardName: "science",
-    title: "New findings on deep-sea bioluminescence discussed",
-    timeAgo: "8d ago",
-    upvotes: 14,
-    commentCount: 38,
-    dotColorClass: "bg-blue-700",
-  },
-  {
-    id: 3,
-    boardName: "coding",
-    title: "Open source tools I actually use every day. (no, this isn't an ad)",
-    timeAgo: "1d ago",
-    upvotes: 31,
-    commentCount: 12,
-    dotColorClass: "bg-green-700",
-  },
-  {
-    id: 4,
-    boardName: "gaming",
-    title: "Haven't been outside in 5 days. Is anyone else suffering from a crippling gaming addiction?",
-    timeAgo: "1d ago",
-    upvotes: 31,
-    commentCount: 12,
-    dotColorClass: "bg-purple-700",
-  },
-  {
-    id: 5,
-    boardName: "books",
-    title: "It's not the beans. This new book on quantum physics revolutionized how I make my coffee.",
-    timeAgo: "1d ago",
-    upvotes: 31,
-    commentCount: 12,
-    dotColorClass: "bg-red-700",
-  }
-]
-  
-export interface UserProfile {
-    id: number
-    username: string
-    bio: string
-    profilePictureUrl: string
-    joinedAt: string
-    postCount: number
-    commentCount: number
-    karma: number
-    joinedBoardNames: string[]
-}
-export const currentUser: UserProfile = {
-    id: 1,
-    username: "paulius",
-    bio: "learning to build things",
-    profilePictureUrl: "",
-    joinedAt: "2026-06-01T09:30:00Z",
-    postCount: 5,
-    commentCount: 8,
-    karma: 62,
-    joinedBoardNames: ["technology", "coding", "lithuania"]
-}
-
 export type Flair = "Discussion" | "News" | "PSA" | "Review" | "Question"
 
 export interface BoardPost {
@@ -179,7 +6,7 @@ export interface BoardPost {
   authorUsername: string
   flair: Flair
   title: string
-  content: string
+  body: string
   createdAt: string
   score: number
   commentCount: number
@@ -191,7 +18,7 @@ export const posts: BoardPost[] = [
     authorUsername: "devjordan_",
     flair: "Discussion",
     title: "What's everyone's go-to laptop for software development?",
-    content:
+    body:
       "I've been comparing Mac, Linux, and Windows machines for development. Curious what setups people are actually using day to day. I'm especially interested in what matters after the first few weeks of ownership: keyboard and trackpad comfort, battery life, thermals, portability, Linux compatibility, external monitor support, repairability, and how well the machine handles a long coding session.\n\nDo you prefer having one machine that does everything, or a lightweight laptop plus a more powerful desktop or home server? I'd also love to hear which specifications you think are genuinely worth paying extra for and which ones mostly look good on a spec sheet. If you have a setup you've used for a year or more, what has held up well and what would you change if you were buying again?",
     createdAt: "2026-08-14T16:48:00+03:00",
     score: 87,
@@ -203,7 +30,7 @@ export const posts: BoardPost[] = [
     authorUsername: "llm_watcher",
     flair: "News",
     title: "Are small AI models finally becoming good enough for local use?",
-    content:
+    body:
       "I've been testing several lightweight models locally and the quality gap with larger cloud models seems smaller than it used to be. What has surprised me most is how useful smaller models can be for focused tasks when latency, privacy, and offline access matter more than having the absolute largest model available. I'm curious what hardware people are running, how much memory you need in practice, and which tasks still clearly benefit from a larger cloud model.\n\nHave local models become part of your normal workflow, or do you still treat them mostly as an experiment? I'd also be interested in practical examples where a smaller model was actually the better choice rather than simply being cheaper or easier to run.",
     createdAt: "2026-08-14T14:48:00+03:00",
     score: 214,
@@ -215,7 +42,7 @@ export const posts: BoardPost[] = [
     authorUsername: "privacyfirst99",
     flair: "PSA",
     title: "How much privacy do you actually get from browser privacy modes?",
-    content:
+    body:
       "Incognito and similar modes are useful, but there's still a lot happening behind the scenes. What privacy tools are people relying on? I'm interested in the distinction between keeping local browsing history out of the browser and actually reducing what websites, networks, advertisers, and other third parties can learn about you.\n\nDo you use separate browser profiles, tracker blocking, DNS filtering, privacy-focused search, containers, or anything else as part of your normal setup? I'm also curious which privacy habits feel worthwhile without making everyday browsing frustrating. What changed your mind about browser privacy, and which common privacy advice do you think is misunderstood?",
     createdAt: "2026-08-14T12:48:00+03:00",
     score: 531,
@@ -227,7 +54,7 @@ export const posts: BoardPost[] = [
     authorUsername: "cables_and_chaos",
     flair: "Discussion",
     title: "Anyone else notice USB-C cable quality has gotten worse?",
-    content:
+    body:
       "I've gone through several cables recently and some started having charging or data issues within months. What brands have held up for you? I'm wondering whether the problem is mostly cheaper construction, higher power requirements, more frequent bending and travel, or simply that there are so many inconsistent cables on the market now.\n\nDo you specifically check USB standards, wattage, data-transfer speeds, certification, or connector construction before buying? I'd also like to know whether anyone has found a reliable way to tell a genuinely good cable from one that just has impressive packaging and specifications. What is the longest you've had a USB-C cable working reliably?",
     createdAt: "2026-08-14T10:48:00+03:00",
     score: 43,
@@ -239,7 +66,7 @@ export const posts: BoardPost[] = [
     authorUsername: "repairability_nerd",
     flair: "Review",
     title: "Framework 16 after a year: was modularity worth it?",
-    content:
+    body:
       "After using a modular laptop as my primary machine for a year, here's what impressed me and what still needs work. The biggest question for me was whether the ability to replace or upgrade individual components actually changed how I think about the laptop over time. Some parts feel much more meaningful to upgrade or repair than others, and there are still trade-offs compared with a conventional machine.\n\nI'm curious how other long-term owners feel after the novelty has worn off. Have you actually replaced or upgraded anything, and did that save meaningful money or simply make the machine easier to keep around? I'd also like to hear how people feel about performance, battery life, build quality, noise, portability, and the practical experience of maintaining a modular system.\n\nIf you had to choose again today, would repairability be enough to make you pick it over a more conventional laptop?",
     createdAt: "2026-08-14T05:48:00+03:00",
     score: 168,
@@ -251,7 +78,7 @@ export const posts: BoardPost[] = [
     authorUsername: "home_lab",
     flair: "Review",
     title: "I finally built a tiny home server from old hardware",
-    content:
+    body:
       "Turned an old mini PC into a surprisingly capable home server running containers, backups, and a few self-hosted services. I originally expected it to be a small experiment, but it has become useful enough that I'm considering what else I can move onto it. The nice thing about using old hardware is that the cost of experimenting is low, although power consumption, storage reliability, cooling, and backup strategy become more important once the machine starts holding anything you care about.\n\nI'm curious what everyone else is self-hosting at home, especially services that genuinely improve daily life rather than becoming projects that require constant maintenance. What hardware are you using, how are you handling backups, and what service would you recommend to someone starting a small home lab?",
     createdAt: "2026-08-13T23:48:00+03:00",
     score: 126,
@@ -263,7 +90,7 @@ export const posts: BoardPost[] = [
     authorUsername: "mechanicalkeys",
     flair: "Discussion",
     title: "What's the best tech purchase you've made under $100?",
-    content:
+    body:
       "Looking for inexpensive gadgets that genuinely improved your daily routine rather than becoming drawer clutter. I'm less interested in flashy novelty products and more interested in small purchases that solved an annoying problem, saved time, made a workspace more comfortable, or quietly became something you use every day. It could be a cable accessory, desk item, kitchen gadget, lighting upgrade, storage solution, peripheral, or anything else.\n\nWhat did you buy for under $100 that ended up being much more useful than you expected? Bonus points if it is something you initially thought was unnecessary but ended up using constantly. I'd also love to hear about purchases that looked promising but turned out to be complete wastes of money.",
     createdAt: "2026-08-13T20:48:00+03:00",
     score: 302,
@@ -275,7 +102,7 @@ export const posts: BoardPost[] = [
     authorUsername: "linux_lurker",
     flair: "Discussion",
     title: "My first month using Linux exclusively on desktop",
-    content:
+    body:
       "I expected more compatibility problems than I actually encountered. There were definitely some surprises, though. The biggest adjustment has been learning which things require a different workflow rather than trying to make Linux behave exactly like another operating system.\n\nI'm curious what other people experienced during their first month, especially with hardware support, gaming, development tools, peripherals, office software, updates, and general desktop usability. What distribution did you choose, and did you stick with it? Were there any small quality-of-life improvements that made you wonder why you had not switched earlier?\n\nOn the other hand, what problem eventually made you consider going back to another platform? I'd be especially interested in hearing from people who use Linux as their primary desktop rather than as a secondary machine.",
     createdAt: "2026-08-13T16:48:00+03:00",
     score: 191,
@@ -287,7 +114,7 @@ export const posts: BoardPost[] = [
     authorUsername: "future_gadget",
     flair: "Question",
     title: "Which current tech trend do you think will disappear in five years?",
-    content:
+    body:
       "Every few years the industry gets obsessed with a new category. Which current trend feels most likely to become a footnote? I'm not necessarily asking which technology will completely disappear; some trends may simply become invisible infrastructure after the hype fades.\n\nI'm curious which products, features, business models, or buzzwords currently seem overhyped compared with their long-term usefulness. What makes a trend feel durable to you versus something that is mostly being pushed because companies need a new market narrative? If you had to predict one technology trend that will look surprisingly unimportant five years from now, what would you pick and why?",
     createdAt: "2026-08-13T11:48:00+03:00",
     score: 74,
@@ -299,7 +126,7 @@ export const posts: BoardPost[] = [
     authorUsername: "pixel_architect",
     flair: "Review",
     title: "My minimalist desk setup after years of collecting gadgets",
-    content:
+    body:
       "I finally sold, donated, or stored most of the unnecessary gear and ended up with a much simpler workspace. The funny part is that I expected losing equipment to make the desk less capable, but it actually made it easier to focus and faster to switch between tasks. I'm curious what other people consider genuinely essential on a desk versus something that seemed useful at first and slowly became clutter.\n\nDo you prefer one large display or multiple monitors? How much do you care about cable management, lighting, speakers, a mechanical keyboard, dedicated peripherals, or having everything mounted? I'd also like to know what you removed that you thought you could never live without.\n\nAfter years of collecting gadgets, what is the smallest setup that still gives you everything you actually need?",
     createdAt: "2026-08-12T17:48:00+03:00",
     score: 415,
@@ -311,7 +138,7 @@ export const posts: BoardPost[] = [
     authorUsername: "astro_mara",
     flair: "Discussion",
     title: "What would the night sky look like from another planet?",
-    content:
+    body:
       "I've been wondering how different the stars and planets would appear from Mars, Venus, or one of the outer planets. Beyond the obvious differences in what planets might be visible, I'm curious about how the atmosphere, distance from the Sun, local day length, and position in the solar system would change the experience of looking up. Would familiar constellations still be recognizable, and how dramatically would the brightness of familiar objects change?\n\nI'm especially interested in what an observer standing outside with their own eyes would actually notice rather than what a telescope or spacecraft could reveal. If you could safely stand on the surface of another world for one clear night just to look at the sky, which world would you choose?",
     createdAt: "2026-08-14T16:18:00+03:00",
     score: 238,
@@ -323,7 +150,7 @@ export const posts: BoardPost[] = [
     authorUsername: "labrat42",
     flair: "Discussion",
     title: "What's a scientific discovery that completely changed your worldview?",
-    content:
+    body:
       "Not necessarily the biggest discovery historically — just something that genuinely changed how you think about the universe. It could be a discovery from astronomy, biology, physics, geology, psychology, or any other field. I'm interested in the moment when a fact stopped being something you memorized and became something that actually changed the way you understood the world.\n\nWas there a particular observation, experiment, photograph, paper, or explanation that caused that shift? I'd also love to hear discoveries that are not necessarily famous outside their field but are especially profound once you understand their implications. What scientific idea permanently changed the way you look at everyday life?",
     createdAt: "2026-08-14T13:48:00+03:00",
     score: 351,
@@ -335,7 +162,7 @@ export const posts: BoardPost[] = [
     authorUsername: "quantum_curious",
     flair: "Question",
     title: "Can someone explain quantum entanglement without the usual analogy?",
-    content:
+    body:
       "I've read plenty of simplified explanations, but I'm looking for an intuitive explanation that doesn't rely on misleading metaphors. In particular, I'm trying to understand what the mathematical description is actually telling us, what is and isn't being correlated, and why measuring one part of an entangled system gives us information about the other. I'm less interested in the usual 'two magic coins' style analogy and more interested in an explanation that preserves the important details without assuming a graduate-level physics background.\n\nIf there are common misconceptions about entanglement that beginners should avoid, please point those out too. What explanation finally made the concept click for you?",
     createdAt: "2026-08-14T09:48:00+03:00",
     score: 182,
@@ -347,7 +174,7 @@ export const posts: BoardPost[] = [
     authorUsername: "deep_sea",
     flair: "Discussion",
     title: "Why do deep-sea creatures look so bizarre?",
-    content:
+    body:
       "The deeper you go, the stranger the adaptations become. What are some of the coolest examples? I'm fascinated by how pressure, darkness, cold, limited food, and the absence of sunlight shape body plans that look almost alien compared with animals we see near the surface.\n\nWhich adaptations are genuinely useful survival strategies rather than simply strange-looking features? I'd especially like examples that demonstrate how different species solved similar problems in completely different ways. Are there any deep-sea creatures whose behavior or biology surprised you once you learned more about them?\n\nWhat is the most bizarre adaptation you know of?",
     createdAt: "2026-08-14T06:48:00+03:00",
     score: 267,
@@ -359,7 +186,7 @@ export const posts: BoardPost[] = [
     authorUsername: "climate_data",
     flair: "News",
     title: "What climate change adaptation projects are actually working?",
-    content:
+    body:
       "There is plenty of discussion about problems, but I'd love to hear about adaptation strategies that have shown measurable results. I'm especially interested in practical projects rather than broad slogans: changes to infrastructure, water management, agriculture, urban planning, coastal protection, heat mitigation, emergency preparedness, or other measures that communities can actually implement. What made the project work, and how was success measured?\n\nDid it remain effective after the initial funding or publicity disappeared? I'm also curious whether the most successful examples tend to be large engineering projects or smaller changes spread across many households and communities. If you've studied or worked on climate adaptation, what example do you think deserves more attention?",
     createdAt: "2026-08-13T22:48:00+03:00",
     score: 143,
@@ -371,7 +198,7 @@ export const posts: BoardPost[] = [
     authorUsername: "evolutionnerd",
     flair: "Discussion",
     title: "What is the strangest example of convergent evolution?",
-    content:
+    body:
       "It's fascinating when unrelated species independently develop similar solutions to the same environmental pressures. What is the strangest example of convergent evolution? I'm interested in examples where the similarity is especially striking, but also in the underlying reason the same solution keeps appearing.\n\nAre there environmental constraints that make certain body plans or behaviors almost inevitable? I'd love examples from animals, plants, microorganisms, or even systems that are less familiar to non-biologists. What case best demonstrates that evolution can arrive at similar outcomes without the species sharing a recent common ancestor?",
     createdAt: "2026-08-13T18:48:00+03:00",
     score: 204,
@@ -383,7 +210,7 @@ export const posts: BoardPost[] = [
     authorUsername: "marsbound",
     flair: "Discussion",
     title: "Would humans adapt physically to living on Mars?",
-    content:
+    body:
       "Ignoring the engineering challenges for a moment, what biological changes might happen after generations on a lower-gravity world? I'm interested in what could plausibly change through natural selection over many generations rather than short-term physiological changes that happen to individual settlers. How might skeletal structure, muscle mass, cardiovascular function, balance, growth, reproduction, or other traits be affected?\n\nWhich changes would be strongly constrained by human biology, and which might have more room to evolve? I'd also be interested in whether a Mars-adapted population could eventually become poorly suited to Earth, and how many generations it might take before meaningful differences accumulated.",
     createdAt: "2026-08-13T12:48:00+03:00",
     score: 319,
@@ -395,7 +222,7 @@ export const posts: BoardPost[] = [
     authorUsername: "fossil_hunter",
     flair: "Discussion",
     title: "What dinosaur discovery deserves more attention?",
-    content:
+    body:
       "T. rex gets all the headlines, but there are countless fascinating dinosaurs that rarely make it into popular science. What dinosaur discovery deserves more attention?\n\nI'm especially interested in discoveries that changed what scientists thought about dinosaur behavior, anatomy, reproduction, feathers, social life, geographic distribution, or extinction. It doesn't have to be the biggest or most famous animal; a small fossil with an unusual feature can sometimes tell us more than a spectacular skeleton. Which discovery do you think has the most interesting story behind it, and what did it teach us that wasn't obvious before?",
     createdAt: "2026-08-13T08:48:00+03:00",
     score: 156,
@@ -407,7 +234,7 @@ export const posts: BoardPost[] = [
     authorUsername: "chemistry_cat",
     flair: "Discussion",
     title: "What's a chemistry fact that sounds completely made up?",
-    content:
+    body:
       "Looking for those bizarre-but-true facts that make chemistry feel like a fictional science. I'm especially interested in facts that sound impossible until you understand the underlying chemistry: unusual reactions, strange material properties, unexpected colors, extreme conditions, surprising biological chemistry, or everyday substances behaving in ways that feel counterintuitive. Please include a little explanation rather than just dropping the fact, because the 'why' is usually the most interesting part.\n\nWhat chemistry fact has made you stop and think, 'there's no way that's real,' before discovering that it absolutely is?",
     createdAt: "2026-08-12T21:48:00+03:00",
     score: 428,
@@ -419,7 +246,7 @@ export const posts: BoardPost[] = [
     authorUsername: "science_teacher",
     flair: "Question",
     title: "Which science misconception do you encounter most often?",
-    content:
+    body:
       "Teachers, researchers, and science enthusiasts: what misconception do you wish you could permanently erase? I'm interested in misconceptions that are genuinely persistent, including ones that sound reasonable at first and therefore take effort to correct. What causes people to believe them, and what explanation works best when you need to replace the incorrect mental model with a better one?\n\nIt could be something from physics, biology, chemistry, astronomy, medicine, climate science, or any other field. Which misconception do you encounter so often that you can practically predict the next question before someone asks it?",
     createdAt: "2026-08-12T15:48:00+03:00",
     score: 367,
@@ -431,7 +258,7 @@ export const posts: BoardPost[] = [
     authorUsername: "pixelwanderer",
     flair: "Discussion",
     title: "What's a game you wish you could experience again for the first time?",
-    content:
+    body:
       "Some games have a special kind of magic that disappears once you know all the twists. Which one would you replay fresh? I'm thinking about games where discovery, atmosphere, story reveals, world design, or the feeling of learning the rules for the first time was especially important.\n\nWhat made that first playthrough so memorable, and do you think the game would still be enjoyable if you already knew everything that was going to happen? It can be a huge RPG, a short indie game, an old classic, or something completely unexpected. If you could erase your memory of exactly one game and experience it again tonight, which one would you choose?",
     createdAt: "2026-08-14T17:08:00+03:00",
     score: 512,
@@ -443,7 +270,7 @@ export const posts: BoardPost[] = [
     authorUsername: "boss_fight",
     flair: "Question",
     title: "What's the hardest boss you've ever beaten?",
-    content:
+    body:
       "Not necessarily the objectively hardest boss — which fight personally took you the longest to finally conquer? I'm interested in the stories behind the struggle as much as the boss itself. Was it a mechanical challenge, a gear check, a poorly understood strategy, a frustrating pattern, or simply a fight that you refused to stop attempting?\n\nHow many tries did it take, and what finally made the difference? I'd also love to hear about bosses that were terrifying the first time but became manageable once you understood their tells. Which victory felt the most satisfying when you finally got it?",
     createdAt: "2026-08-14T15:18:00+03:00",
     score: 284,
@@ -455,7 +282,7 @@ export const posts: BoardPost[] = [
     authorUsername: "retro_save",
     flair: "Discussion",
     title: "Which old game still holds up surprisingly well?",
-    content:
+    body:
       "I went back to some games from the early 2000s and was surprised by how playable they still feel today. Which old game still holds up surprisingly well? I'm curious whether it is the controls, pacing, art direction, writing, mechanics, soundtrack, level design, or something else that keeps the experience from feeling dated.\n\nSome games age badly because technology has moved on, while others seem almost timeless because their underlying design is strong. Have you revisited an old favorite recently and been surprised by how little you wanted to change? Which older game would you confidently recommend to someone who never played it when it originally released?",
     createdAt: "2026-08-14T11:48:00+03:00",
     score: 376,
@@ -467,7 +294,7 @@ export const posts: BoardPost[] = [
     authorUsername: "indiequest",
     flair: "Question",
     title: "Recommend me an indie game I can finish in a weekend",
-    content:
+    body:
       "Looking for something memorable that doesn't require 80 hours or a massive open world. I'd love recommendations for games that can realistically be finished in a weekend without feeling disposable or shallow. It could be a narrative game, puzzle game, adventure, horror game, strategy title, platformer, or anything else.\n\nI'm more interested in games that leave an impression than games that simply have a short runtime. Ideally, tell me roughly how long a first playthrough takes and what made the experience worth recommending. What is the best short game you've played recently?",
     createdAt: "2026-08-14T08:48:00+03:00",
     score: 194,
@@ -479,7 +306,7 @@ export const posts: BoardPost[] = [
     authorUsername: "cozycontroller",
     flair: "Discussion",
     title: "What game do you play when you just want to relax?",
-    content:
+    body:
       "Sometimes I don't want competition, progression systems, or difficult combat. What's your comfort game? I'm looking for games that are easy to settle into after a long day, whether that's because of the music, familiar routine, cozy environments, low pressure, exploration, crafting, or simply the feeling of returning to a place you know well.\n\nIt doesn't necessarily have to be a traditionally 'cozy' game either. What game do you boot up when you want to relax without thinking too hard? And what part of the game makes it comforting enough that you keep coming back?",
     createdAt: "2026-08-14T03:48:00+03:00",
     score: 441,
@@ -490,9 +317,9 @@ export const posts: BoardPost[] = [
     boardName: "gaming",
     authorUsername: "rpg_addict",
     flair: "Discussion",
-    title: "Do modern RPGs have too much content?",
-    content:
-      "I've started several huge RPGs recently and keep bouncing off because the amount of side content feels overwhelming. Do modern RPGs have too much content? I enjoy having options, but sometimes a giant map full of icons turns what should be an adventure into a checklist.\n\nI'm curious whether other players feel the same way or whether the extra content is exactly what makes these games worthwhile. Do you prefer tightly focused campaigns, optional side quests that naturally appear during exploration, or enormous worlds where you can spend hundreds of hours? What recent RPG handled the balance well, and what game made you feel most overwhelmed by its own amount of content?",
+    title: "Do modern RPGs have too much body?",
+    body:
+      "I've started several huge RPGs recently and keep bouncing off because the amount of side body feels overwhelming. Do modern RPGs have too much body? I enjoy having options, but sometimes a giant map full of icons turns what should be an adventure into a checklist.\n\nI'm curious whether other players feel the same way or whether the extra body is exactly what makes these games worthwhile. Do you prefer tightly focused campaigns, optional side quests that naturally appear during exploration, or enormous worlds where you can spend hundreds of hours? What recent RPG handled the balance well, and what game made you feel most overwhelmed by its own amount of body?",
     createdAt: "2026-08-13T21:48:00+03:00",
     score: 327,
     commentCount: 102,
@@ -503,7 +330,7 @@ export const posts: BoardPost[] = [
     authorUsername: "speedrun_sam",
     flair: "Discussion",
     title: "I finally learned a speedrun route after months of practice",
-    content:
+    body:
       "It's only a modest personal best, but seeing the timer drop after weeks of practice felt incredible. I didn't expect such a small improvement to feel so satisfying, especially after repeating the same sections over and over. I'm curious how other people got into speedrunning and what keeps them motivated when progress becomes tiny and incremental.\n\nDo you practice specific segments, watch runs, record yourself, use splits, or just play until the route becomes automatic? I'd also like to hear about the moment when a technique that once seemed impossible finally became consistent. What game or category are you working on, and how much has your time improved?",
     createdAt: "2026-08-13T17:48:00+03:00",
     score: 231,
@@ -515,7 +342,7 @@ export const posts: BoardPost[] = [
     authorUsername: "coop_player",
     flair: "Question",
     title: "Best co-op games for two people who aren't hardcore gamers?",
-    content:
+    body:
       "Looking for something fun to play with a friend that doesn't require perfect reflexes or memorizing complicated systems. Ideally it should be easy to learn, enjoyable for two people, and forgiving enough that one player being more experienced doesn't ruin the experience for the other. Local co-op, online co-op, puzzle games, adventures, and turn-based games are all welcome.\n\nI'm especially interested in games where communication matters more than mechanical skill. What co-op game has worked surprisingly well for you with someone who doesn't normally play games?",
     createdAt: "2026-08-13T13:48:00+03:00",
     score: 268,
@@ -527,7 +354,7 @@ export const posts: BoardPost[] = [
     authorUsername: "controller_drift",
     flair: "Review",
     title: "How long do your controllers actually last?",
-    content:
+    body:
       "I've had wildly different experiences with controller durability. Curious about everyone's longest-lasting gamepad. How many years did it survive, how heavily was it used, and what eventually failed?\n\nI'm particularly interested in stick drift, button wear, triggers, battery degradation, connection problems, and whether repairability made a difference. Some controllers feel great when new but become expensive paperweights once one small component fails. Have you found a model that remains reliable after years of regular use?\n\nAnd if you've repaired a controller instead of replacing it, was the repair actually worth doing?",
     createdAt: "2026-08-13T09:48:00+03:00",
     score: 117,
@@ -539,7 +366,7 @@ export const posts: BoardPost[] = [
     authorUsername: "story_mode",
     flair: "Discussion",
     title: "Which game has the best story you've ever played?",
-    content:
+    body:
       "Movies and books get plenty of discussion about storytelling, but games can make you feel directly responsible for the story. Which game has the best story you've ever played? I'm interested not only in plot twists but also in characters, world-building, dialogue, pacing, atmosphere, and the way gameplay supports the narrative.\n\nSome games tell a great story through cutscenes, while others make the player discover it through exploration or choices. Which game made you care most about its characters or left you thinking about the story long after the credits? Please mention whether the impact came mainly from the writing, the world, the player's choices, or the combination of everything.",
     createdAt: "2026-08-12T18:48:00+03:00",
     score: 593,
@@ -551,7 +378,7 @@ export const posts: BoardPost[] = [
     authorUsername: "paperbackdreams",
     flair: "Discussion",
     title: "What's a book you think everyone should read at least once?",
-    content:
+    body:
       "It doesn't have to be your favorite book. I'm more interested in books that you think offer something genuinely valuable. Maybe it changed how you think, introduced an unfamiliar perspective, explained an important idea beautifully, or simply demonstrated what the medium can do at its best.\n\nI'm open to fiction, nonfiction, classics, contemporary books, short books, and very long books. What would you recommend to someone who wants to read something that stays with them rather than simply providing a few entertaining evenings? If you could put one book into the hands of everyone you know, which would it be and why?",
     createdAt: "2026-08-14T16:38:00+03:00",
     score: 342,
@@ -563,7 +390,7 @@ export const posts: BoardPost[] = [
     authorUsername: "nightreader",
     flair: "Question",
     title: "Looking for a mystery novel with a genuinely surprising ending",
-    content:
+    body:
       "I've read most of the obvious recommendations and want something where the reveal actually caught you off guard. Please avoid spoilers in the discussion, because part of what I'm looking for is the experience of going in without knowing what to expect. I'm interested in mysteries where the clues genuinely hold up after the reveal rather than twists that depend on information being unfairly hidden from the reader.\n\nIt can be classic detective fiction, psychological mystery, crime, literary mystery, or something more experimental. What book surprised you so much that you immediately wanted to reread it to see what you missed?",
     createdAt: "2026-08-14T14:38:00+03:00",
     score: 218,
@@ -575,7 +402,7 @@ export const posts: BoardPost[] = [
     authorUsername: "sci_fi_shelf",
     flair: "Discussion",
     title: "Which sci-fi book predicted the future best?",
-    content:
+    body:
       "Some old science fiction feels remarkably prescient while other predictions aged terribly. What examples stand out? I'm interested in both successes and failures, because the contrast can reveal what writers understood about technological change and what they misunderstood about society.\n\nDid a book predict a specific technology, a social trend, a way of communicating, a business model, or simply a general direction of change? I'd also like examples where the prediction was technically wrong but conceptually insightful. Which science-fiction book feels most impressive when you read it with the benefit of hindsight?",
     createdAt: "2026-08-14T12:08:00+03:00",
     score: 281,
@@ -587,7 +414,7 @@ export const posts: BoardPost[] = [
     authorUsername: "annotated",
     flair: "Discussion",
     title: "Do you annotate your books or keep them pristine?",
-    content:
+    body:
       "I've recently started writing notes in the margins and I'm surprised how much more I remember afterward. Do you annotate your books or keep them pristine? I'm curious whether people use different systems for fiction and nonfiction, whether you highlight passages, write questions, add sticky notes, or keep a separate notebook.\n\nFor those who dislike writing in books, do you use an e-reader or another method instead? Has annotation actually changed how you read, or does it interrupt the flow too much? I'd especially like to hear from people who started annotating after years of keeping every book untouched.",
     createdAt: "2026-08-14T08:08:00+03:00",
     score: 164,
@@ -599,7 +426,7 @@ export const posts: BoardPost[] = [
     authorUsername: "fantasy_reader",
     flair: "Discussion",
     title: "What fantasy world would you actually want to live in?",
-    content:
+    body:
       "Ignoring the protagonist-level plot armor, which fictional world seems like it would be the most enjoyable to inhabit? I'm less interested in becoming the chosen one and more interested in what ordinary life would actually be like. Consider things like safety, food, healthcare, transportation, work, politics, climate, access to magic or technology, and the probability of being eaten by something dangerous.\n\nSome fictional worlds look beautiful until you think about what daily life would be like for a normal person. Which world would you genuinely choose if you had to live there permanently rather than simply visit as an adventurer?",
     createdAt: "2026-08-14T02:48:00+03:00",
     score: 427,
@@ -611,7 +438,7 @@ export const posts: BoardPost[] = [
     authorUsername: "classics_corner",
     flair: "Discussion",
     title: "Which classic surprised you by being genuinely funny?",
-    content:
+    body:
       "I expected another serious old novel and ended up laughing far more than I expected. Which classic surprised you by being genuinely funny? I'm interested in books where the humor still works for modern readers rather than requiring a lot of historical context to understand why something was considered funny.\n\nWas it the dialogue, satire, absurd situations, social commentary, or a particular character? I'd also love recommendations for classics that are approachable for someone who normally finds older literature intimidating. Which supposedly serious book made you laugh the most?",
     createdAt: "2026-08-13T19:48:00+03:00",
     score: 139,
@@ -623,7 +450,7 @@ export const posts: BoardPost[] = [
     authorUsername: "bookstacked",
     flair: "Review",
     title: "My summer reading pile got completely out of control",
-    content:
+    body:
       "I somehow went from planning to read five books to having a stack of twenty sitting beside my bed. The problem is that every new recommendation sounds interesting, so the pile keeps growing faster than I can finish it. Does anyone else have this problem?\n\nHow do you decide what actually gets read next when you have far more books than available reading time? Do you organize by mood, alternate genres, finish one before starting another, or simply grab whatever looks interesting that day? I'm curious whether having a huge reading pile motivates people or makes reading feel like another unfinished task.",
     createdAt: "2026-08-13T15:48:00+03:00",
     score: 256,
@@ -635,7 +462,7 @@ export const posts: BoardPost[] = [
     authorUsername: "shortstories",
     flair: "Question",
     title: "Recommend me a short story that will haunt me for days",
-    content:
+    body:
       "Looking for something atmospheric and unsettling rather than outright horror. I want a short story that creates that lingering feeling where you keep thinking about it after you've finished, preferably through ambiguity, strange imagery, psychological tension, or an unsettling premise rather than gore or jump scares. It can be classic or contemporary, realistic or speculative.\n\nWhat short story genuinely stayed with you for days after reading it? Please give as little detail about the ending as possible so I can experience it without knowing the key turn.",
     createdAt: "2026-08-13T10:48:00+03:00",
     score: 188,
@@ -647,7 +474,7 @@ export const posts: BoardPost[] = [
     authorUsername: "slow_reader",
     flair: "Question",
     title: "How many books do you realistically finish in a month?",
-    content:
+    body:
       "I keep seeing huge yearly reading challenges and wonder what everyone's normal pace actually looks like. How many books do you realistically finish in a month when you are not treating reading like a competition? I'd be interested in both average months and unusually productive ones, because work, school, travel, and life obviously change the number.\n\nDo you count audiobooks, rereads, graphic novels, or very short books? More importantly, does having a target actually help you read more, or does it make reading feel like another productivity metric? What does a sustainable reading routine look like for you?",
     createdAt: "2026-08-12T22:48:00+03:00",
     score: 305,
@@ -659,7 +486,7 @@ export const posts: BoardPost[] = [
     authorUsername: "librarycard",
     flair: "Discussion",
     title: "Do you prefer buying books or using the library?",
-    content:
+    body:
       "I've been trying to use my local library more and it's changed how willing I am to experiment with unfamiliar authors. Do you prefer buying books or using the library? There are obvious advantages to owning books, especially if you annotate them or expect to reread them, but borrowing makes it much easier to take a chance on something you might not love.\n\nI'm curious how people balance cost, space, convenience, collection-building, and the desire to support authors. Have you shifted from one approach to the other over time? What kinds of books do you always buy, and what kinds do you prefer to borrow?",
     createdAt: "2026-08-12T16:48:00+03:00",
     score: 231,
@@ -671,7 +498,7 @@ export const posts: BoardPost[] = [
     authorUsername: "pantrychef",
     flair: "Discussion",
     title: "What's the one ingredient that instantly improves your cooking?",
-    content:
+    body:
       "For me it's good-quality olive oil, but I'm curious which ingredients other home cooks swear by. I'm not necessarily looking for expensive ingredients; sometimes a small upgrade in quality or a particular staple makes a much bigger difference than buying fancy specialty products. What ingredient do you reach for when a dish tastes flat or when you want to make a simple meal feel more complete?\n\nIt could be a spice, acid, condiment, stock, cheese, herb, fat, or something unexpected. I'd also love to hear which ingredient you used to ignore but eventually realized was incredibly useful.",
     createdAt: "2026-08-14T17:18:00+03:00",
     score: 287,
@@ -683,7 +510,7 @@ export const posts: BoardPost[] = [
     authorUsername: "weeknightcook",
     flair: "Discussion",
     title: "My 20-minute pasta recipe has become a weekly staple",
-    content:
+    body:
       "It's simple, cheap, and requires almost no cleanup. Sharing the basic method for anyone who needs quick dinner ideas. I like recipes that are flexible enough to work with whatever is already in the fridge rather than requiring a special shopping trip.\n\nThe basic idea has become a weekly fallback because it is fast enough for busy evenings but still feels like a proper meal. I'm curious what other people make when they have twenty minutes, limited energy, and don't want to order takeout. What ingredients do you keep around specifically because they can turn into a fast dinner?",
     createdAt: "2026-08-14T15:48:00+03:00",
     score: 394,
@@ -695,7 +522,7 @@ export const posts: BoardPost[] = [
     authorUsername: "castironfan",
     flair: "Question",
     title: "What did you cook perfectly only after failing several times?",
-    content:
+    body:
       "Mine was a simple omelet. I somehow managed to make it wrong dozens of times before finally figuring it out. What did you cook perfectly only after failing several times?\n\nI'm interested in dishes that look easy but have a surprisingly small margin for error, as well as techniques that only clicked after enough repetition. Did you eventually figure out a specific mistake, or did the process just become intuitive with practice? Sometimes the most useful cooking lessons come from repeatedly making something badly.\n\nWhat failure taught you the most?",
     createdAt: "2026-08-14T11:18:00+03:00",
     score: 174,
@@ -707,7 +534,7 @@ export const posts: BoardPost[] = [
     authorUsername: "spice_route",
     flair: "Discussion",
     title: "What's a cooking technique beginners should learn early?",
-    content:
+    body:
       "There are hundreds of techniques, but which one made the biggest difference to your cooking once you learned it? I'm thinking about skills that transfer across many dishes rather than a single impressive trick. Knife technique, controlling heat, seasoning, deglazing, making pan sauces, understanding texture, timing, or something completely different all count.\n\nWhat technique changed the way you cook and made recipes easier to understand rather than simply giving you another step to memorize? If you could teach a beginner only one technique during their first month of cooking, what would it be?",
     createdAt: "2026-08-14T07:48:00+03:00",
     score: 319,
@@ -719,7 +546,7 @@ export const posts: BoardPost[] = [
     authorUsername: "breadandbutter",
     flair: "Discussion",
     title: "My first sourdough loaf actually worked",
-    content:
+    body:
       "After several dense bricks, I finally got a loaf with decent oven spring and an airy crumb. The frustrating part was that the recipe itself seemed straightforward, but tiny changes in fermentation, temperature, hydration, shaping, and timing made huge differences. I'm curious what finally made sourdough click for other beginners.\n\nDid you change the starter routine, use a different flour, learn to judge dough by feel, adjust fermentation time, or simply stop following the clock so closely? What mistake did you repeat before realizing what was actually going wrong?",
     createdAt: "2026-08-14T01:48:00+03:00",
     score: 261,
@@ -731,7 +558,7 @@ export const posts: BoardPost[] = [
     authorUsername: "sauceboss",
     flair: "Question",
     title: "What's your secret ingredient for tomato sauce?",
-    content:
+    body:
       "Everyone seems to have one little addition they swear makes homemade sauce better. I'm curious about both traditional techniques and completely personal tricks. Do you add a particular herb, spice, acid, dairy ingredient, fermented ingredient, sweetener, stock, or cooking liquid?\n\nOr is the secret less about an extra ingredient and more about how long you cook the sauce and when you season it? I'm especially interested in additions that improve depth without making the sauce obviously taste like that ingredient. What is the small trick that makes your tomato sauce taste noticeably better?",
     createdAt: "2026-08-13T20:48:00+03:00",
     score: 205,
@@ -743,7 +570,7 @@ export const posts: BoardPost[] = [
     authorUsername: "mealprep_mike",
     flair: "Question",
     title: "What meal prep recipes don't become boring by day three?",
-    content:
+    body:
       "I'm looking for recipes that keep their texture and flavor after several days in the fridge. The ideal meal prep for me is something that can be portioned ahead, reheated without turning mushy, and still taste good on day three or four. I'm open to cuisines and dietary styles, and I don't mind doing a little preparation on the weekend if the weekday payoff is worth it.\n\nWhat meals have actually survived the 'I was excited about this on Sunday and hated it by Wednesday' test? I'd especially appreciate ideas where the components can be mixed and matched so every serving doesn't feel identical.",
     createdAt: "2026-08-13T14:48:00+03:00",
     score: 348,
@@ -755,7 +582,7 @@ export const posts: BoardPost[] = [
     authorUsername: "knife_skills",
     flair: "Discussion",
     title: "How long did it take you to become comfortable with a chef's knife?",
-    content:
+    body:
       "I can chop reasonably quickly now, but I still feel awkward compared with experienced cooks. How long did it take you to become comfortable with a chef's knife? I'm curious whether people learned through deliberate practice, cooking regularly, watching demonstrations, taking a class, or simply developing confidence over time.\n\nWhat mattered most: grip, knife sharpness, cutting technique, board setup, ingredient positioning, or learning to slow down? I'd also like to know what mistakes beginners make when they try to speed up too early. At what point did using a chef's knife start to feel automatic rather than something you had to consciously think about?",
     createdAt: "2026-08-13T09:48:00+03:00",
     score: 122,
@@ -767,7 +594,7 @@ export const posts: BoardPost[] = [
     authorUsername: "comfortfoodie",
     flair: "Discussion",
     title: "What's your ultimate comfort food?",
-    content:
+    body:
       "The kind of meal you make when you're tired, sick, nostalgic, or just having a terrible day. What's your ultimate comfort food? It doesn't have to be sophisticated or particularly nutritious; I'm interested in the food that feels reliable and familiar when everything else is exhausting.\n\nIs it something from childhood, something you learned to make yourself, or a dish you discovered later? What makes it comforting: the taste, smell, texture, memories, simplicity, or the fact that you can make it without thinking? I'd love to hear the meal you would choose on a genuinely terrible day.",
     createdAt: "2026-08-12T21:48:00+03:00",
     score: 463,
@@ -779,7 +606,7 @@ export const posts: BoardPost[] = [
     authorUsername: "restaurantathome",
     flair: "Review",
     title: "I tried recreating my favorite restaurant dish at home",
-    content:
+    body:
       "It took three attempts, but I finally got surprisingly close. The biggest challenge was figuring out the sauce. Have you ever tried recreating a favorite restaurant dish at home?\n\nI'm curious how close people have managed to get and what part turned out to be the hardest: seasoning, texture, cooking temperature, ingredients, presentation, or simply figuring out what was actually in the dish. Did you eventually discover a technique that made the difference? I'd also love to hear about recreations that were not exact copies but ended up becoming better or more personal versions of the original.",
     createdAt: "2026-08-12T13:48:00+03:00",
     score: 183,
@@ -791,7 +618,7 @@ export const posts: BoardPost[] = [
     authorUsername: "midnightfiles",
     flair: "Discussion",
     title: "Has anyone experienced something they still can't explain?",
-    content:
+    body:
       "Not necessarily a ghost story. I'm interested in experiences where you genuinely couldn't figure out what happened. What makes these stories interesting to me is the uncertainty rather than automatically assuming a supernatural explanation.\n\nDid you eventually find a mundane explanation, or has the event remained unresolved even after you investigated it? I'd love to hear what you actually experienced, what details you remember most clearly, and whether your interpretation changed over time. Strange sounds, objects moving, unusual coincidences, unexplained sightings, and other odd experiences are all welcome.",
     createdAt: "2026-08-14T16:58:00+03:00",
     score: 387,
@@ -803,7 +630,7 @@ export const posts: BoardPost[] = [
     authorUsername: "skeptic_at_heart",
     flair: "Discussion",
     title: "What's the most convincing paranormal evidence you've seen?",
-    content:
+    body:
       "I'm skeptical but open-minded. What piece of evidence actually made you stop and reconsider your assumptions? I'm not necessarily looking for proof that settles the question forever; I'm interested in evidence that was unusually difficult to dismiss at first glance.\n\nWhat made it convincing, and did you later discover an alternative explanation? I'm especially interested in cases where people carefully documented what happened rather than relying entirely on memory. If you're skeptical, what standard would evidence have to meet before you would genuinely change your mind?",
     createdAt: "2026-08-14T13:18:00+03:00",
     score: 241,
@@ -815,7 +642,7 @@ export const posts: BoardPost[] = [
     authorUsername: "old_house",
     flair: "Discussion",
     title: "Something keeps knocking from inside the wall",
-    content:
+    body:
       "It happens mostly at night and always seems to come from the same section of the house. Plumbing and pests haven't explained it yet. The sound is distinctive enough that it doesn't feel like ordinary settling or random noise, but I also don't want to jump straight to a paranormal explanation.\n\nI've tried listening from different rooms and checking the obvious sources, but I still haven't identified the cause. Has anyone dealt with something similar? What ordinary household problems can create repeated knocking, tapping, or scratching sounds that seem to come from inside a wall?\n\nI'd also appreciate ideas for how to investigate it methodically without tearing the whole wall apart.",
     createdAt: "2026-08-14T08:18:00+03:00",
     score: 516,
@@ -827,7 +654,7 @@ export const posts: BoardPost[] = [
     authorUsername: "folklorefan",
     flair: "Discussion",
     title: "What's the strangest local legend from your hometown?",
-    content:
+    body:
       "Every town seems to have at least one strange story that gets passed down through generations. What's the strangest local legend from your hometown? I'm interested in stories that locals actually tell each other rather than famous legends copied from tourist websites.\n\nIt could involve a haunted building, mysterious person, hidden treasure, strange creature, unexplained event, unusual historical incident, or a story that everyone knows even though nobody agrees on how it started. What details have survived over time, and do people still take the story seriously? I'd love to hear the version you grew up hearing.",
     createdAt: "2026-08-14T02:18:00+03:00",
     score: 329,
@@ -839,7 +666,7 @@ export const posts: BoardPost[] = [
     authorUsername: "nightcamera",
     flair: "Review",
     title: "I reviewed a month of footage from my supposedly haunted house",
-    content:
+    body:
       "Most of it was completely mundane, but there were a few recordings that I still can't confidently explain. I started reviewing the footage expecting to find obvious examples of normal household activity, and most of the strange moments turned out to have straightforward explanations once I slowed the footage down. A handful remain ambiguous, though, which is arguably more interesting than finding something obviously supernatural.\n\nI'm curious how other people approach supposedly haunted footage: do you analyze it frame by frame, look for environmental explanations, compare different cameras, or simply treat unexplained footage as unexplained? What would actually convince you that a recording captured something unusual?",
     createdAt: "2026-08-13T21:18:00+03:00",
     score: 274,
@@ -851,7 +678,7 @@ export const posts: BoardPost[] = [
     authorUsername: "dreamwalker",
     flair: "Question",
     title: "Do recurring dreams ever feel connected to real places?",
-    content:
+    body:
       "I've dreamed about the same unfamiliar building for years despite never knowingly seeing it in real life. The layout, certain rooms, and general feeling remain surprisingly consistent even though other details change. I'm curious whether other people experience recurring dream locations and whether they eventually recognize connections to places they've seen while awake.\n\nDo recurring locations become more detailed over time, or do they stay strangely fixed? Have you ever encountered a real place that looked unexpectedly similar to somewhere you had repeatedly dreamed about? I'm interested in both psychological explanations and personal experiences.",
     createdAt: "2026-08-13T15:18:00+03:00",
     score: 198,
@@ -863,7 +690,7 @@ export const posts: BoardPost[] = [
     authorUsername: "haunted_history",
     flair: "Discussion",
     title: "What supposedly haunted historical site would you visit?",
-    content:
+    body:
       "There are hundreds of famous haunted locations. Which one would you actually want to explore? I'm less interested in proving whether a place is haunted and more interested in the history, architecture, atmosphere, and stories surrounding it.\n\nWould you choose an old hospital, castle, prison, battlefield, abandoned building, cemetery, or something much less obvious? What makes the location compelling to you? If you could spend one night there with permission, proper safety precautions, and no expectation that anything supernatural would happen, where would you go?",
     createdAt: "2026-08-13T10:18:00+03:00",
     score: 351,
@@ -875,7 +702,7 @@ export const posts: BoardPost[] = [
     authorUsername: "rationalghost",
     flair: "Discussion",
     title: "What's a famous paranormal case with a mundane explanation?",
-    content:
+    body:
       "I love paranormal stories, but debunking them can be just as fascinating as the original claims. What's a famous paranormal case with a mundane explanation? I'm interested in cases where the normal explanation is especially clever, unexpected, or revealing about how people interpret ambiguous evidence.\n\nDid the explanation involve psychology, environmental conditions, technology, deliberate deception, poor documentation, or a combination of factors? What part of the original story made it so convincing at first? I'd love examples where the debunking is almost more interesting than the supposed paranormal event.",
     createdAt: "2026-08-12T22:18:00+03:00",
     score: 288,
@@ -887,7 +714,7 @@ export const posts: BoardPost[] = [
     authorUsername: "strange_signal",
     flair: "Question",
     title: "Have you ever heard a sound with no obvious source?",
-    content:
+    body:
       "I'm fascinated by unexplained sounds, especially reports of low-frequency noises and strange voices. Have you ever heard a sound with no obvious source? What did it sound like, where were you, and how long did it last?\n\nDid anyone else hear it, and were you eventually able to identify a likely source? I'm particularly interested in cases where people investigated carefully but still couldn't determine what produced the sound. Strange mechanical noises, distant sounds that seemed nearby, voices, tones, vibrations, and other unexplained audio experiences are all welcome.",
     createdAt: "2026-08-12T17:18:00+03:00",
     score: 167,
@@ -899,7 +726,7 @@ export const posts: BoardPost[] = [
     authorUsername: "after_dark",
     flair: "Discussion",
     title: "Why do so many paranormal experiences happen at night?",
-    content:
+    body:
       "There are psychological explanations, environmental factors, and cultural reasons, but I'm curious what everyone thinks. Why do so many paranormal experiences happen at night? Darkness changes what we can see, unusual sounds become more noticeable, people are often tired, and expectations can influence perception, but there are also interesting cultural patterns around nighttime experiences.\n\nDo you think the timing is mostly explained by ordinary factors, or is there something about the environment at night that genuinely produces more strange experiences? If you've had an unusual experience yourself, did it happen at night, and did that affect how you interpreted it?",
     createdAt: "2026-08-12T11:18:00+03:00",
     score: 412,
@@ -911,7 +738,7 @@ export const posts: BoardPost[] = [
     authorUsername: "frontend_fred",
     flair: "Question",
     title: "What's your favorite way to structure a React project?",
-    content:
+    body:
       "I've tried feature-based and layer-based structures and keep changing my mind. Curious what patterns have worked long term. I'm especially interested in projects that have grown beyond the small-app stage, because an architecture that feels clean with five files can become frustrating once a team has dozens of features and multiple developers touching the same areas.\n\nHow do you organize shared components, hooks, utilities, API clients, state, tests, and feature-specific code? Do you enforce one structure across the whole project or allow different parts to evolve differently? What structure have you stuck with for years rather than merely liking during the first few months?",
     createdAt: "2026-08-14T17:28:00+03:00",
     score: 143,
@@ -923,7 +750,7 @@ export const posts: BoardPost[] = [
     authorUsername: "backend_builder",
     flair: "Discussion",
     title: "When is a monolith actually the right choice?",
-    content:
+    body:
       "Microservices get recommended constantly, but every project I've seen starts much simpler. Where do you draw the line? I'm interested in situations where a monolith remains the better engineering choice even after a project has grown, as well as the signals that tell you splitting a service is finally worth the operational complexity.\n\nHow much do team size, deployment frequency, scaling requirements, organizational boundaries, and failure isolation matter? Have you ever migrated from a monolith to microservices and regretted doing it too early, or stayed with a monolith longer than you should have? What architecture decision would you make differently if you started the project again?",
     createdAt: "2026-08-14T14:28:00+03:00",
     score: 387,
@@ -935,7 +762,7 @@ export const posts: BoardPost[] = [
     authorUsername: "typescript_tom",
     flair: "Discussion",
     title: "What's the most useful TypeScript feature you've discovered recently?",
-    content:
+    body:
       "There are so many advanced type features that it's easy to miss useful patterns hiding in the documentation. What's the most useful TypeScript feature you've discovered recently? I'm especially interested in features that improve real projects rather than clever type puzzles that look impressive but make code harder to maintain.\n\nHave you found a particular pattern involving generics, narrowing, utility types, conditional types, satisfies, template literal types, or inference that noticeably improved your code? What feature did you initially overlook but eventually start using regularly? Examples from production code would be especially useful.",
     createdAt: "2026-08-14T11:28:00+03:00",
     score: 211,
@@ -947,7 +774,7 @@ export const posts: BoardPost[] = [
     authorUsername: "git_blame",
     flair: "Discussion",
     title: "What's your most useful Git alias?",
-    content:
+    body:
       "I'm cleaning up my shell configuration and looking for small Git aliases that genuinely save time. What's your most useful Git alias? I'm interested in shortcuts that reduce repetitive typing without hiding important information or making commands impossible for teammates to understand.\n\nIt could be something for inspecting history, cleaning branches, checking status, reviewing changes, or handling common workflows. I'd also like to hear about aliases that seemed clever but turned out not to be worth remembering. What is the one alias you would immediately recreate if you moved to a new machine?",
     createdAt: "2026-08-14T07:28:00+03:00",
     score: 169,
@@ -959,7 +786,7 @@ export const posts: BoardPost[] = [
     authorUsername: "debugging_dan",
     flair: "Discussion",
     title: "What's the dumbest bug you've ever spent hours debugging?",
-    content:
+    body:
       "I spent half a day debugging an API only to discover I had misspelled one environment variable. What's the dumbest bug you've ever spent hours debugging? I'm interested in the kind of mistake that becomes obvious the moment someone else looks at it, especially because you've spent hours investigating increasingly complicated explanations.\n\nWas it a typo, wrong configuration, stale cache, timezone issue, incorrect assumption, missing restart, or something even more ridiculous? What made the bug so difficult to spot? These stories are oddly reassuring because they remind everyone that experience doesn't make you immune to tiny mistakes.",
     createdAt: "2026-08-14T02:28:00+03:00",
     score: 624,
@@ -971,7 +798,7 @@ export const posts: BoardPost[] = [
     authorUsername: "rustacean",
     flair: "Discussion",
     title: "I finally understand why Rust's borrow checker is useful",
-    content:
+    body:
       "It took a while, but I've reached the point where compiler errors are starting to feel like helpful design feedback. I used to see the borrow checker as an obstacle that forced me to fight the language, but I'm starting to understand how many problems it catches before they become runtime bugs. For people further along with Rust, what was the conceptual shift that made ownership and borrowing click for you?\n\nWas there a particular project, compiler error, example, or pattern that finally made the rules feel intuitive? I'd also like to hear which parts of Rust still feel unnecessarily difficult even after becoming comfortable with the basics.",
     createdAt: "2026-08-13T19:28:00+03:00",
     score: 298,
@@ -983,7 +810,7 @@ export const posts: BoardPost[] = [
     authorUsername: "junior_dev",
     flair: "Question",
     title: "What should a junior developer focus on beyond coding?",
-    content:
+    body:
       "I'm comfortable with the fundamentals but want to improve the skills that actually matter on a professional development team. What should a junior developer focus on beyond coding? I'm thinking about communication, debugging, reading unfamiliar code, writing documentation, asking good questions, estimating work, reviewing pull requests, understanding product requirements, testing, and knowing when to push back.\n\nWhich skills had the biggest impact on your growth that you didn't learn from tutorials? If you could go back to your first year as a developer, what would you deliberately practice outside of writing code?",
     createdAt: "2026-08-13T14:28:00+03:00",
     score: 341,
@@ -995,7 +822,7 @@ export const posts: BoardPost[] = [
     authorUsername: "testing_time",
     flair: "Question",
     title: "How much test coverage is enough?",
-    content:
+    body:
       "I've worked on projects obsessed with coverage percentages and others with almost no tests. What's a sensible middle ground? I'm less interested in a universal percentage and more interested in how teams decide which behavior deserves protection.\n\nHow do you balance unit tests, integration tests, end-to-end tests, and manual verification? Do you prioritize critical business logic, areas that change frequently, historically buggy code, or anything with a high cost of regression? I'd also like to hear how people avoid writing brittle tests simply to make a coverage dashboard look better.\n\nWhat testing strategy has worked well for a real production project?",
     createdAt: "2026-08-13T09:28:00+03:00",
     score: 226,
@@ -1007,7 +834,7 @@ export const posts: BoardPost[] = [
     authorUsername: "sideprojecter",
     flair: "Review",
     title: "I built a tiny app just to solve an annoying problem",
-    content:
+    body:
       "It's nothing revolutionary, but building something small from idea to deployment taught me more than another tutorial would have. The project forced me to make decisions that tutorials normally make for you: choosing a stack, handling edge cases, dealing with deployment, logging, errors, user experience, and figuring out what to cut when the scope started growing. I'm curious what other people learned from tiny side projects that they couldn't have learned as effectively from courses or documentation.\n\nWhat was the smallest project that taught you something genuinely useful, and what did you learn from taking it all the way to a working release?",
     createdAt: "2026-08-12T20:28:00+03:00",
     score: 454,
@@ -1019,7 +846,7 @@ export const posts: BoardPost[] = [
     authorUsername: "algorithm_owl",
     flair: "Discussion",
     title: "Do developers still need to study algorithms?",
-    content:
+    body:
       "With modern frameworks and AI coding tools everywhere, I'm curious how much traditional algorithm knowledge people actually use. I'm not asking whether algorithms are intellectually valuable; I'm interested in what working developers actually need in day-to-day jobs. Do you regularly implement algorithms from scratch, or is the important part recognizing the right data structure and knowing when an approach will scale badly?\n\nHow much does algorithm knowledge matter for interviews compared with production work? If you think developers should still study algorithms, what topics provide the best return on the time invested?",
     createdAt: "2026-08-12T12:28:00+03:00",
     score: 312,
@@ -1031,7 +858,7 @@ export const posts: BoardPost[] = [
     authorUsername: "vilniuswalker",
     flair: "Discussion",
     title: "What's your favorite place to walk in Vilnius?",
-    content:
+    body:
       "Looking for new walking routes around the city, especially quieter areas that aren't the usual tourist destinations. I'm interested in places that are pleasant for a slow walk rather than necessarily being major attractions: parks, riverside paths, residential streets with interesting architecture, wooded areas, viewpoints, or neighborhoods with good cafés along the way. I'd also love routes that change noticeably with the season or different times of day.\n\nIf you have a favorite walk in Vilnius that you return to regularly, what makes it special? How long does the route take, and is there a particular section you would recommend not skipping?",
     createdAt: "2026-08-14T17:38:00+03:00",
     score: 186,
@@ -1043,7 +870,7 @@ export const posts: BoardPost[] = [
     authorUsername: "cepelinai_enthusiast",
     flair: "Question",
     title: "Where can I find the best cepelinai?",
-    content:
+    body:
       "I'm trying to settle a very important question: which restaurant serves the best traditional cepelinai? I'm interested in both classic versions and places that do something especially well with the filling, texture, sauce, or presentation. What makes a great cepelinai to you: the potato texture, the balance of filling, the sauce, portion size, or simply the feeling that it tastes like the real thing?\n\nI'd love recommendations from people who have tried several places rather than just one favorite. If there is a spot outside the obvious tourist recommendations that deserves more attention, please share it.",
     createdAt: "2026-08-14T15:38:00+03:00",
     score: 273,
@@ -1055,7 +882,7 @@ export const posts: BoardPost[] = [
     authorUsername: "kaunas_local",
     flair: "Discussion",
     title: "Kaunas residents: what's changed the most in the last few years?",
-    content:
+    body:
       "I've visited recently and noticed quite a few changes. What do locals think has improved or gotten worse? I'm interested in changes to public spaces, transport, housing, businesses, nightlife, culture, infrastructure, and the general feel of the city.\n\nSometimes changes that look positive to visitors can be frustrating for residents, while changes that barely get noticed by tourists can make everyday life much easier. If you've lived in Kaunas for several years, what difference feels most significant to you? Are there changes you think deserve more attention, either because they have been particularly successful or because they have created unexpected problems?",
     createdAt: "2026-08-14T12:38:00+03:00",
     score: 147,
@@ -1067,7 +894,7 @@ export const posts: BoardPost[] = [
     authorUsername: "forest_trails",
     flair: "Question",
     title: "Best places in Lithuania for a quiet weekend getaway?",
-    content:
+    body:
       "Looking for somewhere peaceful with forests, lakes, or interesting small towns that's easy to reach without going abroad. I'm especially interested in places where you can slow down for a couple of days rather than trying to pack every hour with activities. A good weekend could involve walking, swimming, local food, historic sites, cycling, or simply staying somewhere quiet and exploring nearby.\n\nHow far from a major city would you realistically travel for a two-night getaway? Which places have you returned to because they consistently deliver a relaxing weekend, and which popular destinations turned out to be more crowded than expected?",
     createdAt: "2026-08-14T09:38:00+03:00",
     score: 229,
@@ -1079,7 +906,7 @@ export const posts: BoardPost[] = [
     authorUsername: "old_vilnius",
     flair: "Discussion",
     title: "What's your favorite piece of Lithuanian history?",
-    content:
+    body:
       "There are so many fascinating chapters in the country's history that don't get much attention outside Lithuania. What's your favorite piece of Lithuanian history? It could be a major political event, a military episode, a cultural development, an individual person's story, an archaeological discovery, or a small local event that reveals something larger about the country.\n\nI'm especially interested in stories that are not the first examples people usually mention. What historical episode do you think more people should know about, and what makes it especially interesting to you?",
     createdAt: "2026-08-14T04:38:00+03:00",
     score: 316,
@@ -1091,7 +918,7 @@ export const posts: BoardPost[] = [
     authorUsername: "lithuanian_coder",
     flair: "Discussion",
     title: "How is Lithuania's tech scene compared with other European hubs?",
-    content:
+    body:
       "For people working in Lithuanian tech, how do you think the local ecosystem compares with larger European markets? I'm curious about the strengths and weaknesses from the perspective of people actually working here: startups, established companies, engineering talent, salaries, remote work, investment, universities, networking, international opportunities, and the kinds of products being built. Does the smaller size of the ecosystem make it easier to know people and move between companies, or does it limit opportunities?\n\nIf you've worked in both Lithuania and another European tech hub, what difference stood out most?",
     createdAt: "2026-08-13T22:38:00+03:00",
     score: 201,
@@ -1103,7 +930,7 @@ export const posts: BoardPost[] = [
     authorUsername: "summer_in_lt",
     flair: "Discussion",
     title: "What do you always do during a Lithuanian summer?",
-    content:
+    body:
       "Every country has its own summer traditions. What activities make it feel like summer in Lithuania for you? I'm thinking beyond the obvious warm-weather activities and more about the little routines that make the season feel distinct: trips to the countryside, lakes, festivals, food, long evenings outside, specific family traditions, gardening, cycling, or spontaneous weekend plans.\n\nWhat is something you look forward to every summer even if you've done it many times before? And are there any Lithuanian summer traditions you didn't appreciate until you got older?",
     createdAt: "2026-08-13T17:38:00+03:00",
     score: 358,
@@ -1115,7 +942,7 @@ export const posts: BoardPost[] = [
     authorUsername: "languagelearner",
     flair: "Discussion",
     title: "What's your favorite Lithuanian word or expression?",
-    content:
+    body:
       "I'm collecting interesting words and expressions that either sound beautiful, funny, or have no satisfying direct translation. What's your favorite Lithuanian word or expression? It can be something commonly used, an old-fashioned phrase, slang, a regional expression, or simply a word whose meaning is difficult to capture in another language.\n\nI'd love examples with a little context about when people actually say them, because unusual vocabulary is much more interesting when you understand the situation behind it. Which Lithuanian expression would you most want a non-Lithuanian speaker to learn?",
     createdAt: "2026-08-13T11:38:00+03:00",
     score: 287,
@@ -1127,7 +954,7 @@ export const posts: BoardPost[] = [
     authorUsername: "publictransport",
     flair: "Question",
     title: "How good is public transport outside Vilnius?",
-    content:
+    body:
       "I'm curious how easy it is to get around smaller Lithuanian cities and towns without owning a car. I'm especially interested in practical experiences rather than official schedules: how reliable connections feel, how easy transfers are, whether walking from stations is realistic, and how difficult it is to reach smaller destinations. Which places are surprisingly easy to visit without driving, and where does public transport become a real limitation?\n\nIf you regularly travel around Lithuania without a car, what planning tricks or routes have made the biggest difference?",
     createdAt: "2026-08-12T23:38:00+03:00",
     score: 164,
@@ -1139,13 +966,13 @@ export const posts: BoardPost[] = [
     authorUsername: "baltic_reader",
     flair: "Discussion",
     title: "What Lithuanian books, films, or music should everyone know?",
-    content:
+    body:
       "Looking for recommendations that give a good sense of Lithuanian culture beyond the most obvious international examples. What Lithuanian books, films, or music should everyone know? I'm interested in both historically important works and contemporary ones that capture how the country feels today.\n\nIt would be great to have a mix across different mediums, genres, and generations, with a short explanation of why each recommendation matters. Which work best represents something distinctly Lithuanian to you, and which one would you recommend first to someone who knows very little about the country's culture?",
     createdAt: "2026-08-12T15:38:00+03:00",
     score: 391,
     commentCount: 85,
   },
-];
+]
 
 export const boardRules: Record<string, string[]> = {
   technology: [
@@ -1153,7 +980,7 @@ export const boardRules: Record<string, string[]> = {
     "Stay on topic — posts must relate to technology.",
     "No spam, self-promotion, or affiliate links.",
     "Cite sources for factual claims.",
-    "Mark NSFW content appropriately.",
+    "Mark NSFW body appropriately.",
     "No duplicate posts — search before submitting.",
     "Rumors and leaks must be labeled as unconfirmed.",
     "No piracy, cracked software, or license key sharing.",
@@ -1179,7 +1006,7 @@ export const boardRules: Record<string, string[]> = {
     "Trade and sale posts belong in the weekly megathread.",
     "Cheating accusations require evidence.",
     "Fan art is welcome but must be your own work.",
-    "No leaked or NDA-protected content.",
+    "No leaked or NDA-protected body.",
     "Livestream self-promotion limited to once per week.",
     "Mod tools and cracked clients are not allowed.",
     "Keep review-bombing campaigns out of the board.",
@@ -1202,7 +1029,7 @@ export const boardRules: Record<string, string[]> = {
     "Be respectful and civil to other members.",
     "Skepticism is welcome, but keep it constructive.",
     "No spam, self-promotion, or affiliate links.",
-    "Clearly label staged, fictional, or AI-generated content.",
+    "Clearly label staged, fictional, or AI-generated body.",
     "Personal experience posts should note date and location.",
     "No harassment of posters who share sightings or experiences.",
     "Debunking is fine — mockery isn't.",

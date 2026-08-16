@@ -1,7 +1,6 @@
-import { currentUser } from "../../data"
+import { currentUser } from "../../data/user"
 import { useGlobalContext } from "../utils"
-import type { Board } from "../../data"
-import { Link } from "react-router"
+import type { Board } from "../../data/home"
 
 interface BoardAboutProps {
     boardInfo: Board | undefined

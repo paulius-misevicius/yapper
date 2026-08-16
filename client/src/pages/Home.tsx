@@ -2,7 +2,8 @@ import { useState } from "react"
 import { useGlobalContext } from "../utils.ts"
 import { Link } from "react-router"
 import { UsersRound, StickyNotes, Search, ArrowUp, MessageSquare, X } from "lucide-react"
-import { boards, recentPosts, currentUser } from "../../data.ts"
+import { boards, recentPosts } from "../../data/home.ts"
+import { currentUser } from "../../data/user.ts"
 
 export default function Home() {
 

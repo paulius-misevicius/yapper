@@ -1,6 +1,7 @@
 import { NavLink, Link } from "react-router"
 import { useState, useEffect } from "react"
-import { currentUser, boards } from "../../data"
+import { currentUser } from "../../data/user"
+import { boards } from "../../data/home"
 import { FocusTrap } from "focus-trap-react"
 import { UserRound, House, X } from "lucide-react"
 import { useGlobalContext } from "../utils"

@@ -1,9 +1,9 @@
 import { useState } from "react"
 import { useOutletContext, Link } from "react-router"
-import { posts } from "../../data"
-import { Bookmark, ChartNoAxesColumn, ChevronDown, ChevronUp, Hourglass, MessageSquare, SlidersVertical } from "lucide-react"
+import { posts } from "../../data/board"
+import { Triangle, Bookmark, ChartNoAxesColumn, Hourglass, MessageSquare, SlidersVertical } from "lucide-react"
 import ProfilePicture from "../components/ProfilePicture"
-import type { Board } from "../../data"
+import type { Board } from "../../data/home"
 import BoardMobileSettings from "../components/BoardMobileSettings"
 import BoardAbout from "../components/BoardAbout"
 import { getTimeAgo } from "../utils"
@@ -124,15 +124,15 @@ export default function Board() {
                                     flex bg-(--surface-1) gap-5 p-5 border border-(--border) rounded-2xl transition-colors duration-100`
                                 }
                             >
-                                <div className="hidden xs:flex flex-col gap-1 items-center">
+                                <div className="hidden xs:flex flex-col gap-2 items-center">
                                     <button 
                                         onClick={() => console.log("Upvoted")}
                                         aria-label={`Upvote post ${item.title}`} 
                                         className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                                     >
-                                        <ChevronUp className="size-5"/>
+                                        <Triangle className="size-4"/>
                                     </button>
-                                    <p className="font-medium">
+                                    <p className="font-medium text-normal!">
                                         {item.score}
                                     </p>
                                     <button 
@@ -140,7 +140,7 @@ export default function Board() {
                                         aria-label={`Downvote post ${item.title}`} 
                                         className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                                     >
-                                        <ChevronDown className="size-5"/>
+                                        <Triangle className="size-4 triangle-down"/>
                                     </button>
                                 </div>
                                 <div>
@@ -166,18 +166,18 @@ export default function Board() {
                                                 {item.title}
                                             </h3>
                                             <p className="mt-2 line-clamp-2">
-                                                {item.content}
+                                                {item.body}
                                             </p>
                                         </div>
                                     </Link>
                                     <div className="flex mt-3 gap-4 items-center">
-                                        <div className="flex items-center gap-1.5 xs:hidden">
+                                        <div className="flex items-center gap-2 xs:hidden">
                                             <button 
                                                 onClick={() => console.log("Downvoted")}
                                                 aria-label={`Upvote post ${item.title}`} 
                                                 className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                                             >
-                                                <ChevronUp className="size-5"/>
+                                                <Triangle className="size-4"/>
                                             </button>
                                             <p className="font-medium">
                                                 {item.score}
@@ -187,7 +187,7 @@ export default function Board() {
                                                 aria-label={`Downvote post ${item.title}`} 
                                                 className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                                             >
-                                                <ChevronDown className="size-5"/>
+                                                <Triangle className="size-4 triangle-down"/>
                                             </button>
                                         </div>
                                         <Link 

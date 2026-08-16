@@ -1,18 +1,58 @@
 import { Link, useOutletContext, useParams } from "react-router"
-import { posts, currentUser } from "../../data"
-import { ChevronDown, ChevronUp, MoveLeft, MessageSquare, Bookmark, Hourglass, ChartNoAxesColumn } from "lucide-react"
+import { posts } from "../../data/board"
+import { currentUser } from "../../data/user"
+import { comments, type Comment } from "../../data/post"
+import { Triangle, MoveLeft, MessageSquare, Bookmark, Hourglass, ChartNoAxesColumn } from "lucide-react"
 import { getTimeAgo } from "../utils"
-
 import type { BoardContext } from "../components/BoardLayout"
 import { useState } from "react"
+import CommentThread from "../components/CommentThread"
+
+export interface CommentWithReplies extends Comment {
+    replies: CommentWithReplies[]
+}
 
 export default function Post() {
 
     const { postId } = useParams()
-    const post = posts.find(item => item.id === Number(postId))
+    const post = posts.find(item => item.id.toString() === postId)
     const { boardInfo } = useOutletContext<BoardContext>()
     const [isCommentBoxActive, setIsCommentBoxActive] = useState(false)
     const [sort, setSort] = useState("top")
+
+    const postComments = comments.filter(item => item.postId.toString() === postId)
+
+    function buildCommentTree() {
+        const map = new Map<number, CommentWithReplies>()
+        postComments.forEach(item => map.set(item.id, {...item, replies: []}))
+
+        const rootComments: CommentWithReplies[] = []
+
+        postComments.forEach(item => {
+            const comment = map.get(item.id)
+
+            if (!comment) {
+                return
+            } else if (item.parentCommentId === null) {
+                rootComments.push(comment)
+            } else {
+                const parent = map.get(item.parentCommentId)
+                parent?.replies.push(comment)
+            }
+        })
+
+        return rootComments.map(item =>
+            <CommentThread 
+                key={item.id}
+                id={item.id}
+                authorUsername={item.authorUsername}
+                createdAt={item.createdAt}
+                score={item.score}
+                body={item.body}
+                replies={item.replies} 
+            />
+        )
+    }
 
     if (!post) return
 
@@ -26,13 +66,13 @@ export default function Post() {
                 Back to b/{boardInfo.name}
             </Link>
             <div className="flex gap-5 bg-(--surface-1) p-5 border border-(--border) rounded-2xl">
-                <div className="hidden xs:flex flex-col gap-1 items-center">
+                <div className="hidden xs:flex flex-col gap-2 items-center">
                     <button
                         onClick={() => console.log("Upvoted")}
                         aria-label={`Upvote post ${post.title}`}
                         className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                     >
-                        <ChevronUp className="size-5"/>
+                        <Triangle className="size-4"/>
                     </button>
                     <p className="font-medium">
                         {post.score}
@@ -42,7 +82,7 @@ export default function Post() {
                         aria-label={`Downvote post ${post.title}`}
                         className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                     >
-                        <ChevronDown className="size-5"/>
+                        <Triangle className="size-4 triangle-down"/>
                     </button>
                 </div>
                 <div>
@@ -65,17 +105,17 @@ export default function Post() {
                             {post.flair}
                         </span>
                         <p className="mt-2 whitespace-pre-line">
-                            {post.content}
+                            {post.body}
                         </p>
                     </div>
                     <div className="flex mt-3 gap-4 items-center">
-                        <div className="flex items-center gap-1.5 xs:hidden">
+                        <div className="flex items-center gap-2 xs:hidden">
                             <button
                                 onClick={() => console.log("Downvoted")}
                                 aria-label={`Upvote post ${post.title}`}
                                 className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                             >
-                                <ChevronUp className="size-5"/>
+                                <Triangle className="size-4"/>
                             </button>
                             <p className="font-medium">
                                 {post.score}
@@ -85,7 +125,7 @@ export default function Post() {
                                 aria-label={`Downvote post ${post.title}`}
                                 className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                             >
-                                <ChevronDown className="size-5"/>
+                                <Triangle className="size-4 triangle-down"/>
                             </button>
                         </div>
                         <div className="text-(--text-muted) text-sm flex items-center gap-2">
@@ -161,6 +201,9 @@ export default function Post() {
                         <div className="hidden xs:block">Top</div>
                     </button>
                 </div>
+            </div>
+            <div className="flex flex-col gap-5 mt-3 bg-(--surface-1) p-5 border border-(--border) rounded-2xl">
+                {buildCommentTree()}
             </div>
         </div>
     )
