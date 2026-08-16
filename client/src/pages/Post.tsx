@@ -202,7 +202,7 @@ export default function Post() {
                     </button>
                 </div>
             </div>
-            <div className="flex flex-col gap-5 mt-3 bg-(--surface-1) p-5 border border-(--border) rounded-2xl">
+            <div className="flex w-full flex-col md:gap-5 mt-3 bg-(--surface-1) p-5 border border-(--border) rounded-2xl">
                 {buildCommentTree()}
             </div>
         </div>

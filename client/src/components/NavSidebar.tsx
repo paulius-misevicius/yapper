@@ -25,8 +25,8 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
         return () => window.removeEventListener("resize", handleResize)
     }, [])
 
-    const { isLoggedIn } = useGlobalContext()
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 1024)
+    const { isLoggedIn } = useGlobalContext()
     const myBoardCollection = currentUser.joinedBoardNames.map(item => {
         const boardColor = boards.find(board => board.name === item)?.dotColorClass ?? "bg-grey-700"
         
