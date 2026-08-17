@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useGlobalContext } from "../utils.ts"
 import { Link } from "react-router"
-import { UsersRound, StickyNotes, Search, ArrowUp, MessageSquare, X } from "lucide-react"
+import { UsersRound, StickyNotes, Search, Triangle, MessageSquare, X } from "lucide-react"
 import { boards, recentPosts } from "../../data/home.ts"
 import { currentUser } from "../../data/user.ts"
 
@@ -43,7 +43,7 @@ export default function Home() {
                 </Link>
                 <div className="flex gap-4">
                     <p className="flex items-center gap-1 text-(--text-muted)! text-xs!">
-                        <ArrowUp className="size-3"/>
+                        <Triangle className="size-3"/>
                         {item.upvotes} upvotes
                     </p>
                     <p className="flex items-center gap-1.5 text-(--text-muted)! text-xs!">

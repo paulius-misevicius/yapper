@@ -1,10 +1,8 @@
-export type Flair = "Discussion" | "News" | "PSA" | "Review" | "Question"
-
 export interface BoardPost {
   id: number
   boardName: string
   authorUsername: string
-  flair: Flair
+  flair: string
   title: string
   body: string
   createdAt: string

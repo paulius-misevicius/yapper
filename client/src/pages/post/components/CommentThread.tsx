@@ -1,5 +1,5 @@
 import type { CommentWithReplies } from "../Post"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { MoveRight } from "lucide-react"
 import { users } from "../../../../data/user"
 import ThreadDesktop from "./ThreadDesktop"
@@ -8,6 +8,7 @@ import MobileShelfModal from "../../../components/MobileShelfModal"
 
 export interface CommentThreadProps extends CommentWithReplies {
     depth?: number
+    isDesktop: boolean
     postAuthor: string
     replyBoxId: number
     setReplyBoxId: React.Dispatch<React.SetStateAction<number>>
@@ -29,21 +30,12 @@ export default function CommentThread({
     setIsNested, 
     replyBoxId, 
     setReplyBoxId, 
+    isDesktop,
     depth = 0 
 }: CommentThreadProps) {
 
-    useEffect(() => {
-        function handleResize() {
-            setIsDesktop(window.innerWidth > 768)
-        }
-
-        window.addEventListener("resize", handleResize)
-        
-        return () => window.removeEventListener("resize", handleResize)
-    }, [])
-
-    const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768)
     const [isThreadOpen, setIsThreadOpen] = useState<boolean>(depth === 0 || (depth < 4 && score > 4))
+    const [reply, setReply] = useState("")
     const user = users.find(item => item.username === authorUsername)
 
     const childProps = {
@@ -64,6 +56,7 @@ export default function CommentThread({
         setIsNested,
         setCommentTree,
         setReplyBoxId,
+        isDesktop
     }
 
     const hasReplies = replies.length > 0
@@ -87,6 +80,7 @@ export default function CommentThread({
                         setIsNested={setIsNested}
                         replyBoxId={replyBoxId}
                         setReplyBoxId={setReplyBoxId}
+                        isDesktop={isDesktop}
                     />
                 )
             :   <div className={`flex my-3`}>
@@ -108,7 +102,7 @@ export default function CommentThread({
                             setIsNested(true)
                     }}
                         aria-label={`Continue thread and open comment of ${authorUsername}`}
-                        className="flex items-center gap-2 text-sm text-(--text-muted) underline underline-offset-2"
+                        className="flex items-center gap-2 text-sm text-(--text-muted) active:text-(--text-secondary)! lg:hover:text-(--text-secondary)! underline underline-offset-2"
                     >
                         Continue thread
                         <MoveRight className="size-4" />
@@ -128,6 +122,8 @@ export default function CommentThread({
                         Reply to comment id {parentCommentId}
                     </label>
                     <textarea 
+                        value={reply}
+                        onChange={event => setReply(event.target.value)}
                         id="comment-box"
                         placeholder="Type your reply here..."
                         rows={2}
@@ -172,6 +168,8 @@ export default function CommentThread({
                             Reply to comment id {parentCommentId}
                         </label>
                         <textarea
+                            value={reply}
+                            onChange={event => setReply(event.target.value)}
                             id="comment-box"
                             placeholder="Type your reply here..."
                             rows={4}

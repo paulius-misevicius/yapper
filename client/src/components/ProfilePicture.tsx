@@ -18,7 +18,7 @@ export default function ProfilePicture({size = "size-11", userSrc}: ProfilePictu
                         alt={userSrc ? "User profile picture" : `${currentUser.username} profile picture`}
                     />
                 :   
-                    <div className="relative w-full h-full">
+                    <div className="relative bg-(--surface-2) w-full h-full">
                         <HatGlasses className="absolute top-[50%] left-[50%] -translate-1/2 text-(--text-muted) size-3/6"/>
                     </div>
             }

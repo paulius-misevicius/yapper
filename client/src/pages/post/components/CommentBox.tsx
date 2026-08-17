@@ -3,9 +3,11 @@ import { currentUser } from "../../../../data/user"
 interface CommentBoxProps {
     isCommentBoxActive: boolean
     setIsCommentBoxActive: React.Dispatch<React.SetStateAction<boolean>>
+    newComment: string
+    setNewComment: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function CommentBox({isCommentBoxActive, setIsCommentBoxActive}: CommentBoxProps) {
+export default function CommentBox({isCommentBoxActive, setIsCommentBoxActive, newComment, setNewComment}: CommentBoxProps) {
     return (
         <div className="flex mt-5 flex-col bg-(--surface-1) p-5 border border-(--border) rounded-2xl">
             <label
@@ -18,6 +20,8 @@ export default function CommentBox({isCommentBoxActive, setIsCommentBoxActive}: 
                 ?
                     <>
                         <textarea 
+                            value={newComment}
+                            onChange={event => setNewComment(event.target.value)}
                             id="comment-box"
                             placeholder="Type your comment here..."
                             rows={2}

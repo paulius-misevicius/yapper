@@ -63,7 +63,7 @@ export default function ThreadMobile({
                     <button
                         onClick={() => setReplyBoxId(id)}
                         aria-label={`Reply to ${authorUsername}`}
-                        className="flex items-center text-(--text-muted) text-xs gap-2"
+                        className="flex items-center text-(--text-muted) active:text-(--text-secondary)! lg:hover:text-(--text-secondary)! text-xs gap-2"
                     >
                         <MessageSquare className="size-3.5"/>
                         Reply

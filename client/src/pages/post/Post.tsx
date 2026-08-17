@@ -22,16 +22,28 @@ export default function Post() {
     const [commentTree, setCommentTree] = useState<CommentWithReplies[]>([])
     const [isNested, setIsNested] = useState(false)
     const [reset, setReset] = useState(0)
-    const [replyBoxId, setReplyBoxId] = useState<number>(1)
+    const [replyBoxId, setReplyBoxId] = useState<number>(0)
+    const [newComment, setNewComment] = useState("")
+    const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768)
 
     const postComments = comments.filter(item => item.postId.toString() === postId)
 
     const sortedComments = sort === "top" 
         ?   [...commentTree].sort((a, b) => b.score - a.score)
         :   [...commentTree].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+
+    useEffect(() => {
+        function handleResize() {
+            setIsDesktop(window.innerWidth > 768)
+        }
+
+        window.addEventListener("resize", handleResize)
+        
+        return () => window.removeEventListener("resize", handleResize)
+    }, [])
     
     useEffect(() => {
-        if (replyBoxId > 0) {
+        if (replyBoxId > 0 && !isDesktop) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = '';
@@ -79,6 +91,8 @@ export default function Post() {
             <CommentBox 
                 isCommentBoxActive={isCommentBoxActive}
                 setIsCommentBoxActive={setIsCommentBoxActive}
+                newComment={newComment}
+                setNewComment={setNewComment}
             />
             <CommentSort 
                 commentCount={post.commentCount}
@@ -114,6 +128,7 @@ export default function Post() {
                         setIsNested={setIsNested}
                         replyBoxId={replyBoxId}
                         setReplyBoxId={setReplyBoxId}
+                        isDesktop={isDesktop}
                     />
                 )}
             </div>

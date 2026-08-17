@@ -84,6 +84,9 @@ button {
     font-weight: 500;
     border: 1px solid transparent;
 }
+textarea, input {
+    caret-color: var(--text-primary);
+}
 input {
     background-color: var(--surface-1);
     color: var(--text-secondary);
@@ -104,7 +107,7 @@ select {
     padding: 8px 16px;
     border-radius: 6px;
 }
-select option {
+option {
     background-color: var(--surface-1);
     color: var(--text-muted);
     font-weight: 500;
