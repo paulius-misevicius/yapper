@@ -3,8 +3,8 @@ import { createContext } from "react"
 import Home from "./pages/Home"
 import AppLayout from "./components/AppLayout"
 import BoardLayout from "./components/BoardLayout"
-import Board from "./pages/Board"
-import Post from "./pages/Post"
+import Board from "./pages/board/Board"
+import Post from "./pages/post/Post"
 import CreatePost from "./pages/CreatePost"
 
 interface GlobalContextValue {

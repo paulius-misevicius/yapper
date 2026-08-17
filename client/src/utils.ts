@@ -1,6 +1,9 @@
 import { useContext } from "react"
 import { GlobalContext } from "./App"
 
+export type Filter = "today" | "this week" | "this month" | "this year" | "all time"
+export type Sort = "new" | "top"
+
 export function useGlobalContext() {
   const context = useContext(GlobalContext)
   if (context === null) {

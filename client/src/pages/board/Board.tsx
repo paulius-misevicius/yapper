@@ -1,17 +1,16 @@
 import { useState } from "react"
 import { useOutletContext, Link } from "react-router"
-import { posts } from "../../data/board"
+import { posts } from "../../../data/board"
 import { Triangle, Bookmark, ChartNoAxesColumn, Hourglass, MessageSquare, SlidersVertical } from "lucide-react"
-import ProfilePicture from "../components/ProfilePicture"
-import type { Board } from "../../data/home"
-import BoardMobileSettings from "../components/BoardMobileSettings"
-import BoardAbout from "../components/BoardAbout"
-import { getTimeAgo } from "../utils"
+import ProfilePicture from "../../components/ProfilePicture"
+import type { Board } from "../../../data/home"
+import BoardMobileSettings from "./components/BoardMobileSettings"
+import BoardAbout from "./components/BoardAbout"
+import { getTimeAgo } from "../../utils"
 
-import type { BoardContext } from "../components/BoardLayout"
+import type { BoardContext } from "../../components/BoardLayout"
+import type { Sort, Filter } from "../../utils"
 
-export type Filter = "today" | "this week" | "this month" | "this year" | "all time"
-export type Sort = "new" | "top"
 type MobileTab = "feed" | "about"
 
 export default function Board() {

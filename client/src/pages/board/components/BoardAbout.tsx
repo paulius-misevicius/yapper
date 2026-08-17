@@ -1,6 +1,6 @@
-import { currentUser } from "../../data/user"
-import { useGlobalContext } from "../utils"
-import type { Board } from "../../data/home"
+import { currentUser } from "../../../../data/user"
+import { useGlobalContext } from "../../../utils"
+import type { Board } from "../../../../data/home"
 
 interface BoardAboutProps {
     boardInfo: Board | undefined

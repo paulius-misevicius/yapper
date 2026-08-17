@@ -2,7 +2,7 @@ import { Outlet } from "react-router"
 import { boards } from "../../data/home"
 import { boardRules } from "../../data/board"
 import { useParams } from "react-router"
-import BoardAbout from "./BoardAbout"
+import BoardAbout from "../pages/board/components/BoardAbout"
 
 import type { Board } from "../../data/home"
 

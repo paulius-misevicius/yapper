@@ -95,14 +95,14 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
                             <Link 
                                 to="/"
                                 aria-label="Create a new account"
-                                className="action-btn text-center bg-(--primary-btn) text-(--primary-btn-text) hover:bg-(--accent)"
+                                className="action-btn text-center bg-(--primary-btn) text-(--primary-btn-text) active:bg-(--accent) lg:hover:bg-(--accent)"
                             >
                                 Sign up
                             </Link>
                             <Link 
                                 to="/"
                                 aria-label="Log into existing account"
-                                className="bg-white action-btn text-center border-(--border)! hover:bg-(--accent-hover)"
+                                className="bg-white action-btn text-center border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
                             >
                                 Log in
                             </Link>
