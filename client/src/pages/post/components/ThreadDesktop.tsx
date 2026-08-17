@@ -25,7 +25,6 @@ export default function ThreadDesktop({
     body, 
     score, 
     replies, 
-    parentCommentId,
     setReplyBoxId
 }: ThreadDesktopProps) {
 
@@ -115,7 +114,7 @@ export default function ThreadDesktop({
                     </div>
                     <button
                         onClick={() => setReplyBoxId(id)}
-                        aria-label={`Reply to comment id ${parentCommentId}`}
+                        aria-label={`Reply to ${authorUsername}`}
                         className="flex items-center text-(--text-muted) text-xs gap-2"
                     >
                         <MessageSquare className="size-3.5"/>

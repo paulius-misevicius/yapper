@@ -14,7 +14,7 @@ export default function BoardMobileSettings({setIsMobileSettingsOpen, sort, setS
 
     return (
         <MobileShelfModal
-            setIsModalOpen={setIsMobileSettingsOpen}
+            onClose={() => setIsMobileSettingsOpen(false)}
             title="Sort and filter"
         >
             <p className="font-medium">Sort by</p>

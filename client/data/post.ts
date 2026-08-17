@@ -14,7 +14,7 @@ export const comments: Comment[] = [
     postId: 3,
     authorUsername: "privacyfirst99",
     parentCommentId: null,
-    body: "Incognito mode only prevents local history storage — your ISP, employer, and the sites you visit can still see everything. Tools like uBlock Origin, a trusted VPN, and DNS-over-HTTPS are the real baseline.",
+    body: "Incognito mode only prevents local history storage — your ISP, employer, and the sites you visit can still see everything. Tools like uBlock Origin, a trusted VPN, and DNS-over-HTTPS are the real baseline. Incognito mode only prevents local history storage — your ISP, employer, and the sites you visit can still see everything. Tools like uBlock Origin, a trusted VPN, and DNS-over-HTTPS are the real baseline. Incognito mode only prevents local history storage — your ISP, employer, and the sites you visit can still see everything. Tools like uBlock Origin, a trusted VPN, and DNS-over-HTTPS are the real baseline.",
     createdAt: "2026-08-14T13:00:00+03:00",
     score: 1247,
   },

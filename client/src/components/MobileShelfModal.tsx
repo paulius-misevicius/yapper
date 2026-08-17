@@ -3,12 +3,12 @@ import { FocusTrap } from "focus-trap-react"
 import { createPortal } from "react-dom"
 
 interface MobileShelfModalProps {
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+    onClose: () => void
     children: React.ReactNode
     title: string
 }
 
-export default function MobileShelfModal({setIsModalOpen, children, title}: MobileShelfModalProps) {
+export default function MobileShelfModal({onClose, children, title}: MobileShelfModalProps) {
 
     const rootPortal = document.getElementById("portal")
 
@@ -17,7 +17,7 @@ export default function MobileShelfModal({setIsModalOpen, children, title}: Mobi
     return createPortal(
         <>
             <div 
-                onClick={() => setIsModalOpen(false)}
+                onClick={onClose}
                 className="fixed inset-0 flex bg-black/60 z-50"
             />
             <FocusTrap
@@ -32,7 +32,7 @@ export default function MobileShelfModal({setIsModalOpen, children, title}: Mobi
                             {title}
                         </h2>
                         <button
-                            onClick={() => setIsModalOpen(false)}
+                            onClick={onClose}
                             aria-label="Close"
                             className="size-7 flex items-center justify-center text-(--text-muted) active:text-(--text-primary)"
                         >

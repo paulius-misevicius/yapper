@@ -4,6 +4,7 @@ import { MoveRight } from "lucide-react"
 import { users } from "../../../../data/user"
 import ThreadDesktop from "./ThreadDesktop"
 import ThreadMobile from "./ThreadMobile"
+import MobileShelfModal from "../../../components/MobileShelfModal"
 
 export interface CommentThreadProps extends CommentWithReplies {
     depth?: number
@@ -14,7 +15,22 @@ export interface CommentThreadProps extends CommentWithReplies {
     setCommentTree: React.Dispatch<React.SetStateAction<CommentWithReplies[]>>
 }
 
-export default function CommentThread({ id, postAuthor, postId, parentCommentId, authorUsername, createdAt, score, body, replies, setCommentTree, setIsNested, replyBoxId, setReplyBoxId, depth = 0 }: CommentThreadProps) {
+export default function CommentThread({ 
+    id, 
+    postAuthor, 
+    postId, 
+    parentCommentId, 
+    authorUsername, 
+    createdAt, 
+    score, 
+    body, 
+    replies, 
+    setCommentTree, 
+    setIsNested, 
+    replyBoxId, 
+    setReplyBoxId, 
+    depth = 0 
+}: CommentThreadProps) {
 
     useEffect(() => {
         function handleResize() {
@@ -140,6 +156,36 @@ export default function CommentThread({ id, postAuthor, postId, parentCommentId,
 
     if (!isDesktop) return (
         <ThreadMobile {...childProps} >
+            {replyBoxId === id &&
+                <MobileShelfModal
+                    onClose={() => setReplyBoxId(0)}
+                    title={`Reply to ${authorUsername}`}
+                >
+                    <p className="max-h-[45dvh] overflow-y-auto">
+                        {body}
+                    </p>
+                    <div>
+                        <label
+                            className="text-xs sr-only text-(--text-secondary)"
+                            htmlFor="comment-box"
+                        >
+                            Reply to comment id {parentCommentId}
+                        </label>
+                        <textarea
+                            id="comment-box"
+                            placeholder="Type your reply here..."
+                            rows={4}
+                            className="bg-(--surface-1) mt-5 min-h-16 max-h-40 px-3 py-2 rounded-md border border-(--border) w-full"
+                        />
+                        <button
+                            aria-label="Submit reply"
+                            className="w-full mt-3 action-btn bg-(--primary-btn) text-(--primary-btn-text) lg:hover:bg-(--accent) active:bg-(--accent)"
+                        >
+                            Reply
+                        </button>
+                    </div>
+                </MobileShelfModal>
+            }
             {nest}
         </ThreadMobile>
     )

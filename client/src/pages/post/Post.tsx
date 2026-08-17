@@ -22,7 +22,7 @@ export default function Post() {
     const [commentTree, setCommentTree] = useState<CommentWithReplies[]>([])
     const [isNested, setIsNested] = useState(false)
     const [reset, setReset] = useState(0)
-    const [replyBoxId, setReplyBoxId] = useState<number>(0)
+    const [replyBoxId, setReplyBoxId] = useState<number>(1)
 
     const postComments = comments.filter(item => item.postId.toString() === postId)
 
@@ -30,6 +30,15 @@ export default function Post() {
         ?   [...commentTree].sort((a, b) => b.score - a.score)
         :   [...commentTree].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     
+    useEffect(() => {
+        if (replyBoxId > 0) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => { document.body.style.overflow = ''; };
+    }, [replyBoxId])
+
     useEffect(() => {
         const map = new Map<number, CommentWithReplies>()
         postComments.forEach(item => map.set(item.id, {...item, replies: []}))

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Header from "./Header"
 import NavSidebar from "./NavSidebar"
 import { Outlet } from "react-router"
@@ -6,6 +6,15 @@ import { Outlet } from "react-router"
 export default function AppLayout() {
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+    useEffect(() => {
+        if (isMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => { document.body.style.overflow = ''; };
+    }, [isMenuOpen])
 
     return (
         <>

@@ -22,7 +22,9 @@ export default function ThreadMobile({
     authorUsername, 
     createdAt, 
     body, 
-    score
+    id,
+    score,
+    setReplyBoxId
 }: ThreadMobileProps) {
 
     const { boardInfo } = useOutletContext<BoardContext>()
@@ -59,6 +61,8 @@ export default function ThreadMobile({
                 <p className="mt-1 mb-2 text-wrap">{body}</p>
                 <div className="flex items-center gap-4 justify-end">
                     <button
+                        onClick={() => setReplyBoxId(id)}
+                        aria-label={`Reply to ${authorUsername}`}
                         className="flex items-center text-(--text-muted) text-xs gap-2"
                     >
                         <MessageSquare className="size-3.5"/>
