@@ -3,10 +3,12 @@ import { MoveLeft, Triangle, MessageSquare, Bookmark } from "lucide-react"
 import type { BoardContext } from "../../../components/BoardLayout"
 import { getTimeAgo } from "../../../utils"
 import type { BoardPost } from "../../../../data/board"
+import { useGlobalContext } from "../../../utils"
 
 export default function PostBody({boardName, title, score, flair, authorUsername, createdAt, body, commentCount}: BoardPost) {
 
     const { boardInfo } = useOutletContext<BoardContext>()
+    const { isLoggedIn, setAuthType } = useGlobalContext()
 
     return (
         <>
@@ -20,7 +22,10 @@ export default function PostBody({boardName, title, score, flair, authorUsername
             <div className="flex gap-5 bg-(--surface-1) p-5 border border-(--border) rounded-2xl">
                 <div className="hidden xs:flex flex-col gap-2 items-center">
                     <button
-                        onClick={() => console.log("Upvoted")}
+                        onClick={isLoggedIn 
+                            ?   () => console.log("Upvoted")
+                            :   () => setAuthType("sign-up")
+                        }
                         aria-label={`Upvote post ${title}`}
                         className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                     >
@@ -30,7 +35,10 @@ export default function PostBody({boardName, title, score, flair, authorUsername
                         {score}
                     </p>
                     <button
-                        onClick={() => console.log("Downvoted")}
+                        onClick={isLoggedIn 
+                            ?   () => console.log("Downvoted")
+                            :   () => setAuthType("sign-up")
+                        }
                         aria-label={`Downvote post ${title}`}
                         className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                     >
@@ -63,7 +71,10 @@ export default function PostBody({boardName, title, score, flair, authorUsername
                     <div className="flex mt-3 gap-4 items-center">
                         <div className="flex items-center gap-2 xs:hidden">
                             <button
-                                onClick={() => console.log("Downvoted")}
+                                onClick={isLoggedIn 
+                                    ?   () => console.log("Upvoted")
+                                    :   () => setAuthType("sign-up")
+                                }
                                 aria-label={`Upvote post ${title}`}
                                 className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                             >
@@ -73,7 +84,10 @@ export default function PostBody({boardName, title, score, flair, authorUsername
                                 {score}
                             </p>
                             <button
-                                onClick={() => console.log("Downvoted")}
+                                onClick={isLoggedIn 
+                                    ?   () => console.log("Downvoted")
+                                    :   () => setAuthType("sign-up")
+                                }
                                 aria-label={`Downvote post ${title}`}
                                 className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                             >
@@ -85,7 +99,10 @@ export default function PostBody({boardName, title, score, flair, authorUsername
                             {commentCount} comments
                         </div>
                         <button
-                            onClick={() => console.log("Saved")}
+                            onClick={isLoggedIn 
+                                ?   () => console.log("Saved")
+                                :   () => setAuthType("sign-up")
+                            }
                             className="group text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) flex items-center gap-2 text-sm ml-auto xs:ml-0"
                         >
                             <Bookmark className="size-4"/>

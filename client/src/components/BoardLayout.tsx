@@ -25,7 +25,7 @@ export default function BoardLayout() {
     return (
         <>
             <section className="flex min-w-0 flex-col flex-1 md:mr-(--sidebar-right-width) py-5 md:pr-5 lg:pr-10">
-                <Outlet context={{boardInfo: boardInfo, board: board, rules: rules}} />
+                <Outlet context={{boardInfo, board, rules}} />
             </section>
             <BoardAbout boardInfo={boardInfo} board={board} rules={rules} sidebar/>
         </>

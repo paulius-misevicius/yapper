@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router"
-import { createContext } from "react"
+import { createContext, useState } from "react"
 import Home from "./pages/Home"
 import AppLayout from "./components/AppLayout"
 import BoardLayout from "./components/BoardLayout"
@@ -7,8 +7,11 @@ import Board from "./pages/board/Board"
 import Post from "./pages/post/Post"
 import CreatePost from "./pages/CreatePost"
 
+type AuthType = "sign-up" | "log-in" | null
 interface GlobalContextValue {
   isLoggedIn: boolean
+  authType: AuthType
+  setAuthType: React.Dispatch<React.SetStateAction<AuthType>>
 }
 
 export const GlobalContext = createContext<GlobalContextValue | null>(null)
@@ -16,6 +19,7 @@ export const GlobalContext = createContext<GlobalContextValue | null>(null)
 export default function App() {
 
   const isLoggedIn = true
+  const [authType, setAuthType] = useState<AuthType>(null)
 
   const router = createBrowserRouter([
     { path: "/", Component: AppLayout, children: [
@@ -31,7 +35,7 @@ export default function App() {
   ])
 
   return (
-    <GlobalContext.Provider value={{isLoggedIn}}>
+    <GlobalContext.Provider value={{isLoggedIn, authType, setAuthType}}>
       <RouterProvider router={router} />
     </GlobalContext.Provider>
   )

@@ -2,7 +2,7 @@ import type { CommentThreadProps } from "./CommentThread"
 import type { BoardContext } from "../../../components/BoardLayout"
 import { MessageSquare, Triangle } from "lucide-react"
 import { useOutletContext } from "react-router"
-import { getTimeAgo } from "../../../utils"
+import { getTimeAgo, useGlobalContext } from "../../../utils"
 import ProfilePicture from "../../../components/ProfilePicture"
 
 interface ThreadMobileProps extends CommentThreadProps {
@@ -28,6 +28,7 @@ export default function ThreadMobile({
 }: ThreadMobileProps) {
 
     const { boardInfo } = useOutletContext<BoardContext>()
+    const { isLoggedIn, setAuthType } = useGlobalContext()
 
     return (
         <div className={`flex my-2`}>
@@ -61,7 +62,10 @@ export default function ThreadMobile({
                 <p className="mt-1 mb-2 text-wrap">{body}</p>
                 <div className="flex items-center gap-4 justify-end">
                     <button
-                        onClick={() => setReplyBoxId(id)}
+                        onClick={isLoggedIn 
+                            ?   () => setReplyBoxId(id)
+                            :   () => setAuthType("sign-up")
+                        }
                         aria-label={`Reply to ${authorUsername}`}
                         className="flex items-center text-(--text-muted) active:text-(--text-secondary)! lg:hover:text-(--text-secondary)! text-xs gap-2"
                     >
@@ -70,7 +74,10 @@ export default function ThreadMobile({
                     </button>
                     <div className="flex items-center gap-2">
                         <button
-                            onClick={() => console.log("Downvoted")}
+                            onClick={isLoggedIn 
+                                ?   () => {}
+                                :   () => setAuthType("sign-up")
+                            }
                             aria-label={`Upvote comment`}
                             className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                         >
@@ -80,7 +87,10 @@ export default function ThreadMobile({
                             {score}
                         </p>
                         <button
-                            onClick={() => console.log("Downvoted")}
+                            onClick={isLoggedIn 
+                                ?   () => {}
+                                :   () => setAuthType("sign-up")
+                            }
                             aria-label={`Downvote comment`}
                             className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                         >

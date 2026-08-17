@@ -1,4 +1,4 @@
-import { NavLink, Link } from "react-router"
+import { NavLink } from "react-router"
 import { useState, useEffect } from "react"
 import { currentUser } from "../../data/user"
 import { boards } from "../../data/home"
@@ -26,7 +26,7 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
     }, [])
 
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 1024)
-    const { isLoggedIn } = useGlobalContext()
+    const { isLoggedIn, setAuthType } = useGlobalContext()
     const myBoardCollection = currentUser.joinedBoardNames.map(item => {
         const boardColor = boards.find(board => board.name === item)?.dotColorClass ?? "bg-grey-700"
         
@@ -92,20 +92,20 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
                             Sign in to join boards, post, and track your karma.
                         </p>
                         <div className="flex flex-col gap-3 mt-3">
-                            <Link 
-                                to="/"
+                            <button 
+                                onClick={() => setAuthType("sign-up")}
                                 aria-label="Create a new account"
                                 className="action-btn text-center bg-(--primary-btn) text-(--primary-btn-text) active:bg-(--accent) lg:hover:bg-(--accent)"
                             >
                                 Sign up
-                            </Link>
-                            <Link 
-                                to="/"
+                            </button>
+                            <button 
+                                onClick={() => setAuthType("log-in")}
                                 aria-label="Log into existing account"
                                 className="bg-white action-btn text-center border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
                             >
                                 Log in
-                            </Link>
+                            </button>
                         </div>
                     </div>
             }
@@ -189,20 +189,20 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
                                     Sign in to join boards, post, and track your karma.
                                 </p>
                                 <div className="flex flex-col gap-3 mt-3">
-                                    <Link 
-                                        to="/"
+                                    <button 
+                                        onClick={() => setAuthType("sign-up")}
                                         aria-label="Create a new account"
                                         className="action-btn text-center bg-(--primary-btn) text-(--primary-btn-text) active:bg-(--accent)"
                                     >
                                         Sign up
-                                    </Link>
-                                    <Link 
-                                        to="/"
+                                    </button>
+                                    <button 
+                                        onClick={() => setAuthType("log-in")}
                                         aria-label="Log into existing account"
                                         className="bg-white action-btn text-center border-(--border)! active:bg-(--accent-hover)"
                                     >
                                         Log in
-                                    </Link>
+                                    </button>
                                 </div>
                             </div>
                     }

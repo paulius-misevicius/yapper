@@ -1,5 +1,6 @@
-import { Link, useOutletContext } from "react-router"
+import { Link, useOutletContext, useNavigate } from "react-router"
 import { useState } from "react"
+import { useGlobalContext } from "../utils"
 import type { BoardContext } from "../components/BoardLayout"
 import type { BoardPost } from "../../data/board"
 import { currentUser } from "../../data/user"
@@ -9,6 +10,7 @@ type CreatePost = Omit<BoardPost, "id" | "score" | "commentCount" | "createdAt" 
 export default function CreatePost() {
 
     const { board } = useOutletContext<BoardContext>()
+    const { isLoggedIn, setAuthType } = useGlobalContext()
     const [postDetails, setPostDetails] = useState<CreatePost>(
         {
             boardName: board, 
@@ -18,6 +20,13 @@ export default function CreatePost() {
             body: ""
         }
     )
+
+    const navigate = useNavigate()
+
+    if (!isLoggedIn) {
+        navigate("/", { replace: true })
+        setAuthType("sign-up")
+    }
 
     return (
         <div>

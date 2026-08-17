@@ -24,7 +24,7 @@ export default function BoardMobileSettings({setIsMobileSettingsOpen, sort, setS
                     aria-label="Filter by newest posts"
                     className={`
                         ${sort === "new" ? "text-(--accent-text)! bg-(--accent)! border-(--accent-text)!" : ""}
-                        flex border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
+                        flex text-sm border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
                         `}
                 >
                     <Hourglass className="size-4"/>
@@ -35,7 +35,7 @@ export default function BoardMobileSettings({setIsMobileSettingsOpen, sort, setS
                     aria-label="Filter by top posts"
                     className={`
                         ${sort === "top" ? "text-(--accent-text)! bg-(--accent)! border-(--accent-text)!" : ""}
-                        flex border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
+                        flex text-sm border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
                         `}
                 >
                     <ChartNoAxesColumn className="size-4"/>
@@ -51,7 +51,7 @@ export default function BoardMobileSettings({setIsMobileSettingsOpen, sort, setS
                         onClick={() => setFilter("all time")}
                         className={`
                             ${filter === "all time" ? "text-(--accent-text)! bg-(--accent)! border-(--accent-text)!" : ""}
-                            flex border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
+                            flex text-sm border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
                         `}
                     >
                         All time
@@ -60,7 +60,7 @@ export default function BoardMobileSettings({setIsMobileSettingsOpen, sort, setS
                         onClick={() => setFilter("today")}
                         className={`
                             ${filter === "today" ? "text-(--accent-text)! bg-(--accent)! border-(--accent-text)!" : ""}
-                            flex border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
+                            flex text-sm border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
                         `}
                     >
                         Today
@@ -69,7 +69,7 @@ export default function BoardMobileSettings({setIsMobileSettingsOpen, sort, setS
                         onClick={() => setFilter("this week")}
                         className={`
                             ${filter === "this week" ? "text-(--accent-text)! bg-(--accent)! border-(--accent-text)!" : ""}
-                            flex border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
+                            flex text-sm border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
                         `}
                     >
                         This week
@@ -78,7 +78,7 @@ export default function BoardMobileSettings({setIsMobileSettingsOpen, sort, setS
                         onClick={() => setFilter("this month")}
                         className={`
                             ${filter === "this month" ? "text-(--accent-text)! bg-(--accent)! border-(--accent-text)!" : ""}
-                            flex border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
+                            flex text-sm border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
                         `}
                     >
                         This month
@@ -87,7 +87,7 @@ export default function BoardMobileSettings({setIsMobileSettingsOpen, sort, setS
                         onClick={() => setFilter("this year")}
                         className={`
                             ${filter === "this year" ? "text-(--accent-text)! bg-(--accent)! border-(--accent-text)!" : ""}
-                            flex border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
+                            flex text-sm border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
                         `}
                     >
                         This year

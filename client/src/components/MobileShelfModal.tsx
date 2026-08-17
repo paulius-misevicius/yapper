@@ -26,7 +26,7 @@ export default function MobileShelfModal({onClose, children, title}: MobileShelf
                     escapeDeactivates: true
                 }}
             >
-                <div className="w-full bg-(--surface-1) rounded-t-2xl py-6 px-5 flex flex-col gap-5 fixed bottom-0 z-100">
+                <div className="w-full bg-(--surface-1) rounded-t-2xl p-8 flex flex-col gap-5 fixed bottom-0 z-100">
                     <div className="flex items-center justify-between">
                         <h2 className="font-medium text-lg">
                             {title}

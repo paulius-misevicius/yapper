@@ -177,7 +177,7 @@ export default function CommentThread({
                         />
                         <button
                             aria-label="Submit reply"
-                            className="w-full mt-3 action-btn bg-(--primary-btn) text-(--primary-btn-text) lg:hover:bg-(--accent) active:bg-(--accent)"
+                            className="w-full mt-3 py-3! action-btn bg-(--primary-btn) text-(--primary-btn-text) lg:hover:bg-(--accent) active:bg-(--accent)"
                         >
                             Reply
                         </button>

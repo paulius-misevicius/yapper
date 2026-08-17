@@ -85,7 +85,7 @@ button {
     border: 1px solid transparent;
 }
 textarea, input {
-    caret-color: var(--text-primary);
+    caret-color: var(--text-primary) !important;
 }
 input {
     background-color: var(--surface-1);

@@ -1,4 +1,3 @@
-import { Link } from "react-router"
 import { currentUser } from "../../data/user"
 import { useGlobalContext } from "../utils"
 import { Menu } from "lucide-react"
@@ -10,7 +9,7 @@ interface HeaderProps {
 
 export default function Header({setIsMenuOpen}: HeaderProps) {
 
-    const { isLoggedIn } = useGlobalContext()
+    const { isLoggedIn, setAuthType } = useGlobalContext()
 
     return (
         <header className="flex fiex z-10 fixed w-full justify-between items-center px-5 lg:px-10 h-(--header-height) border-b border-(--border) bg-(--surface-1)">
@@ -34,20 +33,20 @@ export default function Header({setIsMenuOpen}: HeaderProps) {
                         </div>
                     :
                         <div className="flex gap-3">
-                            <Link 
-                                to="/"
+                            <button 
+                                onClick={() => setAuthType("log-in")}
                                 aria-label="Log into existing account"
                                 className="action-btn border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
                             >
                                 Log in
-                            </Link>
-                            <Link 
-                                to="/"
+                            </button>
+                            <button 
+                                onClick={() => setAuthType("sign-up")}
                                 aria-label="Create a new account"
                                 className="action-btn bg-(--primary-btn) text-(--primary-btn-text) active:bg-(--accent) lg:hover:bg-(--accent)"
                             >
                                 Sign up
-                            </Link>
+                            </button>
                         </div>
                 }
             </div>

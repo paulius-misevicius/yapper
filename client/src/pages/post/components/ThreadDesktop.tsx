@@ -2,7 +2,7 @@ import type { CommentThreadProps } from "./CommentThread"
 import type { BoardContext } from "../../../components/BoardLayout"
 import ProfilePicture from "../../../components/ProfilePicture"
 import { Plus, Minus, Triangle, MessageSquare } from "lucide-react"
-import { getTimeAgo } from "../../../utils"
+import { getTimeAgo, useGlobalContext } from "../../../utils"
 import { useOutletContext } from "react-router"
 
 interface ThreadDesktopProps extends CommentThreadProps {
@@ -29,6 +29,7 @@ export default function ThreadDesktop({
 }: ThreadDesktopProps) {
 
     const { boardInfo } = useOutletContext<BoardContext>()
+    const { isLoggedIn, setAuthType } = useGlobalContext()
 
     return (
         <details 
@@ -95,7 +96,10 @@ export default function ThreadDesktop({
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
                         <button
-                            onClick={() => console.log("Downvoted")}
+                            onClick={isLoggedIn 
+                                ?   () => {}
+                                :   () => setAuthType("sign-up")
+                            }
                             aria-label={`Upvote comment`}
                             className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                         >
@@ -105,7 +109,10 @@ export default function ThreadDesktop({
                             {score}
                         </p>
                         <button
-                            onClick={() => console.log("Downvoted")}
+                            onClick={isLoggedIn 
+                                ?   () => {}
+                                :   () => setAuthType("sign-up")
+                            }
                             aria-label={`Downvote comment`}
                             className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                         >
@@ -113,7 +120,10 @@ export default function ThreadDesktop({
                         </button>
                     </div>
                     <button
-                        onClick={() => setReplyBoxId(id)}
+                        onClick={isLoggedIn 
+                            ?   () => setReplyBoxId(id)
+                            :   () => setAuthType("sign-up")
+                        }
                         aria-label={`Reply to ${authorUsername}`}
                         className="flex items-center text-(--text-muted) active:text-(--text-secondary)! lg:hover:text-(--text-secondary)! text-xs gap-2"
                     >

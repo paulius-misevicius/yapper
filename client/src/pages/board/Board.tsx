@@ -6,7 +6,7 @@ import ProfilePicture from "../../components/ProfilePicture"
 import type { Board } from "../../../data/home"
 import BoardMobileSettings from "./components/BoardMobileSettings"
 import BoardAbout from "./components/BoardAbout"
-import { getTimeAgo } from "../../utils"
+import { getTimeAgo, useGlobalContext } from "../../utils"
 
 import type { BoardContext } from "../../components/BoardLayout"
 import type { Sort, Filter } from "../../utils"
@@ -20,6 +20,7 @@ export default function Board() {
     const [isMobileSettingsOpen, setIsMobileSettingsOpen] = useState(false)
     const [mobileTab, setMobileTab] = useState<MobileTab>("feed")
     const { boardInfo, board, rules } = useOutletContext<BoardContext>()
+    const { isLoggedIn, setAuthType } = useGlobalContext()
     const [hoveredItemId, setHoveredItemId] = useState<number | null>(null)
 
     const boardPosts = posts.filter(item => item.boardName === board)
@@ -39,12 +40,22 @@ export default function Board() {
             <h1>b/{boardInfo.name}</h1>
             <div className="flex flex-wrap min-w-0 items-center gap-4 py-2 px-3 bg-(--surface-1) border border-(--border) rounded-2xl mt-4">
                 <ProfilePicture size="size-9"/>
-                <Link 
-                    to="create"
-                    className="text-xs font-medium text-(--text-muted) bg-(--surface-2) flex-1 text-left py-2 px-4 border border-(--border) rounded-md truncate min-w-0"
-                >
-                    Create a post in b/{boardInfo.name}...
-                </Link>
+                {isLoggedIn
+                    ?   
+                        <Link 
+                            to="create"
+                            className="text-xs font-medium text-(--text-muted) bg-(--surface-2) flex-1 text-left py-2 px-4 border border-(--border) rounded-md truncate min-w-0"
+                        >
+                            Create a post in b/{boardInfo.name}...
+                        </Link>
+                    :   
+                        <button
+                            onClick={() => setAuthType("sign-up")}
+                            className="text-xs font-medium text-(--text-muted) bg-(--surface-2) flex-1 text-left py-2 px-4 border border-(--border) rounded-md truncate min-w-0"
+                        >
+                            Create a post in b/{boardInfo.name}...
+                        </button>
+                }
                 <button 
                     onClick={() => setSort("new")}
                     aria-label="Filter by newest posts"
@@ -125,7 +136,10 @@ export default function Board() {
                             >
                                 <div className="hidden xs:flex flex-col gap-2 items-center">
                                     <button 
-                                        onClick={() => console.log("Upvoted")}
+                                        onClick={isLoggedIn 
+                                            ?   () => console.log("Upvoted")
+                                            :   () => setAuthType("sign-up")
+                                        }
                                         aria-label={`Upvote post ${item.title}`} 
                                         className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                                     >
@@ -135,7 +149,10 @@ export default function Board() {
                                         {item.score}
                                     </p>
                                     <button 
-                                        onClick={() => console.log("Downvoted")}
+                                        onClick={isLoggedIn 
+                                            ?   () => console.log("Downvoted")
+                                            :   () => setAuthType("sign-up")
+                                        }
                                         aria-label={`Downvote post ${item.title}`} 
                                         className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                                     >
@@ -172,7 +189,10 @@ export default function Board() {
                                     <div className="flex mt-3 gap-4 items-center">
                                         <div className="flex items-center gap-2 xs:hidden">
                                             <button 
-                                                onClick={() => console.log("Downvoted")}
+                                                onClick={isLoggedIn 
+                                                    ?   () => console.log("Upvoted")
+                                                    :   () => setAuthType("sign-up")
+                                                }
                                                 aria-label={`Upvote post ${item.title}`} 
                                                 className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                                             >
@@ -182,7 +202,10 @@ export default function Board() {
                                                 {item.score}
                                             </p>
                                             <button 
-                                                onClick={() => console.log("Downvoted")}
+                                                onClick={isLoggedIn 
+                                                    ?   () => console.log("Downvoted")
+                                                    :   () => setAuthType("sign-up")
+                                                }
                                                 aria-label={`Downvote post ${item.title}`} 
                                                 className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                                             >
@@ -200,7 +223,10 @@ export default function Board() {
                                             {item.commentCount} comments
                                         </Link>
                                         <button 
-                                            onClick={() => console.log("Saved")}
+                                            onClick={isLoggedIn 
+                                                ?   () => console.log("Saved")
+                                                :   () => setAuthType("sign-up")
+                                            }
                                             className="group text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) flex items-center gap-2 text-sm ml-auto xs:ml-0"
                                         >
                                             <Bookmark className="size-4"/>
