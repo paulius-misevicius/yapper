@@ -52,7 +52,7 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
                 </NavLink>
                 {isLoggedIn &&
                     <NavLink
-                        to="/u/123"
+                        to={`/u/${currentUser.username}`}
                         aria-label="My profile"
                     >
                         <UserRound />
@@ -90,7 +90,7 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
                             <button 
                                 onClick={() => setAuthType("log-in")}
                                 aria-label="Log into existing account"
-                                className="bg-white action-btn text-center border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
+                                className="bg-white text-(--text-secondary) action-btn text-center border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
                             >
                                 Log in
                             </button>
@@ -148,7 +148,7 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
                         </NavLink>
                         {isLoggedIn &&
                             <NavLink
-                                to="/u/123"
+                                to={`/u/${currentUser.username}`}
                                 onClick={() => setIsMenuOpen(false)}
                                 aria-label="My profile"
                             >
@@ -187,7 +187,7 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
                                     <button 
                                         onClick={() => setAuthType("log-in")}
                                         aria-label="Log into existing account"
-                                        className="bg-white action-btn text-center border-(--border)! active:bg-(--accent-hover)"
+                                        className="bg-white text-(--text-secondary) action-btn text-center border-(--border)! active:bg-(--accent-hover)"
                                     >
                                         Log in
                                     </button>

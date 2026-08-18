@@ -1,19 +1,7 @@
 import { getMonthYear } from "../../../utils"
 import ProfilePicture from "../../../components/ProfilePicture"
 import { Camera, Triangle } from "lucide-react"
-import type { UserProfile } from "../../../../data/user"
-
-interface DetailsDesktopProps {
-    discardChanges: () => void
-    previewProfilePic: (event: React.ChangeEvent<HTMLInputElement>) => void
-    isEditing: boolean
-    setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
-    profilePic: string
-    user: UserProfile
-    bio: string
-    setBio: React.Dispatch<React.SetStateAction<string>>
-    profilePicRef: React.RefObject<HTMLInputElement | null>
-}
+import type { ProfileChildProps } from "../Profile"
 
 export default function DetailsDesktop({
     discardChanges, 
@@ -25,7 +13,8 @@ export default function DetailsDesktop({
     bio, 
     setBio,
     profilePicRef, 
-}: DetailsDesktopProps) {
+    isCurrentUser
+}: ProfileChildProps) {
     return (
         <div className="flex gap-8 bg-(--surface-1) px-8 py-6 border border-(--border) rounded-2xl">
             {isEditing
@@ -75,7 +64,7 @@ export default function DetailsDesktop({
                             {user.karma} karma
                         </p>
                     </div>
-                    {isEditing
+                    {isEditing && isCurrentUser
                         ?
                             <div className="flex gap-2 items-center">
                                 <button
@@ -94,19 +83,20 @@ export default function DetailsDesktop({
                                 </button>
                             </div>
                         :
-                            <button 
-                                onClick={() => setIsEditing(true)}
-                                aria-label="Edit profile"
-                                className="whitespace-nowrap bg-white action-btn text-center border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
-                            >
-                                Edit profile
-                            </button>
+                            isCurrentUser &&
+                                <button 
+                                    onClick={() => setIsEditing(true)}
+                                    aria-label="Edit profile"
+                                    className="whitespace-nowrap bg-white text-(--text-secondary) action-btn text-center border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
+                                >
+                                    Edit profile
+                                </button>
                     }
                 </div>
                 <p className="text-(--text-muted)! mt-0.5">
                     Joined {getMonthYear(user.joinedAt)}
                 </p>
-                {isEditing
+                {isEditing && isCurrentUser
                     ?
                         <div className="mt-3">
                             <label className="sr-only" htmlFor="profile-bio">

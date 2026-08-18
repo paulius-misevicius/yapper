@@ -36,7 +36,7 @@ export default function Header({setIsMenuOpen}: HeaderProps) {
                             <button 
                                 onClick={() => setAuthType("log-in")}
                                 aria-label="Log into existing account"
-                                className="action-btn border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
+                                className="action-btn text-(--text-secondary) border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
                             >
                                 Log in
                             </button>

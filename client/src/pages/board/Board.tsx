@@ -1,15 +1,16 @@
 import { useState } from "react"
 import { useOutletContext, Link } from "react-router"
 import { posts } from "../../../data/board"
-import { Triangle, Bookmark, ChartNoAxesColumn, Hourglass, MessageSquare, SlidersVertical } from "lucide-react"
+import { ChartNoAxesColumn, Hourglass, SlidersVertical } from "lucide-react"
 import ProfilePicture from "../../components/ProfilePicture"
 import type { Board } from "../../../data/home"
 import BoardMobileSettings from "./components/BoardMobileSettings"
 import BoardAbout from "./components/BoardAbout"
-import { getTimeAgo, useGlobalContext } from "../../utils"
+import { useGlobalContext } from "../../utils"
 
 import type { BoardContext } from "../../components/BoardLayout"
 import type { Sort, Filter } from "../../utils"
+import PostCard from "./components/PostCard"
 
 type MobileTab = "feed" | "about"
 
@@ -21,7 +22,6 @@ export default function Board() {
     const [mobileTab, setMobileTab] = useState<MobileTab>("feed")
     const { boardInfo, board, rules } = useOutletContext<BoardContext>()
     const { isLoggedIn, setAuthType } = useGlobalContext()
-    const [hoveredItemId, setHoveredItemId] = useState<number | null>(null)
 
     const boardPosts = posts.filter(item => item.boardName === board)
     const sortedPosts = sort === "top" 
@@ -127,114 +127,19 @@ export default function Board() {
                 ?
                     <div className="flex flex-col gap-4 mt-5">
                         {sortedPosts.map(item =>
-                            <div 
+                            <PostCard 
                                 key={item.id}
-                                className={`
-                                    ${hoveredItemId === item.id ? "bg-(--accent-hover-light)! border-(--border-strong)!" : ""} 
-                                    flex bg-(--surface-1) gap-5 p-5 border border-(--border) rounded-2xl transition-colors duration-100`
-                                }
-                            >
-                                <div className="hidden xs:flex flex-col gap-2 items-center">
-                                    <button 
-                                        onClick={isLoggedIn 
-                                            ?   () => console.log("Upvoted")
-                                            :   () => setAuthType("sign-up")
-                                        }
-                                        aria-label={`Upvote post ${item.title}`} 
-                                        className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
-                                    >
-                                        <Triangle className="size-4"/>
-                                    </button>
-                                    <p className="font-medium text-normal!">
-                                        {item.score}
-                                    </p>
-                                    <button 
-                                        onClick={isLoggedIn 
-                                            ?   () => console.log("Downvoted")
-                                            :   () => setAuthType("sign-up")
-                                        }
-                                        aria-label={`Downvote post ${item.title}`} 
-                                        className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
-                                    >
-                                        <Triangle className="size-4 triangle-down"/>
-                                    </button>
-                                </div>
-                                <div>
-                                    <Link 
-                                        to={item.id.toString()}
-                                        onMouseEnter={() => setHoveredItemId(item.id)}
-                                        onMouseDown={() => setHoveredItemId(item.id)}
-                                        onMouseLeave={() => setHoveredItemId(null)}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <span className={`hidden xs:block ${boardInfo.colorClass} text-xs px-3 py-0.5 font-medium rounded-sm`}>
-                                                {item.flair}
-                                            </span>
-                                            <p className="text-xs!">
-                                                Posted by <b>u/{item.authorUsername}</b>
-                                            </p>
-                                            <p className="text-xs! text-(--text-muted)!">
-                                                {getTimeAgo(item.createdAt)}
-                                            </p>
-                                        </div>
-                                        <div className="mt-2">
-                                            <h3 className="line-clamp-3">
-                                                {item.title}
-                                            </h3>
-                                            <p className="mt-2 line-clamp-2">
-                                                {item.body}
-                                            </p>
-                                        </div>
-                                    </Link>
-                                    <div className="flex mt-3 gap-4 items-center">
-                                        <div className="flex items-center gap-2 xs:hidden">
-                                            <button 
-                                                onClick={isLoggedIn 
-                                                    ?   () => console.log("Upvoted")
-                                                    :   () => setAuthType("sign-up")
-                                                }
-                                                aria-label={`Upvote post ${item.title}`} 
-                                                className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
-                                            >
-                                                <Triangle className="size-4"/>
-                                            </button>
-                                            <p className="font-medium">
-                                                {item.score}
-                                            </p>
-                                            <button 
-                                                onClick={isLoggedIn 
-                                                    ?   () => console.log("Downvoted")
-                                                    :   () => setAuthType("sign-up")
-                                                }
-                                                aria-label={`Downvote post ${item.title}`} 
-                                                className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
-                                            >
-                                                <Triangle className="size-4 triangle-down"/>
-                                            </button>
-                                        </div>
-                                        <Link 
-                                            to={item.id.toString()}
-                                            onMouseEnter={() => setHoveredItemId(item.id)}
-                                            onMouseDown={() => setHoveredItemId(item.id)}
-                                            onMouseLeave={() => setHoveredItemId(null)}
-                                            className="text-(--text-muted) text-sm flex items-center gap-2 active:text-(--text-secondary) lg:hover:text-(--text-secondary)"
-                                        >
-                                            <MessageSquare className="size-4"/>
-                                            {item.commentCount} comments
-                                        </Link>
-                                        <button 
-                                            onClick={isLoggedIn 
-                                                ?   () => console.log("Saved")
-                                                :   () => setAuthType("sign-up")
-                                            }
-                                            className="group text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) flex items-center gap-2 text-sm ml-auto xs:ml-0"
-                                        >
-                                            <Bookmark className="size-4"/>
-                                            <p className="transition-colors duration-100 hidden xs:block text-(--text-muted)! lg:group-hover:text-(--text-secondary)!">Save</p>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                                id={item.id}
+                                title={item.title}
+                                score={item.score}
+                                body={item.body}
+                                authorUsername={item.authorUsername}
+                                createdAt={item.createdAt}
+                                commentCount={item.commentCount}
+                                flair={item.flair}
+                                boardName={item.boardName}
+                                colorClass={boardInfo.colorClass}
+                            />
                         )}
                     </div>
                 :

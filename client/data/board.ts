@@ -313,7 +313,7 @@ export const posts: BoardPost[] = [
   {
     id: 26,
     boardName: "gaming",
-    authorUsername: "rpg_addict",
+    authorUsername: "privacyfirst99",
     flair: "Discussion",
     title: "Do modern RPGs have too much body?",
     body:
@@ -385,7 +385,7 @@ export const posts: BoardPost[] = [
   {
     id: 32,
     boardName: "books",
-    authorUsername: "nightreader",
+    authorUsername: "privacyfirst99",
     flair: "Question",
     title: "Looking for a mystery novel with a genuinely surprising ending",
     body:
@@ -970,6 +970,21 @@ export const posts: BoardPost[] = [
     score: 391,
     commentCount: 85,
   },
+]
+
+export interface SavedPost {
+  userId: number
+  postId: number
+}
+
+export const savedPosts: SavedPost[] = [
+  { userId: 1, postId: 3 },
+  { userId: 1, postId: 21 },
+  { userId: 2, postId: 3 },
+  { userId: 6, postId: 7 },
+  { userId: 6, postId: 31 },
+  { userId: 6, postId: 30 },
+  { userId: 6, postId: 40 },
 ]
 
 export const boardRules: Record<string, string[]> = {

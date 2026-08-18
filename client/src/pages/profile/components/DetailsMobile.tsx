@@ -2,19 +2,7 @@ import MobileShelfModal from "../../../components/MobileShelfModal"
 import { getMonthYear } from "../../../utils"
 import ProfilePicture from "../../../components/ProfilePicture"
 import { Camera, Triangle } from "lucide-react"
-import type { UserProfile } from "../../../../data/user"
-
-interface DetailsMobileProps {
-    discardChanges: () => void
-    previewProfilePic: (event: React.ChangeEvent<HTMLInputElement>) => void
-    isEditing: boolean
-    setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
-    profilePic: string
-    user: UserProfile
-    bio: string
-    setBio: React.Dispatch<React.SetStateAction<string>>
-    profilePicRef: React.RefObject<HTMLInputElement | null>
-}
+import type { ProfileChildProps } from "../Profile"
 
 export default function DetailsMobile({
     discardChanges, 
@@ -26,10 +14,11 @@ export default function DetailsMobile({
     bio, 
     setBio,
     profilePicRef, 
-}: DetailsMobileProps) {
+    isCurrentUser
+}: ProfileChildProps) {
     return (
         <>
-            {isEditing &&
+            {isEditing && isCurrentUser &&
                 <MobileShelfModal
                     onClose={discardChanges}
                     title="Edit profile"
@@ -80,38 +69,38 @@ export default function DetailsMobile({
                     </div>
                 </MobileShelfModal>
             }
-            <div className="py-5 w-full">
-                <div className="flex gap-8 bg-(--surface-1) p-5 border border-(--border) rounded-2xl">
-                    <div className="w-full min-w-0">
-                        <div className="flex items-center justify-between">
-                            <div className="flex min-w-0 flex-col justify-center w-full items-center">
-                                <div className="mb-1">
-                                    <ProfilePicture size="size-19" userSrc={user.profilePictureUrl} />
-                                </div>
-                                <h1
-                                    className="truncate"
-                                >
-                                    {user.username}
-                                </h1>
-                                <p
-                                    className={
-                                        `flex whitespace-nowrap mt-3 items-center rounded-md gap-1 py-1 px-3 font-medium text-xs!
-                                        ${user.karma >= 0 ? "bg-(--accent) text-(--accent-text)!" : "bg-(--failure) text-(--failure-text)!"}`
-                                    }
-                                >
-                                    <Triangle
-                                        className={`${user.karma >= 0 ? "" : "triangle-down"} size-3.5`}
-                                    />
-                                    {user.karma} karma
-                                </p>
+            <div className="flex gap-8 bg-(--surface-1) p-5 border border-(--border) rounded-2xl">
+                <div className="w-full min-w-0">
+                    <div className="flex items-center justify-between">
+                        <div className="flex min-w-0 flex-col justify-center w-full items-center">
+                            <div className="mb-1">
+                                <ProfilePicture size="size-19" userSrc={user.profilePictureUrl} />
                             </div>
+                            <h1
+                                className="truncate"
+                            >
+                                {user.username}
+                            </h1>
+                            <p
+                                className={
+                                    `flex whitespace-nowrap mt-3 items-center rounded-md gap-1 py-1 px-3 font-medium text-xs!
+                                    ${user.karma >= 0 ? "bg-(--accent) text-(--accent-text)!" : "bg-(--failure) text-(--failure-text)!"}`
+                                }
+                            >
+                                <Triangle
+                                    className={`${user.karma >= 0 ? "" : "triangle-down"} size-3.5`}
+                                />
+                                {user.karma} karma
+                            </p>
                         </div>
-                        <p className="mt-2 text-(--text-muted)! text-center">
-                            Joined {getMonthYear(user.joinedAt)}
-                        </p>
-                        <p className="mt-3">
-                            {user.bio}
-                        </p>
+                    </div>
+                    <p className="mt-2 text-(--text-muted)! text-center">
+                        Joined {getMonthYear(user.joinedAt)}
+                    </p>
+                    <p className="mt-3">
+                        {user.bio}
+                    </p>
+                    {isCurrentUser &&
                         <button 
                             onClick={() => setIsEditing(true)}
                             aria-label="Edit profile"
@@ -119,20 +108,20 @@ export default function DetailsMobile({
                         >
                             Edit profile
                         </button>
-                        <div className="mt-5 flex items-center justify-around">
-                            <p className="text-(--text-muted)! items-center flex flex-col">
-                                <span className="font-bold text-lg! text-(--text-secondary)">{user.postCount}</span>
-                                Posts
-                            </p>
-                            <p className="text-(--text-muted)! items-center flex flex-col">
-                                <span className="font-bold text-lg! text-(--text-secondary)">{user.commentCount}</span>
-                                Comments
-                            </p>
-                            <p className="text-(--text-muted)! items-center flex flex-col">
-                                <span className="font-bold text-lg! text-(--text-secondary)">{user.joinedBoardNames.length}</span>
-                                Boards
-                            </p>
-                        </div>
+                    }
+                    <div className="mt-5 flex items-center justify-around">
+                        <p className="text-(--text-muted)! items-center flex flex-col">
+                            <span className="font-bold text-lg! text-(--text-secondary)">{user.postCount}</span>
+                            Posts
+                        </p>
+                        <p className="text-(--text-muted)! items-center flex flex-col">
+                            <span className="font-bold text-lg! text-(--text-secondary)">{user.commentCount}</span>
+                            Comments
+                        </p>
+                        <p className="text-(--text-muted)! items-center flex flex-col">
+                            <span className="font-bold text-lg! text-(--text-secondary)">{user.joinedBoardNames.length}</span>
+                            Boards
+                        </p>
                     </div>
                 </div>
             </div>
