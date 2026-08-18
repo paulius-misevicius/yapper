@@ -5,10 +5,10 @@ import { users } from "../../../../data/user"
 import ThreadDesktop from "./ThreadDesktop"
 import ThreadMobile from "./ThreadMobile"
 import MobileShelfModal from "../../../components/MobileShelfModal"
+import { useGlobalContext } from "../../../utils"
 
 export interface CommentThreadProps extends CommentWithReplies {
     depth?: number
-    isDesktop: boolean
     postAuthor: string
     replyBoxId: number
     setReplyBoxId: React.Dispatch<React.SetStateAction<number>>
@@ -30,10 +30,10 @@ export default function CommentThread({
     setIsNested, 
     replyBoxId, 
     setReplyBoxId, 
-    isDesktop,
     depth = 0 
 }: CommentThreadProps) {
 
+    const { screenWidth } = useGlobalContext()
     const [isThreadOpen, setIsThreadOpen] = useState<boolean>(depth === 0 || (depth < 4 && score > 4))
     const [reply, setReply] = useState("")
     const user = users.find(item => item.username === authorUsername)
@@ -55,12 +55,11 @@ export default function CommentThread({
         replyBoxId,
         setIsNested,
         setCommentTree,
-        setReplyBoxId,
-        isDesktop
+        setReplyBoxId
     }
 
     const hasReplies = replies.length > 0
-    const maxNestDepth = isDesktop ? 5 : 3
+    const maxNestDepth = screenWidth >= 768 ? 5 : 3
     const nest = hasReplies && (
         depth < maxNestDepth
             ?   replies.map(item =>
@@ -80,7 +79,6 @@ export default function CommentThread({
                         setIsNested={setIsNested}
                         replyBoxId={replyBoxId}
                         setReplyBoxId={setReplyBoxId}
-                        isDesktop={isDesktop}
                     />
                 )
             :   <div className={`flex my-3`}>
@@ -111,7 +109,7 @@ export default function CommentThread({
     )
         
 
-    if (isDesktop) return (
+    if (screenWidth >= 768) return (
         <ThreadDesktop {...childProps} >
             {replyBoxId === id && 
                 <div className="flex mt-1 flex-col bg-(--surface-1)">
@@ -150,7 +148,7 @@ export default function CommentThread({
         </ThreadDesktop>
     )
 
-    if (!isDesktop) return (
+    if (screenWidth < 768) return (
         <ThreadMobile {...childProps} >
             {replyBoxId === id &&
                 <MobileShelfModal

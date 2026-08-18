@@ -34,3 +34,11 @@ export function getTimeAgo(date: string | undefined) {
   const years = Math.floor(months / 12);
   return `${years}y ago`;
 }
+
+export function getMonthYear(timestamp: string) {
+  const date = new Date(timestamp)
+
+  const monthYear = new Intl.DateTimeFormat("en-US", {month: "long", year: "numeric"}).format(date)
+
+  return monthYear
+}

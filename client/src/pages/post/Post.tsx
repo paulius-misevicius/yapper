@@ -8,6 +8,8 @@ import CommentThread from "./components/CommentThread"
 import PostBody from "./components/PostBody"
 import CommentBox from "./components/CommentBox"
 import CommentSort from "./components/CommentSort"
+import NotFound from "../NotFound"
+import { useGlobalContext } from "../../utils"
 
 export interface CommentWithReplies extends Comment {
     replies: CommentWithReplies[]
@@ -24,7 +26,7 @@ export default function Post() {
     const [reset, setReset] = useState(0)
     const [replyBoxId, setReplyBoxId] = useState<number>(0)
     const [newComment, setNewComment] = useState("")
-    const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768)
+    const { screenWidth } = useGlobalContext()
 
     const postComments = comments.filter(item => item.postId.toString() === postId)
 
@@ -32,18 +34,9 @@ export default function Post() {
         ?   [...commentTree].sort((a, b) => b.score - a.score)
         :   [...commentTree].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
-    useEffect(() => {
-        function handleResize() {
-            setIsDesktop(window.innerWidth > 768)
-        }
-
-        window.addEventListener("resize", handleResize)
-        
-        return () => window.removeEventListener("resize", handleResize)
-    }, [])
     
     useEffect(() => {
-        if (replyBoxId > 0 && !isDesktop) {
+        if (replyBoxId > 0 && screenWidth < 768) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = '';
@@ -73,7 +66,9 @@ export default function Post() {
         setCommentTree(rootComments)
     }, [reset])
 
-    if (!post) return
+    if (!post) {
+        return <NotFound object="post" />
+    }
 
     return (
         <div>
@@ -128,7 +123,6 @@ export default function Post() {
                         setIsNested={setIsNested}
                         replyBoxId={replyBoxId}
                         setReplyBoxId={setReplyBoxId}
-                        isDesktop={isDesktop}
                     />
                 )}
             </div>

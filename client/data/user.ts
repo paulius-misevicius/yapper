@@ -23,9 +23,20 @@ export const currentUser: UserProfile = {
 
 export const users: UserProfile[] = [
   {
+    id: 1,
+    username: "paulius",
+    bio: "learning to build things",
+    profilePictureUrl: "",
+    joinedAt: "2026-09-01T09:30:00Z",
+    postCount: 5,
+    commentCount: 8,
+    karma: 20,
+    joinedBoardNames: ["technology", "coding", "lithuania"]
+  },
+  {
     id: 6,
     username: "privacyfirst99",
-    bio: "browser privacy, self-hosting, DNS nerd",
+    bio: "Full-stack dev tinkering with side projects on evenings and weekends. Mostly lurking in b/technology and b/coding, occasionally surfacing to talk about the Lithuanian tech scene in b/lithuania.",
     profilePictureUrl: "",
     joinedAt: "2026-05-20T09:00:00Z",
     postCount: 14,

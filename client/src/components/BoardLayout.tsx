@@ -3,6 +3,7 @@ import { boards } from "../../data/home"
 import { boardRules } from "../../data/board"
 import { useParams } from "react-router"
 import BoardAbout from "../pages/board/components/BoardAbout"
+import NotFound from "../pages/NotFound"
 
 import type { Board } from "../../data/home"
 
@@ -18,7 +19,9 @@ export default function BoardLayout() {
     
     const boardInfo = boards.find(item => item.name === `${board}`)
 
-    if (!board || !boardInfo) return
+    if (!board || !boardInfo) {
+        return <NotFound object="board" />
+    }
 
     const rules = boardRules[board]
 

@@ -39,7 +39,8 @@
     --primary-btn: rgba(0, 24, 133, 0.8);
     --primary-btn-text: white;
     
-    --failure: red;
+    --failure: rgba(180, 0, 0, 0.2);
+    --failure-text: rgb(180, 0, 0);
 
     --font-size-s: 0.875rem;
     --font-size-xs: 0.75rem;

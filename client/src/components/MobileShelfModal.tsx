@@ -6,13 +6,14 @@ interface MobileShelfModalProps {
     onClose: () => void
     children: React.ReactNode
     title: string
+    mobile?: boolean
 }
 
-export default function MobileShelfModal({onClose, children, title}: MobileShelfModalProps) {
+export default function MobileShelfModal({onClose, children, title, mobile}: MobileShelfModalProps) {
 
     const rootPortal = document.getElementById("portal")
 
-    if (!rootPortal) return
+    if (!rootPortal || mobile) return
 
     return createPortal(
         <>

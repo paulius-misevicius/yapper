@@ -171,7 +171,7 @@ export default function Board() {
                                                 {item.flair}
                                             </span>
                                             <p className="text-xs!">
-                                                Posted by <b>{item.authorUsername}</b>
+                                                Posted by <b>u/{item.authorUsername}</b>
                                             </p>
                                             <p className="text-xs! text-(--text-muted)!">
                                                 {getTimeAgo(item.createdAt)}

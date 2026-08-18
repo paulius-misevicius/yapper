@@ -1,5 +1,4 @@
 import { NavLink } from "react-router"
-import { useState, useEffect } from "react"
 import { currentUser } from "../../data/user"
 import { boards } from "../../data/home"
 import { FocusTrap } from "focus-trap-react"
@@ -15,25 +14,14 @@ interface NavSidebarProps {
 
 export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps) {
 
-    useEffect(() => {
-        function handleResize() {
-            setIsDesktop(window.innerWidth > 1024)
-        }
-        
-        window.addEventListener("resize", handleResize)
-        
-        return () => window.removeEventListener("resize", handleResize)
-    }, [])
-
-    const [isDesktop, setIsDesktop] = useState(window.innerWidth > 1024)
-    const { isLoggedIn, setAuthType } = useGlobalContext()
+    const { isLoggedIn, setAuthType, screenWidth } = useGlobalContext()
     const myBoardCollection = currentUser.joinedBoardNames.map(item => {
         const boardColor = boards.find(board => board.name === item)?.dotColorClass ?? "bg-grey-700"
         
         return (
             <NavLink 
                 to={`b/${item}`}
-                onClick={!isDesktop 
+                onClick={screenWidth < 1024 
                     ? () => setIsMenuOpen(false) 
                     : () => {}
                 }
@@ -49,7 +37,7 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
 
     if (!rootPortal) return
 
-    if (isDesktop) return (
+    if (screenWidth >= 1024) return (
         <section className="mt-(--header-height) bg-(--surface-1) hidden lg:block w-(--sidebar-nav-width) z-10 fixed px-6 py-8 border-r border-(--border) h-full">
             <nav
                 className="flex flex-col gap-2"
@@ -112,7 +100,7 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
         </section>
     )
 
-    if (!isDesktop && isMenuOpen) return createPortal(
+    if (screenWidth < 1024 && isMenuOpen) return createPortal(
         <>
             <div 
                 onClick={() => setIsMenuOpen(false)}

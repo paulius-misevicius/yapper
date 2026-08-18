@@ -7,15 +7,15 @@ interface ProfilePictureProps {
     userSrc?: string
 }
 
-export default function ProfilePicture({size = "size-11", userSrc}: ProfilePictureProps) {
+export default function ProfilePicture({size = "size-11", userSrc = currentUser.profilePictureUrl}: ProfilePictureProps) {
 
     return (
         <div className={`${size} rounded-full overflow-hidden border border-(--border) shrink-0`}>
-            {currentUser.profilePictureUrl && currentUser.profilePictureUrl.length > 0
+            {userSrc && userSrc.length > 0
                 ?   
                     <ImageLoader 
-                        src={userSrc ? userSrc : currentUser.profilePictureUrl} 
-                        alt={userSrc ? "User profile picture" : `${currentUser.username} profile picture`}
+                        src={userSrc} 
+                        alt="User profile picture"
                     />
                 :   
                     <div className="relative bg-(--surface-2) w-full h-full">
