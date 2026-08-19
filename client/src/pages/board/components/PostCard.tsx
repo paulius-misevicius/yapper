@@ -1,6 +1,7 @@
 import { useGlobalContext, getTimeAgo } from "../../../utils"
 import { Triangle, Bookmark, MessageSquare } from "lucide-react"
 import { Link } from "react-router"
+import { useState } from "react"
 
 import type { BoardPost } from "../../../../data/board"
 
@@ -25,7 +26,8 @@ export default function PostCard({
     useBoardName
 }: PostCardProps) {
 
-    const { isLoggedIn, setAuthType } = useGlobalContext()
+    const { isLoggedIn, setAuthType, savedPostIds } = useGlobalContext()
+    const [isSaved, setIsSaved] = useState(savedPostIds.has(id))
 
     return (
         <div 
@@ -124,10 +126,12 @@ export default function PostCard({
                             ?   () => console.log("Saved")
                             :   () => setAuthType("sign-up")
                         }
-                        className="group text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) flex items-center gap-2 text-sm ml-auto xs:ml-0"
+                        className={`group ${isSaved ? "text-(--text-secondary)" : "text-(--text-muted)"} active:text-(--text-secondary) lg:hover:text-(--text-secondary) flex items-center gap-2 text-sm ml-auto xs:ml-0`}
                     >
-                        <Bookmark className="size-4"/>
-                        <p className="transition-colors duration-100 hidden xs:block text-(--text-muted)! lg:group-hover:text-(--text-secondary)!">Save</p>
+                        <Bookmark className={`${isSaved ? "fill-(--text-secondary)" : ""} size-4`}/>
+                        <p className="transition-colors duration-100 hidden xs:block text-(--text-muted)! lg:group-hover:text-(--text-secondary)!">
+                            {isSaved ? "Unsave" : "Save"}
+                        </p>
                     </button>
                 </div>
             </div>

@@ -3,7 +3,7 @@ import type { BoardContext } from "../../../components/BoardLayout"
 import ProfilePicture from "../../../components/ProfilePicture"
 import { Plus, Minus, Triangle, MessageSquare } from "lucide-react"
 import { getTimeAgo, useGlobalContext } from "../../../utils"
-import { useOutletContext } from "react-router"
+import { useOutletContext, Link } from "react-router"
 
 interface ThreadDesktopProps extends CommentThreadProps {
     children: React.ReactNode
@@ -41,7 +41,12 @@ export default function ThreadDesktop({
                 className="grid min-w-0 items-center gap-3 grid-cols-[24px_minmax(0,1fr)] xs:grid-cols-[32px_minmax(0,1fr)]">
                 {isThreadOpen
                     ?   
-                        <ProfilePicture size="w-full aspect-square" userSrc={profilePictureUrl} />
+                        <Link
+                            to={`/u/${authorUsername}`}
+                            className="rounded-full"
+                        >
+                            <ProfilePicture size="w-full aspect-square" userSrc={profilePictureUrl} />
+                        </Link>
                     :   
                         <button 
                             onClick={event => {

@@ -104,7 +104,7 @@ export default function DetailsMobile({
                         <button 
                             onClick={() => setIsEditing(true)}
                             aria-label="Edit profile"
-                            className="w-full mt-5 whitespace-nowrap bg-white action-btn text-center border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
+                            className="w-full mt-5 whitespace-nowrap text-(--text-secondary) action-btn text-center border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
                         >
                             Edit profile
                         </button>

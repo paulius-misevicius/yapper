@@ -26,7 +26,7 @@ export interface ProfileChildProps {
 
 export default function Profile() {
 
-    const { screenWidth, isLoggedIn } = useGlobalContext()
+    const { screenWidth, isLoggedIn, savedPostIds } = useGlobalContext()
     const { username } = useParams()
     const user = users.find(item => item.username === username)
     
@@ -43,9 +43,6 @@ export default function Profile() {
     const profilePicRef = useRef<HTMLInputElement>(null)
     
     const userPosts = posts.filter(item => item.authorUsername === user.username)
-    const savedPostIds = new Set(
-        savedPosts.filter(item => item.userId === user.id).map(item => item.postId)
-    )
     const userSavedPosts = posts.filter(item => savedPostIds.has(item.id))
 
     const arrToDisplay = openTab === "posts" ? userPosts : userSavedPosts

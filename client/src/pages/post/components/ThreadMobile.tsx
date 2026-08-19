@@ -1,7 +1,7 @@
 import type { CommentThreadProps } from "./CommentThread"
 import type { BoardContext } from "../../../components/BoardLayout"
 import { MessageSquare, Triangle } from "lucide-react"
-import { useOutletContext } from "react-router"
+import { useOutletContext, Link } from "react-router"
 import { getTimeAgo, useGlobalContext } from "../../../utils"
 import ProfilePicture from "../../../components/ProfilePicture"
 
@@ -44,7 +44,12 @@ export default function ThreadMobile({
                 <summary
                     className="flex items-center gap-3"
                 >
-                    <ProfilePicture size="size-6.5 aspect-square" userSrc={profilePictureUrl} />
+                    <Link
+                        to={`/u/${authorUsername}`}
+                        className="rounded-full"
+                    >
+                        <ProfilePicture size="size-6.5 aspect-square" userSrc={profilePictureUrl} />
+                    </Link>
                     <div className="flex items-center gap-2">
                         <p className="font-medium">
                             {authorUsername}

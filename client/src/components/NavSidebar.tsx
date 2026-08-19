@@ -2,7 +2,7 @@ import { NavLink } from "react-router"
 import { currentUser } from "../../data/user"
 import { boards } from "../../data/home"
 import { FocusTrap } from "focus-trap-react"
-import { UserRound, House, X } from "lucide-react"
+import { UserRound, House, X, Settings, LogOut } from "lucide-react"
 import { useGlobalContext } from "../utils"
 import ProfilePicture from "./ProfilePicture"
 import { createPortal } from "react-dom"
@@ -68,7 +68,7 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
                     >
                         <h4
                             id="board-nav-label"
-                            className="text-(--text-muted)! text-(length:--font-size-xs) font-bold tracking-wider mb-1"
+                            className="text-(--text-muted)! text-xs font-bold tracking-wide mb-1"
                         >
                             MY BOARDS
                         </h4>
@@ -114,7 +114,7 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
                     escapeDeactivates: true
                 }}
             >
-                <section className="bg-(--surface-1) w-(--sidebar-nav-width) z-100 fixed top-0 px-5 py-5 border-r border-(--border) h-full">
+                <section className="flex flex-col bg-(--surface-1) w-(--sidebar-nav-width) z-100 fixed top-0 px-5 py-5 border-r border-(--border) h-full">
                     <div className="flex justify-between border-b border-(--border) pb-5 mb-5">
                         {isLoggedIn
                             ?
@@ -159,18 +159,37 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
                     </nav>
                     {isLoggedIn
                         ?
-                            <nav
-                                className="mt-7 flex flex-col gap-1"
-                                aria-labelledby="board-nav-label"
-                            >
-                                <h4
-                                    id="board-nav-label"
-                                    className="text-(--text-muted)! text-(length:--font-size-xs) font-bold tracking-wider mb-1"
+                            <>
+                                <nav
+                                    className="mt-7 flex flex-col gap-1"
+                                    aria-labelledby="board-nav-label"
                                 >
-                                    MY BOARDS
-                                </h4>
-                                {myBoardCollection}
-                            </nav>
+                                    <h4
+                                        id="board-nav-label"
+                                        className="text-(--text-muted)! text-xs font-bold tracking-wide mb-1"
+                                    >
+                                        MY BOARDS
+                                    </h4>
+                                    {myBoardCollection}
+                                </nav>
+                                <nav className="flex flex-col mt-auto gap-2 border-t border-(--border) pt-5">
+                                    <NavLink
+                                        onClick={() => setIsMenuOpen(false)}
+                                        aria-label="Account settings"
+                                        to="/settings"
+                                    >
+                                        <Settings />
+                                        Settings
+                                    </NavLink>
+                                    <button
+                                        aria-label="Log out from account"
+                                        className="flex items-center gap-3 px-4 rounded-xl py-2 text-(--text-secondary) text-sm font-medium text-left active:bg-(--failure) w-full"
+                                    >
+                                        <LogOut className="size-4.5"/>
+                                        Log out
+                                    </button>
+                                </nav>
+                            </>
                         :
                             <div className="bg-(--accent) mt-5 py-3 px-4 rounded-xl">
                                 <p className="text-(--accent-text)!">
