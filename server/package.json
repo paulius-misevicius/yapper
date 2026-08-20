@@ -1,0 +1,20 @@
+{
+  "name": "yapper",
+  "version": "1.0.0",
+  "description": "A simple message board",
+  "license": "ISC",
+  "author": "Paulius Misevičius",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@tsconfig/node24": "^24.0.5",
+    "@types/express": "^5.0.6",
+    "typescript": "^7.0.2"
+  }
+}

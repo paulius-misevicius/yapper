@@ -99,7 +99,7 @@ export default function CreatePost() {
                     <Link
                         to={`/b/${board}`}
                         aria-label="Cancel post"
-                        className="bg-white text-(--text-muted) action-btn text-center border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
+                        className="text-(--text-muted) action-btn text-center border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
                     >
                         Cancel
                     </Link>
