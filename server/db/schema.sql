@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS board_memberships (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id),
     board_id INTEGER NOT NULL REFERENCES boards(id),
-    joined_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+    joined_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
 
     UNIQUE (user_id, board_id)
 );
@@ -44,7 +44,9 @@ CREATE TABLE IF NOT EXISTS board_rules (
 CREATE TABLE IF NOT EXISTS saved_posts (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id),
-    post_id INTEGER NOT NULL REFERENCES posts(id)
+    post_id INTEGER NOT NULL REFERENCES posts(id),
+
+    UNIQUE (user_id, post_id)
 );
 
 CREATE TABLE IF NOT EXISTS comments (
@@ -61,10 +63,10 @@ CREATE TABLE IF NOT EXISTS votes (
     user_id INTEGER NOT NULL REFERENCES users(id),
     value INTEGER NOT NULL CHECK (value IN (-1, 1)),
     post_id INTEGER REFERENCES posts(id),
-    comment_id INTEGER REFERENCES comments(id) 
+    comment_id INTEGER REFERENCES comments(id),
 
     UNIQUE (user_id, post_id),
-    UNIQUE (user_id, comment_id)
+    UNIQUE (user_id, comment_id),
 
     CHECK (
         (post_id IS NOT NULL AND comment_id IS NULL)
