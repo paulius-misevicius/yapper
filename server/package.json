@@ -7,14 +7,18 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --exec node src/index.ts"
   },
   "dependencies": {
+    "cors": "^2.8.6",
     "express": "^5.2.1"
   },
   "devDependencies": {
     "@tsconfig/node24": "^24.0.5",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "nodemon": "^3.1.14",
     "typescript": "^7.0.2"
   }
 }

@@ -35,18 +35,28 @@ export default function App() {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
   const savedPostIds = new Set(savedPosts.filter(item => item.userId === currentUser.id).map(item => item.postId))
 
+  async function fetchTest() {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/`)
+      console.log(response)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme)
   }, [theme])
 
   useEffect(() => {
-      function handleResize() {
-          setScreenWidth(window.innerWidth)
-      }
+    fetchTest()
+    function handleResize() {
+        setScreenWidth(window.innerWidth)
+    }
 
-      window.addEventListener("resize", handleResize)
-      
-      return () => window.removeEventListener("resize", handleResize)
+    window.addEventListener("resize", handleResize)
+    
+    return () => window.removeEventListener("resize", handleResize)
   }, [])
 
   const router = createBrowserRouter([
