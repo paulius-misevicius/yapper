@@ -1,14 +1,40 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useGlobalContext } from "../utils.ts"
 import { Link } from "react-router"
 import { UsersRound, StickyNotes, Search, Triangle, MessageSquare, X } from "lucide-react"
-import { boards, recentPosts } from "../../data/home.ts"
+import { recentPosts } from "../../data/home.ts"
 import { currentUser } from "../../data/user.ts"
+
+interface Board {
+    id: number
+    name: string
+    description: string
+    memberCount: number
+    postCount: number
+    createdAt: string
+    color: string
+}
 
 export default function Home() {
 
     const [searchValue, setSearchValue] = useState("")
     const { isLoggedIn } = useGlobalContext()
+    const [boards, setBoards] = useState<Board[]>([])
+
+    useEffect(() => {
+        async function getAllBoards() {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/boards`)
+                const data = await response.json()
+                // const shapedData: Board[] = data.map((item: Board) => ({...item, joined: false}))
+                setBoards(data)
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        getAllBoards()
+    }, [])
+    console.log(boards)
 
     const filteredBoards = searchValue !== "" 
         ?   boards.filter(item => item.name.includes(searchValue))
@@ -64,7 +90,13 @@ export default function Home() {
         >
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                    <span className={`size-10 font-bold flex items-center justify-center rounded-lg ${item.colorClass}`}>
+                    <span 
+                        className={`size-10 font-bold flex items-center justify-center rounded-lg`}
+                        style={{
+                            backgroundColor: `rgba(${item.color}, 0.1)`,
+                            color: `rgba(${item.color}, 1)`
+                        }}
+                    >
                         {item.name.charAt(0).toUpperCase()}
                     </span>
                     <h2>b/{item.name}</h2>

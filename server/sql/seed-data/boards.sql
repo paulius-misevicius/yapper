@@ -10,96 +10,96 @@ VALUES
     (
         'technology',
         'A place to discuss technology, gadgets, software, AI, and the internet.',
-        'dodgerblue',
+        '30, 144, 255',
         '2024-01-15 10:30:00+00'
     ),
     (
         'programming',
         'Talk about code, software development, debugging, projects, and everything related to programming.',
-        'blueviolet',
+        '138, 43, 226',
         '2024-02-03 14:20:00+00'
     ),
     (
         'gaming',
         'Discuss video games, consoles, PC gaming, new releases, and old favorites.',
-        'crimson',
+        '220, 20, 60',
         '2024-02-18 19:45:00+00'
     ),
     (
         'movies',
         'For talking about films, directors, scenes, recommendations, and what you watched recently.',
-        'hotpink',
+        '255, 105, 180',
         '2024-03-12 21:15:00+00'
     ),
     (
         'music',
         'Share music, discover artists, discuss albums, concerts, genres, and everything in between.',
-        'mediumorchid',
+        '186, 85, 211',
         '2024-04-07 16:40:00+00'
     ),
     (
         'books',
         'For readers, book recommendations, literary discussions, and sharing what you are currently reading.',
-        'goldenrod',
+        '218, 165, 32',
         '2024-05-22 09:10:00+00'
     ),
     (
         'travel',
         'Share travel experiences, ask for advice, discover destinations, and plan your next trip.',
-        'turquoise',
+        '64, 224, 208',
         '2024-06-11 13:25:00+00'
     ),
     (
         'food',
         'Recipes, cooking experiments, restaurant recommendations, food opinions, and everything delicious.',
-        'coral',
+        '255, 127, 80',
         '2024-07-03 18:50:00+00'
     ),
     (
         'fitness',
         'Talk about workouts, training, routines, progress, motivation, and staying active.',
-        'forestgreen',
+        '34, 139, 34',
         '2024-08-19 07:30:00+00'
     ),
     (
         'casual',
         'A place for random conversations, everyday questions, stories, and anything that does not fit somewhere else.',
-        'slategray',
+        '112, 128, 144',
         '2024-09-08 22:05:00+00'
     ),
     (
         'science',
         'Discuss space, physics, biology, discoveries, experiments, and the weird things we are still trying to understand.',
-        'teal',
+        '0, 128, 128',
         '2024-10-14 11:45:00+00'
     ),
     (
         'photography',
         'Share photos, discuss cameras and editing, ask for feedback, and talk about photography.',
-        'indigo',
+        '75, 0, 130',
         '2024-11-27 15:20:00+00'
     ),
     (
         'art',
         'A space for artists and art lovers to share work, discuss techniques, and find inspiration.',
-        'mediumvioletred',
+        '199, 21, 133',
         '2025-01-09 12:15:00+00'
     ),
     (
         'sports',
         'Discuss teams, matches, athletes, competitions, predictions, and everything happening in sports.',
-        'deepskyblue',
+        '0, 191, 255',
         '2025-03-16 20:30:00+00'
     ),
     (
         'pets',
         'Share stories, photos, advice, and questionable behavior from the animals in your life.',
-        'yellowgreen',
+        '154, 205, 50',
         '2025-05-02 08:40:00+00'
     ),
     (
         'diy',
         'For building, fixing, creating, and learning how to do things yourself.',
-        'saddlebrown',
+        '139, 69, 19',
         '2025-07-21 17:10:00+00'
     );

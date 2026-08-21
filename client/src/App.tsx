@@ -35,21 +35,11 @@ export default function App() {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
   const savedPostIds = new Set(savedPosts.filter(item => item.userId === currentUser.id).map(item => item.postId))
 
-  async function fetchTest() {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/`)
-      console.log(response)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme)
   }, [theme])
 
   useEffect(() => {
-    fetchTest()
     function handleResize() {
         setScreenWidth(window.innerWidth)
     }
