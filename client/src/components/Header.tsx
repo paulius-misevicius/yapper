@@ -5,6 +5,7 @@ import ProfilePicture from "./ProfilePicture"
 import { Link } from "react-router"
 import { useState, useEffect, useRef } from "react"
 import logo from "../assets/yapper-logo.svg"
+import logoWhite from "../assets/yapper-logo-white.svg"
 
 interface HeaderProps {
     setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -12,7 +13,7 @@ interface HeaderProps {
 
 export default function Header({setIsMenuOpen}: HeaderProps) {
 
-    const { isLoggedIn, setAuthType } = useGlobalContext()
+    const { isLoggedIn, setAuthType, theme } = useGlobalContext()
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const dropdownRef = useRef<HTMLInputElement>(null)
     const dropdownToggleRef = useRef<HTMLButtonElement>(null)
@@ -36,7 +37,7 @@ export default function Header({setIsMenuOpen}: HeaderProps) {
     }, [isDropdownOpen])
 
     return (
-        <header className="flex overflow-hidden fiex z-20 fixed w-full justify-between items-center px-5 lg:px-10 h-(--header-height) border-b border-(--border) bg-(--surface-1)">
+        <header className="flex fiex z-20 fixed w-full justify-between items-center px-5 lg:px-10 h-(--header-height) border-b border-(--border) bg-(--surface-1)">
             <button
                 className="size-4.5 flex lg:hidden"
                 aria-label="Open mobile menu button"
@@ -49,7 +50,7 @@ export default function Header({setIsMenuOpen}: HeaderProps) {
             >
                 <img
                     className="size-18"
-                    src={logo}
+                    src={theme === "light" ? logo : logoWhite}
                     alt="Yapper logo"
                 />
             </Link>

@@ -7,14 +7,11 @@ import BoardAbout from "./components/BoardAbout"
 import { useGlobalContext } from "../../utils"
 import type { Sort, Filter } from "../../utils"
 import PostCard from "./components/PostCard"
-import type { BoardProps, PostProps } from "../../types"
+import type { PostProps } from "../../types"
 import { TailSpin } from "react-loader-spinner"
+import type { BoardContext } from "../../components/BoardLayout"
 
 type MobileTab = "feed" | "about"
-interface BoardContext {
-    boardInfo: BoardProps
-    isBoardInfoLoading: boolean
-}
 
 export default function Board() {
 

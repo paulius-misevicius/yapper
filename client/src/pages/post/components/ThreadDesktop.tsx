@@ -66,7 +66,13 @@ export default function ThreadDesktop({
                             {authorUsername}
                         </p>
                         {authorUsername === postAuthor &&
-                            <span className={`text-xs tracking-wide px-1.5 rounded-xs font-medium ${boardInfo.colorClass}`}>
+                            <span 
+                                className="text-xs tracking-wide px-1.5 rounded-xs font-medium"
+                                style={{
+                                    backgroundColor: `rgba(${boardInfo.color}, 0.1)`,
+                                    color: `rgba(${boardInfo.color}, 1)`
+                                }}
+                            >
                                 OP
                             </span>
                         }

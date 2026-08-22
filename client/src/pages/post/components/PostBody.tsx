@@ -49,7 +49,13 @@ export default function PostBody({boardName, title, score, flair, authorUsername
                 </div>
                 <div>
                     <div className="flex items-center gap-3">
-                        <span className={`hidden xs:block ${boardInfo.colorClass} text-xs px-3 py-0.5 font-medium rounded-sm`}>
+                        <span 
+                            className={`hidden xs:block text-xs px-3 py-0.5 font-medium rounded-sm`}
+                            style={{
+                                backgroundColor: `rgba(${boardInfo.color}, 0.1)`,
+                                color: `rgba(${boardInfo.color}, 1)`
+                            }}
+                        >
                             {flair}
                         </span>
                         <p className="text-xs!">
@@ -63,7 +69,7 @@ export default function PostBody({boardName, title, score, flair, authorUsername
                         <h2 className="line-clamp-3 text-lg leading-6 md:text-xl md:leading-7">
                             {title}
                         </h2>
-                        <span className={`block w-fit xs:hidden mt-2 ${boardInfo.colorClass} text-xs px-3 py-0.5 font-medium rounded-sm`}>
+                        <span className={`block w-fit xs:hidden mt-2 text-xs px-3 py-0.5 font-medium rounded-sm`}>
                             {flair}
                         </span>
                         <p className="mt-2 whitespace-pre-line">

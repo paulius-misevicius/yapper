@@ -1,6 +1,4 @@
-import { useParams } from "react-router"
-import { posts } from "../../../data/board"
-import { comments, type Comment } from "../../../data/post"
+import { useOutletContext, useParams } from "react-router"
 import { MoveLeft } from "lucide-react"
 import type { Sort } from "../../utils"
 import { useEffect, useState } from "react"
@@ -10,15 +8,22 @@ import CommentBox from "./components/CommentBox"
 import CommentSort from "./components/CommentSort"
 import NotFound from "../NotFound"
 import { useGlobalContext } from "../../utils"
+import type { CommentProps, PostProps } from "../../types"
+import type { BoardContext } from "../../components/BoardLayout"
+import { TailSpin } from "react-loader-spinner"
 
-export interface CommentWithReplies extends Comment {
+export interface CommentWithReplies extends CommentProps {
     replies: CommentWithReplies[]
+    postId: number
 }
 
 export default function Post() {
 
-    const { postId } = useParams()
-    const post = posts.find(item => item.id.toString() === postId)
+    const postId = Number(useParams().postId)
+    const { boardInfo } = useOutletContext<BoardContext>()
+    const [isLoadingPost, setIsLoadingPost] = useState(true)
+    const [isLoadingComments, setIsLoadingComments] = useState(false)
+    const [post, setPost] = useState<PostProps>()
     const [isCommentBoxActive, setIsCommentBoxActive] = useState(false)
     const [sort, setSort] = useState<Sort>("top")
     const [commentTree, setCommentTree] = useState<CommentWithReplies[]>([])
@@ -28,7 +33,63 @@ export default function Post() {
     const [newComment, setNewComment] = useState("")
     const { screenWidth } = useGlobalContext()
 
-    const postComments = comments.filter(item => item.postId.toString() === postId)
+    useEffect(() => {
+        async function getPost() {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/boards/${boardInfo.name}/${postId}`)
+
+                if (!response.ok) {
+                    const errorData = await response.json()
+                    throw new Error(errorData.error)
+                }
+
+                const data = await response.json()
+                setPost(data)
+            } catch (error) {
+                console.error(error)
+                setPost(undefined)
+            } finally {
+                setIsLoadingPost(false)
+            }
+        }
+        getPost()
+    }, [])
+
+    useEffect(() => {
+        async function getPostComments() {
+            try {
+                setIsLoadingComments(true)
+
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/comments/${postId}`)
+                const comments: CommentWithReplies[] = await response.json()
+
+                const map = new Map<number, CommentWithReplies>()
+                comments.forEach(item => map.set(item.id, {...item, replies: []}))
+                
+                const rootComments: CommentWithReplies[] = []
+            
+                comments.forEach(item => {
+                    const comment = map.get(item.id)
+            
+                    if (!comment) {
+                        return
+                    } else if (item.parentCommentId === null) {
+                        rootComments.push(comment)
+                    } else {
+                        const parent = map.get(item.parentCommentId)
+                        parent?.replies.push(comment)
+                    }
+                })
+        
+                setCommentTree(rootComments)
+            } catch (error) {
+                console.error(error)
+            } finally {
+                setIsLoadingComments(false)
+            }
+        }
+        getPostComments()
+    }, [reset])
 
     const sortedComments = sort === "top" 
         ?   [...commentTree].sort((a, b) => b.score - a.score)
@@ -44,37 +105,20 @@ export default function Post() {
         return () => { document.body.style.overflow = ''; };
     }, [replyBoxId])
 
-    useEffect(() => {
-        const map = new Map<number, CommentWithReplies>()
-        postComments.forEach(item => map.set(item.id, {...item, replies: []}))
-        
-        const rootComments: CommentWithReplies[] = []
-    
-        postComments.forEach(item => {
-            const comment = map.get(item.id)
-    
-            if (!comment) {
-                return
-            } else if (item.parentCommentId === null) {
-                rootComments.push(comment)
-            } else {
-                const parent = map.get(item.parentCommentId)
-                parent?.replies.push(comment)
-            }
-        })
 
-        setCommentTree(rootComments)
-    }, [reset])
+    if (isLoadingPost) {
+        return <TailSpin wrapperClass="loader" color="var(--accent)"/>
+    }
 
-    if (!post) {
+    if (!post || !postId) {
         return <NotFound object="post" />
     }
 
     return (
-        <div>
+        <div className="flex flex-col grow">
             <PostBody 
                 id={post.id}
-                boardName={post.boardName}
+                boardName={boardInfo.name}
                 title={post.title}
                 score={post.score}
                 flair={post.flair}
@@ -94,38 +138,48 @@ export default function Post() {
                 sort={sort}
                 setSort={setSort}
             />
-            <div className="flex w-full flex-col md:gap-5 mt-3 bg-(--surface-1) p-5 border border-(--border) rounded-2xl overflow-hidden">
-                {isNested &&
-                    <button 
-                        onClick={() => {
-                            setReset(prev => prev + 1)
-                            setIsNested(false)
-                        }}
-                        className="flex items-center gap-2 mb-3 md:mb-0 text-sm text-(--text-muted) underline underline-offset-2 w-fit"
-                    >
-                        <MoveLeft className="size-4"/>
-                        See full discussion
-                    </button>
-                }
-                {sortedComments.map(item =>
-                    <CommentThread 
-                        key={item.id}
-                        postAuthor={post.authorUsername}
-                        postId={item.postId}
-                        parentCommentId={item.parentCommentId}
-                        id={item.id}
-                        authorUsername={item.authorUsername}
-                        createdAt={item.createdAt}
-                        score={item.score}
-                        body={item.body}
-                        replies={item.replies}
-                        setCommentTree={setCommentTree}
-                        setIsNested={setIsNested}
-                        replyBoxId={replyBoxId}
-                        setReplyBoxId={setReplyBoxId}
-                    />
-                )}
-            </div>
+            {isLoadingComments ? <TailSpin wrapperClass="loader" color="var(--accent)"/> :
+                sortedComments.length > 0
+                    ?
+                        <div className="flex w-full flex-col md:gap-5 mt-3 bg-(--surface-1) p-5 border border-(--border) rounded-2xl overflow-hidden">
+                            {isNested &&
+                                <button 
+                                    onClick={() => {
+                                        setReset(prev => prev + 1)
+                                        setIsNested(false)
+                                    }}
+                                    className="flex items-center gap-2 mb-3 md:mb-0 text-sm text-(--text-muted) underline underline-offset-2 w-fit"
+                                >
+                                    <MoveLeft className="size-4"/>
+                                    See full discussion
+                                </button>
+                            }
+                            {sortedComments.map(item =>
+                                <CommentThread 
+                                    key={item.id}
+                                    postAuthor={post.authorUsername}
+                                    postId={postId}
+                                    parentCommentId={item.parentCommentId}
+                                    id={item.id}
+                                    authorUsername={item.authorUsername}
+                                    createdAt={item.createdAt}
+                                    score={item.score}
+                                    body={item.body}
+                                    replies={item.replies}
+                                    setCommentTree={setCommentTree}
+                                    setIsNested={setIsNested}
+                                    replyBoxId={replyBoxId}
+                                    setReplyBoxId={setReplyBoxId}
+                                />
+                            )}
+                        </div>
+                    :
+                        <div className="grow content-center">
+                            <p className="text-center font-medium text-(--text-muted)!">
+                                Be the first one to comment!
+                            </p>
+                        </div>
+            }
         </div>
     )
 }

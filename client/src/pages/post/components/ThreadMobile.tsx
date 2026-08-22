@@ -55,7 +55,13 @@ export default function ThreadMobile({
                             {authorUsername}
                         </p>
                         {authorUsername === postAuthor &&
-                            <span className={`text-[10px] tracking-wide px-1.5 rounded-xs font-medium ${boardInfo.colorClass}`}>
+                            <span 
+                                className="text-[10px] tracking-wide px-1.5 rounded-xs font-medium"
+                                style={{
+                                    backgroundColor: `rgba(${boardInfo.color}, 0.1)`,
+                                    color: `rgba(${boardInfo.color}, 1)`
+                                }}
+                            >
                                 OP
                             </span>
                         }

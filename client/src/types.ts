@@ -27,3 +27,11 @@ export interface PostProps {
   score: number
   commentCount: number
 }
+export interface CommentProps {
+    id: number
+    authorUsername: string
+    parentCommentId: number | null
+    body: string
+    createdAt: string
+    score: number
+}

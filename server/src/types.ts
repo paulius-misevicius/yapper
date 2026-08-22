@@ -7,6 +7,9 @@ export interface Board {
     postCount: number
     color: string
 }
+export interface BoardRule {
+    rule: string
+}
 
 export interface Post {
     id: number

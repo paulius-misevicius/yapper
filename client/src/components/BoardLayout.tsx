@@ -6,6 +6,11 @@ import type { BoardProps } from "../types"
 import { useEffect, useState } from "react"
 import { TailSpin } from "react-loader-spinner"
 
+export interface BoardContext {
+    boardInfo: BoardProps
+    isBoardInfoLoading: boolean
+}
+
 export default function BoardLayout() {
     
     const { board } = useParams()
