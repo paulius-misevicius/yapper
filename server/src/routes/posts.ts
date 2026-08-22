@@ -5,17 +5,17 @@ import type { Post } from "../types.ts"
 const postsRouter = Router()
 
 postsRouter.get("/", async (req, res) => {
-
+    
     const limit = Number(req.query.limit) || 50
-
+    
     let sort = "id"
 
     if (req.query.sort === "recent") {
         sort = "p.created_at DESC"
     }
 
-    const result = await pool.query<Post>(
-        `
+    try {
+        const result = await pool.query<Post>(`
             SELECT 
                 p.id,
                 p.flair,
@@ -39,10 +39,51 @@ postsRouter.get("/", async (req, res) => {
             GROUP BY p.id, b.color, b.name
             ORDER BY ${sort}
             LIMIT $1
-        `, [limit]
-    )
+        `, [limit])
+    
+        res.json(result.rows)
+    } catch (error) {
+        console.error(error)
 
-    res.json(result.rows)
+        return res.status(500).json({
+            error: "Internal server error"
+        })
+    }
+})
+
+postsRouter.get("/:boardName", async (req, res) => {
+
+    const board = req.params.boardName
+
+    try {
+        const result = await pool.query<Post>(`
+            SELECT
+                p.id,
+                p.flair,
+                p.title,
+                u.username as "authorUsername",
+                p.body,
+                p.created_at AS "createdAt",
+                (
+                    SELECT SUM(v.value)::int 
+                    FROM votes v 
+                    WHERE p.id = v.post_id
+                ) AS score,
+                (
+                    SELECT COUNT(*)::int
+                    FROM comments c
+                    WHERE p.id = c.post_id
+                ) AS "commentCount"
+            FROM posts p
+            JOIN boards b ON p.board_id = b.id
+            JOIN users u ON p.user_id = u.id
+            WHERE b.name = $1
+        `, [board])
+
+        res.json(result.rows)
+    } catch (error) {
+        console.error(error)
+    }
 })
 
 export default postsRouter

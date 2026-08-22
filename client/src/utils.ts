@@ -35,10 +35,19 @@ export function getTimeAgo(date: string | undefined) {
   return `${years}y ago`;
 }
 
-export function getMonthYear(timestamp: string) {
+export function getMonthYear(timestamp: string, day?: boolean) {
+  
+  if (!timestamp) return
+
   const date = new Date(timestamp)
-
   const monthYear = new Intl.DateTimeFormat("en-US", {month: "long", year: "numeric"}).format(date)
+  const monthDayYear = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+    timeZone: "UTC"
+  }).format(date)
 
-  return monthYear
+  if (day) return monthDayYear
+  else return monthYear
 }

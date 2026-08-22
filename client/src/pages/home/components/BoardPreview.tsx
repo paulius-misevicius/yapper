@@ -2,9 +2,9 @@ import { Link } from "react-router"
 import { UsersRound, StickyNotes } from "lucide-react"
 import { useGlobalContext } from "../../../utils"
 import { currentUser } from "../../../../data/user"
-import type { HomeBoard } from "../../../types"
+import type { BoardProps } from "../../../types"
 
-export default function BoardPreview({id, name, color, description, memberCount, postCount}: HomeBoard) {
+export default function BoardPreview({id, name, color, description, memberCount, postCount}: BoardProps) {
 
     const { isLoggedIn } = useGlobalContext()
 

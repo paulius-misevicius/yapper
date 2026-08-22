@@ -166,6 +166,14 @@ nav a svg {
     transform: rotate(180deg);
 }
 
+.loader {
+    width: 100%;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
 @media (min-width: 1024px) {
     nav a:hover {
         background-color: var(--accent-hover);

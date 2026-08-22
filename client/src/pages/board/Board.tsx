@@ -1,18 +1,20 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useOutletContext, Link } from "react-router"
-import { posts } from "../../../data/board"
 import { ChartNoAxesColumn, Hourglass, SlidersVertical } from "lucide-react"
 import ProfilePicture from "../../components/ProfilePicture"
-import type { Board } from "../../../data/home"
 import BoardMobileSettings from "./components/BoardMobileSettings"
 import BoardAbout from "./components/BoardAbout"
 import { useGlobalContext } from "../../utils"
-
-import type { BoardContext } from "../../components/BoardLayout"
 import type { Sort, Filter } from "../../utils"
 import PostCard from "./components/PostCard"
+import type { BoardProps, PostProps } from "../../types"
+import { TailSpin } from "react-loader-spinner"
 
 type MobileTab = "feed" | "about"
+interface BoardContext {
+    boardInfo: BoardProps
+    isBoardInfoLoading: boolean
+}
 
 export default function Board() {
 
@@ -20,13 +22,25 @@ export default function Board() {
     const [sort, setSort] = useState<Sort>("top")
     const [isMobileSettingsOpen, setIsMobileSettingsOpen] = useState(false)
     const [mobileTab, setMobileTab] = useState<MobileTab>("feed")
-    const { boardInfo, board, rules } = useOutletContext<BoardContext>()
+    const { boardInfo, isBoardInfoLoading } = useOutletContext<BoardContext>()
     const { isLoggedIn, setAuthType } = useGlobalContext()
+    const [posts, setPosts] = useState<PostProps[]>([])
+    const [isLoading, setIsLoading] = useState(true)
 
-    const boardPosts = posts.filter(item => item.boardName === board)
-    const sortedPosts = sort === "top" 
-        ?   [...boardPosts].sort((a, b) => b.score - a.score)
-        :   [...boardPosts].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    useEffect(() => {
+        async function getBoardPosts() {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/posts/${boardInfo.name}`)
+                const data = await response.json()
+                setPosts(data)
+            } catch (error) {
+                console.error(error)
+            } finally {
+                setIsLoading(false)
+            }
+        }
+        getBoardPosts()
+    }, [])
 
     return (
         <>
@@ -124,26 +138,30 @@ export default function Board() {
             </div>
 
             {mobileTab === "feed" 
-                ?
-                    <div className="flex flex-col gap-4 mt-5">
-                        {sortedPosts.map(item =>
-                            <PostCard 
-                                key={item.id}
-                                id={item.id}
-                                title={item.title}
-                                score={item.score}
-                                body={item.body}
-                                authorUsername={item.authorUsername}
-                                createdAt={item.createdAt}
-                                commentCount={item.commentCount}
-                                flair={item.flair}
-                                boardName={item.boardName}
-                                colorClass={boardInfo.colorClass}
-                            />
-                        )}
-                    </div>
-                :
-                    <BoardAbout board={board} boardInfo={boardInfo} rules={rules} />
+                    ?
+                        isLoading ? <TailSpin wrapperClass="loader" color="var(--accent)"/> :
+                            <div className="flex flex-col gap-4 mt-5">
+                                {posts.map(item =>
+                                    <PostCard 
+                                        key={item.id}
+                                        id={item.id}
+                                        title={item.title}
+                                        score={item.score}
+                                        body={item.body}
+                                        authorUsername={item.authorUsername}
+                                        createdAt={item.createdAt}
+                                        commentCount={item.commentCount}
+                                        flair={item.flair}
+                                        boardName={boardInfo.name}
+                                        color={boardInfo.color}
+                                    />
+                                )}
+                            </div>
+                    :
+                        isBoardInfoLoading 
+                            ?   <TailSpin wrapperClass="loader" color="var(--accent)"/> 
+                            :   <BoardAbout boardInfo={boardInfo} />
+                        
             }
         </>
     )

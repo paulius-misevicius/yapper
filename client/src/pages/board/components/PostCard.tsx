@@ -3,10 +3,11 @@ import { Triangle, Bookmark, MessageSquare } from "lucide-react"
 import { Link } from "react-router"
 import { useState } from "react"
 
-import type { BoardPost } from "../../../../data/board"
+import type { PostProps } from "../../../types"
 
-interface PostCardProps extends BoardPost {
-    colorClass?: string
+interface PostCardProps extends PostProps {
+    color?: string
+    boardName?: string
     noFlair?: boolean
     useBoardName?: boolean
 }
@@ -21,7 +22,7 @@ export default function PostCard({
     commentCount, 
     flair, 
     boardName,
-    colorClass,
+    color,
     noFlair,
     useBoardName
 }: PostCardProps) {
@@ -65,7 +66,13 @@ export default function PostCard({
                 >
                     <div className="flex items-center gap-3">
                         {!noFlair &&
-                            <span className={`hidden xs:block ${colorClass} text-xs px-3 py-0.5 font-medium rounded-sm`}>
+                            <span 
+                                className="hidden xs:block text-xs px-3 py-0.5 font-medium rounded-sm"
+                                style={{
+                                    backgroundColor: `rgba(${color}, 0.1)`,
+                                    color: `rgba(${color}, 1)`
+                                }}
+                            >
                                 {flair}
                             </span>
                         }

@@ -1,36 +1,53 @@
 import { Outlet } from "react-router"
-import { boards } from "../../data/home"
-import { boardRules } from "../../data/board"
 import { useParams } from "react-router"
 import BoardAbout from "../pages/board/components/BoardAbout"
 import NotFound from "../pages/NotFound"
-
-import type { Board } from "../../data/home"
-
-export interface BoardContext {
-    boardInfo: Board
-    board: string
-    rules: string[]
-}
+import type { BoardProps } from "../types"
+import { useEffect, useState } from "react"
+import { TailSpin } from "react-loader-spinner"
 
 export default function BoardLayout() {
     
     const { board } = useParams()
+    const [boardInfo, setBoardInfo] = useState<BoardProps>()
+    const [isBoardInfoLoading, setIsBoardInfoLoading] = useState(true)
     
-    const boardInfo = boards.find(item => item.name === `${board}`)
+    useEffect(() => {
+        async function getBoardInfo() {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/boards/${board}`)
 
-    if (!board || !boardInfo) {
-        return <NotFound object="board" />
+                if (!response.ok) {
+                    const errorData = await response.json()
+                    throw new Error(errorData.error)
+                }
+
+                const data = await response.json()
+                setBoardInfo(data)
+            } catch (error) {
+                console.error(error)
+                setBoardInfo(undefined)
+            } finally {
+                setIsBoardInfoLoading(false)
+            }
+        }
+        getBoardInfo()
+    }, [board])
+
+    if (isBoardInfoLoading) {
+        return <TailSpin wrapperClass="loader" color="var(--accent)"/>
     }
 
-    const rules = boardRules[board]
+    if (!boardInfo) {
+        return <NotFound object="board" />
+    }
 
     return (
         <>
             <section className="flex min-w-0 flex-col flex-1 md:mr-(--sidebar-right-width) py-5 md:pr-5 lg:pr-10">
-                <Outlet context={{boardInfo, board, rules}} />
+                <Outlet context={{boardInfo, isBoardInfoLoading}} />
             </section>
-            <BoardAbout boardInfo={boardInfo} board={board} rules={rules} sidebar/>
+            <BoardAbout boardInfo={boardInfo} sidebar/>
         </>
     )
 }

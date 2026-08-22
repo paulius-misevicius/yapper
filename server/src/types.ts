@@ -10,9 +10,9 @@ export interface Board {
 
 export interface Post {
     id: number
-    color: string
+    color?: string
     flair: string
-    boardName: string
+    boardName?: string
     createdAt: string
     title: string
     score: number

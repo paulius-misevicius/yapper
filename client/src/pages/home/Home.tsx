@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react"
 import { Search, X } from "lucide-react"
-import type { BoardPreviewProps, RecentPostProps } from "../../types.ts"
+import type { BoardProps, RecentPostProps } from "../../types.ts"
 import BoardPreview from "./components/BoardPreview.tsx"
 import RecentPost from "./components/RecentPost.tsx"
+import { TailSpin } from "react-loader-spinner"
 
 export default function Home() {
 
     const [searchValue, setSearchValue] = useState("")
-    const [boards, setBoards] = useState<BoardPreviewProps[]>([])
+    const [boards, setBoards] = useState<BoardProps[]>([])
     const [recentPosts, setRecentPosts] = useState<RecentPostProps[]>([])
+    const [isLoadingBoards, setIsLoadingBoards] = useState(true)
+    const [isLoadingPosts, setIsLoadingPosts] = useState(true)
 
     useEffect(() => {
         async function getBoardPreviews() {
@@ -18,6 +21,8 @@ export default function Home() {
                 setBoards(data)
             } catch (error) {
                 console.error(error)
+            } finally {
+                setIsLoadingBoards(false)
             }
         }
         async function getRecentPosts() {
@@ -27,6 +32,8 @@ export default function Home() {
                 setRecentPosts(data)
             } catch (error) {
                 console.error(error)
+            } finally {
+                setIsLoadingPosts(false)
             }
         }
         getBoardPreviews()
@@ -40,7 +47,7 @@ export default function Home() {
     return (
         <>
             <section className="flex flex-1 md:mr-(--sidebar-right-width) py-5">
-                <div className="flex-1">
+                <div className="flex-1 flex flex-col">
                     <div className="flex flex-col xs:flex-row justify-between items-center mb-5">
                         <h1 className="whitespace-nowrap self-start mb-3 xs:mb-0">All boards</h1>
                         <div className="flex w-full xs:w-60">
@@ -66,42 +73,47 @@ export default function Home() {
                             </div>
                         </div>
                     </div>
-                    {filteredBoards.length > 0
-                        ?
-                            <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-5">
-                                {filteredBoards.map(item =>
-                                    <BoardPreview 
-                                        key={item.id}
-                                        id={item.id}
-                                        name={item.name}
-                                        description={item.description}
-                                        color={item.color}
-                                        postCount={item.postCount}
-                                        memberCount={item.memberCount}
-                                    />
-                                )}
-                            </div>
-                        :
-                            <div className="flex justify-center items-center h-[calc(80%-var(--header-height))]">
-                                <p className="text-center font-medium">No boards matched your search!</p>
-                            </div>
+                    {isLoadingBoards ? <TailSpin wrapperClass="loader" color="var(--accent)"/> :
+                        filteredBoards.length > 0
+                            ?
+                                <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-5">
+                                    {filteredBoards.map(item =>
+                                        <BoardPreview 
+                                            key={item.id}
+                                            id={item.id}
+                                            name={item.name}
+                                            description={item.description}
+                                            color={item.color}
+                                            postCount={item.postCount}
+                                            memberCount={item.memberCount}
+                                            createdAt={item.createdAt}
+                                        />
+                                    )}
+                                </div>
+                            :
+                                <div className="flex justify-center items-center h-[calc(80%-var(--header-height))]">
+                                    <p className="text-center font-medium">No boards matched your search!</p>
+                                </div>
                     }
                 </div>
             </section>
             <section className="hidden md:block fixed z-10 px-6 right-0 w-(--sidebar-right-width) border-l border-(--border) h-[calc(100%-var(--header-height))] py-5">
                 <h2>Recent posts</h2>
-                <div className="flex flex-col gap-5 mt-5">
-                    {recentPosts.map(item =>
-                        <RecentPost 
-                            id={item.id}
-                            color={item.color}
-                            boardName={item.boardName}
-                            createdAt={item.createdAt}
-                            title={item.title}
-                            score={item.score}
-                            commentCount={item.commentCount}
-                        />
-                    )}
+                <div className="flex flex-col gap-5 mt-5 h-full">
+                    {isLoadingPosts ? <TailSpin wrapperClass="loader" color="var(--accent)"/> :
+                        recentPosts.map(item =>
+                            <RecentPost 
+                                key={item.id}
+                                id={item.id}
+                                color={item.color}
+                                boardName={item.boardName}
+                                createdAt={item.createdAt}
+                                title={item.title}
+                                score={item.score}
+                                commentCount={item.commentCount}
+                            />
+                        )
+                    }
                 </div>
             </section>
         </>
