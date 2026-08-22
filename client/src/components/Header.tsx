@@ -4,6 +4,7 @@ import { Menu, Settings, UserRound, LogOut, ChevronDown } from "lucide-react"
 import ProfilePicture from "./ProfilePicture"
 import { Link } from "react-router"
 import { useState, useEffect, useRef } from "react"
+import logo from "../assets/yapper-logo.svg"
 
 interface HeaderProps {
     setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -35,7 +36,7 @@ export default function Header({setIsMenuOpen}: HeaderProps) {
     }, [isDropdownOpen])
 
     return (
-        <header className="flex fiex z-20 fixed w-full justify-between items-center px-5 lg:px-10 h-(--header-height) border-b border-(--border) bg-(--surface-1)">
+        <header className="flex overflow-hidden fiex z-20 fixed w-full justify-between items-center px-5 lg:px-10 h-(--header-height) border-b border-(--border) bg-(--surface-1)">
             <button
                 className="size-4.5 flex lg:hidden"
                 aria-label="Open mobile menu button"
@@ -43,7 +44,15 @@ export default function Header({setIsMenuOpen}: HeaderProps) {
             >
                 <Menu className="size-4.5 text-(--text-secondary)"/>
             </button>
-            <h3>Yapper logo</h3>
+            <Link
+                to="/"
+            >
+                <img
+                    className="size-18"
+                    src={logo}
+                    alt="Yapper logo"
+                />
+            </Link>
             <div className="hidden lg:block">
                 {isLoggedIn
                     ?
