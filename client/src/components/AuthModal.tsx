@@ -13,7 +13,7 @@ export default function AuthModal() {
     const [error, setError] = useState<string | null>(null)
 
     const rootPortal = document.getElementById("portal")
-    const { isLoggedIn, authType, setAuthType } = useGlobalContext()
+    const { isLoggedIn, authType, setAuthType, setCurrentUser } = useGlobalContext()
 
     async function registerUser(event: React.SubmitEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -39,8 +39,47 @@ export default function AuthModal() {
                 credentials: "include"
             })
             const userData = await user.json()
+
             console.log(userData)
 
+            setCurrentUser(userData)
+            setAuthType(null)
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message)
+            }
+        }
+    }
+
+    async function logInUser(event: React.SubmitEvent<HTMLFormElement>) {
+        event.preventDefault()
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username, email, password
+                })
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.message)
+            }
+
+            const user = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
+                credentials: "include"
+            })
+            const userData = await user.json()
+
+            console.log(userData)
+
+            setCurrentUser(userData)
+            setAuthType(null)
         } catch (error) {
             if (error instanceof Error) {
                 setError(error.message)
@@ -73,7 +112,7 @@ export default function AuthModal() {
                 <form 
                     onSubmit={authType === "sign-up" 
                         ?   registerUser
-                        :   () => {}
+                        :   logInUser
                     }
                     className="fixed bottom-0 w-full sm:bottom-[unset] sm:w-120 sm:-translate-1/2 sm:top-1/2 sm:left-1/2 z-100 bg-(--surface-1) py-8 px-8 sm:px-10 border border-(--border) rounded-t-2xl sm:rounded-2xl"
                 >
@@ -97,7 +136,6 @@ export default function AuthModal() {
                         </p>
                     </div>
                     <div className="mt-5 mb-3 flex flex-col gap-5">
-                        {authType === "sign-up" &&
                             <div className="flex flex-col gap-2">
                                 <label
                                     className="text-sm font-medium text-(--text-secondary)"
@@ -111,27 +149,31 @@ export default function AuthModal() {
                                     id="username"
                                     // required
                                     className="text-sm placeholder:font-medium bg-(--surface-2)! px-4 py-2 focus:bg-(--surface-1)!"
-                                    placeholder="Pick a unique username..."
+                                    placeholder={authType === "sign-up"
+                                        ?   "Pick a unique username..."
+                                        :   "Enter your username..."
+                                    }
+                                />
+                            </div>
+                        {authType === "sign-up" &&
+                            <div className="flex flex-col gap-2">
+                                <label
+                                    className="text-sm font-medium text-(--text-secondary)"
+                                    htmlFor="email"
+                                >
+                                    Email
+                                </label>
+                                <input
+                                    value={email}
+                                    onChange={event => setEmail(event.target.value)}
+                                    id="email"
+                                    type="email"
+                                    // required
+                                    className="text-sm placeholder:font-medium bg-(--surface-2)! px-4 py-2 focus:bg-(--surface-1)!"
+                                    placeholder="you@example.com"
                                 />
                             </div>
                         }
-                        <div className="flex flex-col gap-2">
-                            <label
-                                className="text-sm font-medium text-(--text-secondary)"
-                                htmlFor="email"
-                            >
-                                Email
-                            </label>
-                            <input
-                                value={email}
-                                onChange={event => setEmail(event.target.value)}
-                                id="email"
-                                type="email"
-                                // required
-                                className="text-sm placeholder:font-medium bg-(--surface-2)! px-4 py-2 focus:bg-(--surface-1)!"
-                                placeholder="you@example.com"
-                            />
-                        </div>
                         <div className="flex flex-col gap-2">
                             <label
                                 className="text-sm font-medium text-(--text-secondary)"

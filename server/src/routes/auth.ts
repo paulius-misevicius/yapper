@@ -3,7 +3,7 @@ import { checkPasswordRegex, checkUsernameRegex } from "../utils.ts"
 import { pool } from "../db.ts"
 import validator from "validator"
 import bcrypt from "bcryptjs"
-import type { Email, Id, Username } from "../types.ts"
+import type { Email, Id, User, UserLogin, Username } from "../types.ts"
 
 const authRouter = Router()
 
@@ -90,11 +90,71 @@ authRouter.post("/register", async (req, res) => {
     }
 })
 
+authRouter.post("/login", async (req, res) => {
+    try {
+        const { username, password } = req.body
+
+        if (!username) {
+            return res.status(400).json({
+                message: "Username is missing."
+            })
+        }
+        if (!password) {
+            return res.status(400).json({
+                message: "Password is missing."
+            })
+        }
+
+        const result = await pool.query<UserLogin>(`
+            SELECT
+                u.id,
+                u.password_hash as "passwordHash"
+            FROM users u
+            WHERE u.username = $1
+        `, [username])
+
+        const user = result.rows[0]
+
+        if (!user) {
+            return res.status(401).json({
+                message: "Invalid credentials."
+            })
+        }
+
+        const isPasswordValid = bcrypt.compare(password, user.passwordHash)
+
+        if (!isPasswordValid) {
+            return res.status(401).json({
+                message: "Invalid credentials."
+            })
+        }
+
+        req.session.userId = user.id
+
+        res.json({
+            message: "Log in successful"
+        })
+
+    } catch (error) {
+        console.error(error)
+
+        return res.status(500).json({
+            message: "Internal server error"
+        })
+    }
+})
+
 authRouter.get("/me", async (req, res) => {
     try {
         const userId = req.session.userId
 
-        const result = await pool.query(`
+        if (!userId) {
+            return res.json({
+                message: "User id not received."
+            })
+        }
+
+        const result = await pool.query<User>(`
             SELECT
                 u.id,
                 u.username,
@@ -110,7 +170,7 @@ authRouter.get("/me", async (req, res) => {
             WHERE u.id = $1
         `, [userId])
         
-        res.json(result.rows)
+        res.json(result.rows[0])
     } catch (error) {
         console.error(error)
 

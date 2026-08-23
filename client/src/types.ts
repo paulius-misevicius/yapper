@@ -38,3 +38,14 @@ export interface CommentProps {
     createdAt: string
     score: number
 }
+export interface UserProps {
+    id: number
+    username: string
+    bio: string
+    profilePictureUrl: string
+    joinedAt: string
+    postCount: number
+    commentCount?: number
+    karma?: number
+    joinedBoardNames?: string[]
+}

@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router"
 import { createContext, useState, useEffect } from "react"
 import { savedPosts } from "../data/board"
-import { currentUser } from "../data/user"
 import Home from "./pages/home/Home"
 import AppLayout from "./components/AppLayout"
 import BoardLayout from "./components/BoardLayout"
@@ -11,6 +10,7 @@ import CreatePost from "./pages/CreatePost"
 import Profile from "./pages/profile/Profile"
 import NotFound from "./pages/NotFound"
 import Settings from "./pages/settings/Settings"
+import type { UserProps } from "./types"
 
 type AuthType = "sign-up" | "log-in" | null
 type Theme = "light" | "dark"
@@ -20,20 +20,23 @@ interface GlobalContextValue {
   authType: AuthType
   setAuthType: React.Dispatch<React.SetStateAction<AuthType>>
   screenWidth: number
-  savedPostIds: Set<number>
+  savedPostIds?: Set<number>
   theme: Theme
   setTheme: React.Dispatch<React.SetStateAction<Theme>>
+  currentUser: UserProps | null
+  setCurrentUser: React.Dispatch<React.SetStateAction<UserProps | null>>
 }
 
 export const GlobalContext = createContext<GlobalContextValue | null>(null)
 
 export default function App() {
 
-  const isLoggedIn = false
+  const [currentUser, setCurrentUser] = useState<UserProps | null>(null)
   const [authType, setAuthType] = useState<AuthType>(null)
   const [theme, setTheme] = useState<Theme>("light")
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
-  const savedPostIds = new Set(savedPosts.filter(item => item.userId === currentUser.id).map(item => item.postId))
+  // const savedPostIds = new Set(savedPosts.filter(item => item.userId === currentUser.id).map(item => item.postId))
+  const isLoggedIn = currentUser !== null
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme)
@@ -65,7 +68,7 @@ export default function App() {
   ])
 
   return (
-    <GlobalContext.Provider value={{isLoggedIn, authType, setAuthType, screenWidth, savedPostIds, theme, setTheme}}>
+    <GlobalContext.Provider value={{currentUser, setCurrentUser, authType, isLoggedIn, setAuthType, screenWidth, theme, setTheme}}>
       <RouterProvider router={router} />
     </GlobalContext.Provider>
   )

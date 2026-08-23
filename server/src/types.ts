@@ -36,6 +36,14 @@ export interface Comment {
     createdAt: string
     score: number
 }
+export interface User {
+    id: number
+    username: string
+    bio: string
+    profilePictureUrl: string
+    joinedAt: string
+    postCount: number
+}
 export interface Username {
     username: string
 }
@@ -44,4 +52,8 @@ export interface Email {
 }
 export interface Id {
     id: number
+}
+export interface UserLogin {
+    id: number
+    passwordHash: string
 }
