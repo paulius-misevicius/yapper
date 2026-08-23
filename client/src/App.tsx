@@ -29,7 +29,7 @@ export const GlobalContext = createContext<GlobalContextValue | null>(null)
 
 export default function App() {
 
-  const isLoggedIn = true
+  const isLoggedIn = false
   const [authType, setAuthType] = useState<AuthType>(null)
   const [theme, setTheme] = useState<Theme>("light")
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)

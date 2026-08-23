@@ -1,3 +1,11 @@
+import "express-session";
+
+declare module "express-session" {
+  interface SessionData {
+    userId?: number
+  }
+}
+
 export interface Board {
     id: number
     name: string
@@ -10,7 +18,6 @@ export interface Board {
 export interface BoardRule {
     rule: string
 }
-
 export interface Post {
     id: number
     color?: string
@@ -20,4 +27,21 @@ export interface Post {
     title: string
     score: number
     commentCount: number
+}
+export interface Comment {
+    id: number
+    authorUsername: string
+    parentCommentId: number
+    body: string
+    createdAt: string
+    score: number
+}
+export interface Username {
+    username: string
+}
+export interface Email {
+    email: string
+}
+export interface Id {
+    id: number
 }

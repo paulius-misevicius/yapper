@@ -1,6 +1,6 @@
 import { useOutletContext, useParams } from "react-router"
 import { MoveLeft } from "lucide-react"
-import type { Sort } from "../../utils"
+import type { Sort } from "../../types"
 import { useEffect, useState } from "react"
 import CommentThread from "./components/CommentThread"
 import PostBody from "./components/PostBody"

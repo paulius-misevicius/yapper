@@ -1,5 +1,6 @@
 import { Router } from "express"
 import { pool } from "../db.ts"
+import type { Comment } from "../types.ts"
 
 const commentsRouter = Router()
 
@@ -8,7 +9,7 @@ commentsRouter.get("/:postId", async (req, res) => {
     const postId = req.params.postId
 
     try {
-        const result = await pool.query(`
+        const result = await pool.query<Comment>(`
             SELECT 
                 c.id,
                 u.username AS "authorUsername",

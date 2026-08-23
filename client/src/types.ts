@@ -1,3 +1,6 @@
+export type Filter = "today" | "this week" | "this month" | "this year" | "all time"
+export type Sort = "new" | "top"
+
 export interface BoardProps {
     id: number
     name: string
