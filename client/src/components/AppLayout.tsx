@@ -4,11 +4,35 @@ import NavSidebar from "./NavSidebar"
 import { Outlet, ScrollRestoration } from "react-router"
 import AuthModal from "./AuthModal"
 import { useGlobalContext } from "../utils"
+import type { BoardProps } from "../types"
+
+export interface AppLayoutContext {
+    boards: BoardProps[]
+    isLoadingBoards: boolean
+}
 
 export default function AppLayout() {
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const { authType } = useGlobalContext()
+    const [boards, setBoards] = useState<BoardProps[]>([])
+    const [isLoadingBoards, setIsLoadingBoards] = useState(true)
+
+    useEffect(() => {
+        async function getBoardPreviews() {
+            try {
+
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/boards`)
+                const data = await response.json()
+                setBoards(data)
+            } catch (error) {
+                console.error(error)
+            } finally {
+                setIsLoadingBoards(false)
+            }
+        }
+        getBoardPreviews()
+    })
 
     useEffect(() => {
         if (isMenuOpen || authType) {
@@ -25,9 +49,9 @@ export default function AppLayout() {
                 <AuthModal />
             }
             <Header setIsMenuOpen={setIsMenuOpen}/>
-            <NavSidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+            <NavSidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} boards={boards} />
             <main className="relative mt-(--header-height) flex flex-1 lg:ml-(--sidebar-nav-width) px-5 lg:px-10">
-                <Outlet />
+                <Outlet context={{boards, isLoadingBoards}}/>
                 <ScrollRestoration 
                     getKey={location => location.pathname}
                 />

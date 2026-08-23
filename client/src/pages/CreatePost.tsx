@@ -2,37 +2,41 @@ import { Link, useOutletContext, useNavigate } from "react-router"
 import { useState } from "react"
 import { useGlobalContext } from "../utils"
 import type { BoardContext } from "../components/BoardLayout"
-import type { BoardPost } from "../../data/board"
-import { currentUser } from "../../data/user"
 
-type CreatePost = Omit<BoardPost, "id" | "score" | "commentCount" | "createdAt" >
+interface NewPost {
+    userId: number
+    flair: string
+    title: string
+    body: string
+}
 
 export default function CreatePost() {
 
-    const { board } = useOutletContext<BoardContext>()
-    const { isLoggedIn, setAuthType } = useGlobalContext()
-    const [postDetails, setPostDetails] = useState<CreatePost>(
+    const { isLoggedIn, setAuthType, currentUser } = useGlobalContext()
+    
+    const navigate = useNavigate()
+    
+    if (!isLoggedIn || !currentUser) {
+        navigate("/", { replace: true })
+        setAuthType("sign-up")
+        return
+    }
+    
+    const { boardInfo } = useOutletContext<BoardContext>()
+    const [postDetails, setPostDetails] = useState<NewPost>(
         {
-            boardName: board, 
-            authorUsername: currentUser.username, 
+            userId: currentUser.id, 
             flair: "", 
             title: "", 
             body: ""
         }
     )
 
-    const navigate = useNavigate()
-
-    if (!isLoggedIn) {
-        navigate("/", { replace: true })
-        setAuthType("sign-up")
-    }
-
     return (
         <div>
             <h1>Create a post</h1>
             <div className="bg-(--surface-1) mt-4 p-5 border border-(--border) rounded-2xl">
-                <p>Posting to <b>b/{board}</b></p>
+                <p>Posting to <b>b/{boardInfo.name}</b></p>
                 <div className="flex flex-col gap-2 mt-5">
                     <label 
                         className="text-sm font-medium text-(--text-secondary)" 
@@ -97,7 +101,7 @@ export default function CreatePost() {
                 </div>
                 <div className="flex gap-2 justify-end items-center mt-5">
                     <Link
-                        to={`/b/${board}`}
+                        to={`/b/${boardInfo.name}`}
                         aria-label="Cancel post"
                         className="text-(--text-muted) action-btn text-center border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover)"
                     >

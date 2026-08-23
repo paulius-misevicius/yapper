@@ -24,6 +24,7 @@ export interface PostProps {
   id: number
   authorUsername: string
   flair: string
+  boardName?: string
   title: string
   body: string
   createdAt: string
@@ -34,6 +35,7 @@ export interface CommentProps {
     id: number
     authorUsername: string
     parentCommentId: number | null
+    profilePictureUrl: string | null
     body: string
     createdAt: string
     score: number
@@ -45,7 +47,19 @@ export interface UserProps {
     profilePictureUrl: string
     joinedAt: string
     postCount: number
-    commentCount?: number
-    karma?: number
-    joinedBoardNames?: string[]
+    commentCount: number
+    karma: number
+    savedPostIds: number[]
+    joinedBoardNames: string[]
+}
+export interface UserProfileProps {
+    id: number
+    username: string
+    bio: string
+    profilePictureUrl: string
+    joinedAt: string
+    postCount: number
+    commentCount: number
+    karma: number
+    joinedBoardCount: number
 }

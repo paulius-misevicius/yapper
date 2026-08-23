@@ -126,7 +126,7 @@ export default function DetailsDesktop({
                         Comments
                     </p>
                     <p className="flex text-(--text-muted)! flex-col">
-                        <span className="font-bold text-lg! text-(--text-secondary)">{user.joinedBoardNames.length}</span>
+                        <span className="font-bold text-lg! text-(--text-secondary)">{user.joinedBoardCount}</span>
                         Boards joined
                     </p>
                 </div>

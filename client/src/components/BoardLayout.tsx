@@ -15,11 +15,13 @@ export default function BoardLayout() {
     
     const { board } = useParams()
     const [boardInfo, setBoardInfo] = useState<BoardProps>()
-    const [isBoardInfoLoading, setIsBoardInfoLoading] = useState(true)
+    const [isBoardInfoLoading, setIsBoardInfoLoading] = useState(false)
     
     useEffect(() => {
         async function getBoardInfo() {
             try {
+                setIsBoardInfoLoading(true)
+
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/boards/${board}`)
 
                 if (!response.ok) {

@@ -1,4 +1,3 @@
-import { currentUser } from "../../../../data/user"
 import { useGlobalContext } from "../../../utils"
 
 interface CommentBoxProps {
@@ -10,7 +9,7 @@ interface CommentBoxProps {
 
 export default function CommentBox({isCommentBoxActive, setIsCommentBoxActive, newComment, setNewComment}: CommentBoxProps) {
 
-    const { isLoggedIn, setAuthType } = useGlobalContext()
+    const { isLoggedIn, setAuthType, currentUser } = useGlobalContext()
 
     return (
         <div className="flex mt-5 flex-col bg-(--surface-1) p-5 border border-(--border) rounded-2xl">
@@ -18,7 +17,7 @@ export default function CommentBox({isCommentBoxActive, setIsCommentBoxActive, n
                 className="text-xs text-(--text-secondary)"
                 htmlFor="comment-box"
             >
-                {isLoggedIn 
+                {isLoggedIn && currentUser
                     ?   <>Comment as <b>{currentUser.username}</b></>
                     :   <>Leave a <b>comment</b></>
                 }

@@ -6,6 +6,7 @@ import boardsRouter from "./routes/boards.ts"
 import postsRouter from "./routes/posts.ts"
 import commentsRouter from "./routes/comments.ts"
 import authRouter from "./routes/auth.ts"
+import usersRouter from "./routes/users.ts"
 
 const PORT = 8000
 const app = express()
@@ -27,8 +28,9 @@ app.use(cors({
 app.use(express.json())
 
 app.use("/api/boards", boardsRouter)
-app.use("/api/posts", postsRouter)
 app.use("/api/comments", commentsRouter)
+app.use("/api/users", usersRouter)
 app.use("/api/auth", authRouter)
+app.use("/api/posts", postsRouter)
 
 app.listen(PORT)

@@ -1,5 +1,5 @@
 import { Hourglass, ChartNoAxesColumn } from "lucide-react"
-import type { Sort, Filter } from "../../../utils"
+import type { Sort, Filter } from "../../../types"
 import MobileShelfModal from "../../../components/MobileShelfModal"
 
 interface BoardMobileSettingsProps {

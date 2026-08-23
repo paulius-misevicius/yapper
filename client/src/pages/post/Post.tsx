@@ -15,13 +15,14 @@ import { TailSpin } from "react-loader-spinner"
 export interface CommentWithReplies extends CommentProps {
     replies: CommentWithReplies[]
     postId: number
+    profilePictureUrl: string
 }
 
 export default function Post() {
 
     const postId = Number(useParams().postId)
     const { boardInfo } = useOutletContext<BoardContext>()
-    const [isLoadingPost, setIsLoadingPost] = useState(true)
+    const [isLoadingPost, setIsLoadingPost] = useState(false)
     const [isLoadingComments, setIsLoadingComments] = useState(false)
     const [post, setPost] = useState<PostProps>()
     const [isCommentBoxActive, setIsCommentBoxActive] = useState(false)
@@ -36,6 +37,8 @@ export default function Post() {
     useEffect(() => {
         async function getPost() {
             try {
+                setIsLoadingPost(true)
+
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/boards/${boardInfo.name}/${postId}`)
 
                 if (!response.ok) {
@@ -162,6 +165,7 @@ export default function Post() {
                                     parentCommentId={item.parentCommentId}
                                     id={item.id}
                                     authorUsername={item.authorUsername}
+                                    profilePictureUrl={item.profilePictureUrl}
                                     createdAt={item.createdAt}
                                     score={item.score}
                                     body={item.body}

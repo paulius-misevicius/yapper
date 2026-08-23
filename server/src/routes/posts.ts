@@ -25,7 +25,7 @@ postsRouter.get("/", async (req, res) => {
                 b.color,
                 b.name as "boardName",
                 (
-                    SELECT SUM(v.value)::int 
+                    SELECT COALESCE(SUM(v.value), 0)::int 
                     FROM votes v 
                     WHERE p.id = v.post_id
                 ) AS score,
@@ -51,7 +51,7 @@ postsRouter.get("/", async (req, res) => {
     }
 })
 
-postsRouter.get("/:boardName", async (req, res) => {
+postsRouter.get("/board/:boardName", async (req, res) => {
 
     const board = req.params.boardName
 
@@ -65,7 +65,7 @@ postsRouter.get("/:boardName", async (req, res) => {
                 p.body,
                 p.created_at AS "createdAt",
                 (
-                    SELECT SUM(v.value)::int 
+                    SELECT COALESCE(SUM(v.value), 0)::int 
                     FROM votes v 
                     WHERE p.id = v.post_id
                 ) AS score,
@@ -83,6 +83,83 @@ postsRouter.get("/:boardName", async (req, res) => {
         res.json(result.rows)
     } catch (error) {
         console.error(error)
+    }
+})
+
+postsRouter.get("/user/:username", async (req, res) => {
+
+    const username = req.params.username
+
+    try {
+        const result = await pool.query<Post>(`
+            SELECT
+                p.id,
+                p.title,
+                p.body,
+                p.created_at AS "createdAt",
+                (
+                    SELECT b.name
+                    FROM boards b
+                    WHERE b.id = p.board_id
+                ) AS "boardName",
+                (
+                    SELECT COALESCE(SUM(v.value), 0)::int 
+                    FROM votes v 
+                    WHERE p.id = v.post_id
+                ) AS score,
+                (
+                    SELECT COUNT(*)::int
+                    FROM comments c
+                    WHERE p.id = c.post_id
+                ) AS "commentCount"
+            FROM posts p
+            JOIN users u ON p.user_id = u.id
+            WHERE u.username = $1
+        `, [username])
+
+        res.json(result.rows)
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+postsRouter.get("/saved/:userId", async (req, res) => {
+    try {
+        const userId = req.params.userId
+
+        const result = await pool.query(`
+            SELECT
+                p.id,
+                p.title,
+                p.body,
+                p.created_at AS "createdAt",
+                (
+                    SELECT b.name
+                    FROM boards b
+                    WHERE b.id = p.board_id
+                ) AS "boardName",
+                (
+                    SELECT COALESCE(SUM(v.value), 0)::int 
+                    FROM votes v 
+                    WHERE p.id = v.post_id
+                ) AS score,
+                (
+                    SELECT COUNT(*)::int
+                    FROM comments c
+                    WHERE p.id = c.post_id
+                ) AS "commentCount"
+            FROM posts p
+            JOIN saved_posts sp ON p.id = sp.post_id
+            WHERE sp.user_id = $1
+        `, [userId])
+
+        res.json(result.rows)
+    } catch (error) {
+        console.error(error)
+
+        return res.status(500).json({
+            error: "Internal server error"
+        })
     }
 })
 

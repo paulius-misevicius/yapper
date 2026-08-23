@@ -1,32 +1,24 @@
 import { useState, useEffect } from "react"
 import { Search, X } from "lucide-react"
-import type { BoardProps, RecentPostProps } from "../../types.ts"
+import type { RecentPostProps } from "../../types.ts"
 import BoardPreview from "./components/BoardPreview.tsx"
 import RecentPost from "./components/RecentPost.tsx"
 import { TailSpin } from "react-loader-spinner"
+import { useOutletContext } from "react-router"
+import type { AppLayoutContext } from "../../components/AppLayout.tsx"
 
 export default function Home() {
 
+    const { boards, isLoadingBoards } = useOutletContext<AppLayoutContext>()
     const [searchValue, setSearchValue] = useState("")
-    const [boards, setBoards] = useState<BoardProps[]>([])
     const [recentPosts, setRecentPosts] = useState<RecentPostProps[]>([])
-    const [isLoadingBoards, setIsLoadingBoards] = useState(true)
-    const [isLoadingPosts, setIsLoadingPosts] = useState(true)
+    const [isLoadingPosts, setIsLoadingPosts] = useState(false)
 
     useEffect(() => {
-        async function getBoardPreviews() {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/boards`)
-                const data = await response.json()
-                setBoards(data)
-            } catch (error) {
-                console.error(error)
-            } finally {
-                setIsLoadingBoards(false)
-            }
-        }
         async function getRecentPosts() {
             try {
+                setIsLoadingPosts(true)
+
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/posts?sort=recent&limit=4`)
                 const data = await response.json()
                 setRecentPosts(data)
@@ -36,7 +28,6 @@ export default function Home() {
                 setIsLoadingPosts(false)
             }
         }
-        getBoardPreviews()
         getRecentPosts()
     }, [])
 

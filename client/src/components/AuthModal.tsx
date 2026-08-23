@@ -40,8 +40,6 @@ export default function AuthModal() {
             })
             const userData = await user.json()
 
-            console.log(userData)
-
             setCurrentUser(userData)
             setAuthType(null)
         } catch (error) {
@@ -75,8 +73,6 @@ export default function AuthModal() {
                 credentials: "include"
             })
             const userData = await user.json()
-
-            console.log(userData)
 
             setCurrentUser(userData)
             setAuthType(null)

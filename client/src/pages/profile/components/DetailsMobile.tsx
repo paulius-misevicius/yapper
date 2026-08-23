@@ -119,7 +119,7 @@ export default function DetailsMobile({
                             Comments
                         </p>
                         <p className="text-(--text-muted)! items-center flex flex-col">
-                            <span className="font-bold text-lg! text-(--text-secondary)">{user.joinedBoardNames.length}</span>
+                            <span className="font-bold text-lg! text-(--text-secondary)">{user.joinedBoardCount}</span>
                             Boards
                         </p>
                     </div>

@@ -1,5 +1,4 @@
 import { HatGlasses } from "lucide-react"
-import { currentUser } from "../../data/user"
 import ImageLoader from "./ImageLoader"
 
 interface ProfilePictureProps {
@@ -7,8 +6,8 @@ interface ProfilePictureProps {
     userSrc?: string
 }
 
-export default function ProfilePicture({size = "size-11", userSrc = currentUser.profilePictureUrl}: ProfilePictureProps) {
-
+export default function ProfilePicture({size = "size-11", userSrc}: ProfilePictureProps) {
+    
     return (
         <div className={`${size} rounded-full overflow-hidden border border-(--border) shrink-0`}>
             {userSrc && userSrc.length > 0

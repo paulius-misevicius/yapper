@@ -22,12 +22,14 @@ export default function Board() {
     const { boardInfo, isBoardInfoLoading } = useOutletContext<BoardContext>()
     const { isLoggedIn, setAuthType } = useGlobalContext()
     const [posts, setPosts] = useState<PostProps[]>([])
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         async function getBoardPosts() {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/posts/${boardInfo.name}`)
+                setIsLoading(true)
+
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/posts/board/${boardInfo.name}`)
                 const data = await response.json()
                 setPosts(data)
             } catch (error) {
@@ -37,7 +39,7 @@ export default function Board() {
             }
         }
         getBoardPosts()
-    }, [])
+    }, [boardInfo])
 
     return (
         <>

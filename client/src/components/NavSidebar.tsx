@@ -1,22 +1,23 @@
 import { NavLink } from "react-router"
-import { currentUser } from "../../data/user"
-import { boards } from "../../data/home"
 import { FocusTrap } from "focus-trap-react"
 import { UserRound, House, X, Settings, LogOut } from "lucide-react"
 import { useGlobalContext } from "../utils"
 import ProfilePicture from "./ProfilePicture"
 import { createPortal } from "react-dom"
+import type { BoardProps } from "../types"
 
 interface NavSidebarProps {
     isMenuOpen: boolean
     setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
+    boards: BoardProps[]
 }
 
-export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps) {
+export default function NavSidebar({isMenuOpen, setIsMenuOpen, boards}: NavSidebarProps) {
 
-    const { isLoggedIn, setAuthType, screenWidth } = useGlobalContext()
-    const myBoardCollection = currentUser.joinedBoardNames.map(item => {
-        const boardColor = boards.find(board => board.name === item)?.dotColorClass ?? "bg-grey-700"
+    const { isLoggedIn, setAuthType, screenWidth, currentUser } = useGlobalContext()
+    
+    const myBoardCollection = currentUser?.joinedBoardNames.map(item => {
+        const boardColor = boards.find(board => board.name === item)?.color ?? "bg-grey-700"
         
         return (
             <NavLink 
@@ -28,7 +29,10 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
                 key={item}
                 aria-label={`Go to b/${item}`}
             >
-                <div className={`${boardColor} rounded-full size-2.25`}/>
+                <div 
+                    className="rounded-full size-2.25"
+                    style={{backgroundColor: `rgba(${boardColor}, 1)`}}
+                />
                 b/{item}
             </NavLink>
         )
@@ -50,7 +54,7 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
                     <House />
                     Home
                 </NavLink>
-                {isLoggedIn &&
+                {isLoggedIn && currentUser &&
                     <NavLink
                         to={`/u/${currentUser.username}`}
                         aria-label="My profile"
@@ -116,7 +120,7 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
             >
                 <section className="flex flex-col bg-(--surface-1) w-(--sidebar-nav-width) z-100 fixed top-0 px-5 py-5 border-r border-(--border) h-full">
                     <div className="flex justify-between border-b border-(--border) pb-5 mb-5">
-                        {isLoggedIn
+                        {isLoggedIn && currentUser
                             ?
                                 <div className="flex items-center gap-3">
                                     <ProfilePicture size="size-11" />
@@ -146,7 +150,7 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen}: NavSidebarProps)
                             <House />
                             Home
                         </NavLink>
-                        {isLoggedIn &&
+                        {isLoggedIn && currentUser &&
                             <NavLink
                                 to={`/u/${currentUser.username}`}
                                 onClick={() => setIsMenuOpen(false)}

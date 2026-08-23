@@ -108,7 +108,7 @@ boardsRouter.get("/:boardName/:postId", async (req, res) => {
             p.created_at as "createdAt",
             u.username as "authorUsername",
             (
-                SELECT SUM(v.value)::int 
+                SELECT COALESCE(SUM(v.value), 0)::int 
                 FROM votes v 
                 WHERE p.id = v.post_id
             ) AS score,

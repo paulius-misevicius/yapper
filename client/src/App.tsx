@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router"
 import { createContext, useState, useEffect } from "react"
-import { savedPosts } from "../data/board"
 import Home from "./pages/home/Home"
 import AppLayout from "./components/AppLayout"
 import BoardLayout from "./components/BoardLayout"
@@ -35,8 +34,8 @@ export default function App() {
   const [authType, setAuthType] = useState<AuthType>(null)
   const [theme, setTheme] = useState<Theme>("light")
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
-  // const savedPostIds = new Set(savedPosts.filter(item => item.userId === currentUser.id).map(item => item.postId))
   const isLoggedIn = currentUser !== null
+  console.log(currentUser)
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme)

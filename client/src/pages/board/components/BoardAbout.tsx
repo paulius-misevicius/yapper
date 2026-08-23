@@ -1,4 +1,3 @@
-import { currentUser } from "../../../../data/user"
 import { getMonthYear, useGlobalContext } from "../../../utils"
 import type { BoardProps } from "../../../types"
 
@@ -9,7 +8,7 @@ interface BoardAboutProps {
 
 export default function BoardAbout({boardInfo, sidebar}: BoardAboutProps) {
 
-    const { isLoggedIn } = useGlobalContext()
+    const { isLoggedIn, currentUser } = useGlobalContext()
 
     return (
         <section className={sidebar ? "hidden md:flex md:flex-col fixed z-10 my-5 mr-5 lg:mr-10 right-0 w-(--sidebar-right-width) top-(--header-height) bottom-0 bg-(--surface-1) border border-(--border) rounded-2xl overflow-hidden shrink-0" : "mt-5 bg-(--surface-1) border border-(--border) rounded-2xl overflow-hidden md:hidden"}>
@@ -49,7 +48,7 @@ export default function BoardAbout({boardInfo, sidebar}: BoardAboutProps) {
                         <button
                             className="bg-(--primary-btn) text-(--primary-btn-text) text-sm w-full py-3 rounded-lg mt-4 font-medium active:bg-(--accent) lg:hover:bg-(--accent)"
                         >
-                            {isLoggedIn && currentUser.joinedBoardNames.find(item => item === boardInfo.name)
+                            {isLoggedIn && currentUser && currentUser.joinedBoardNames.find(item => item === boardInfo.name)
                                 ?   "Leave board"
                                 :   "Join board"
                             }

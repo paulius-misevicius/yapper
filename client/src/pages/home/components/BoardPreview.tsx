@@ -1,12 +1,11 @@
 import { Link } from "react-router"
 import { UsersRound, StickyNotes } from "lucide-react"
 import { useGlobalContext } from "../../../utils"
-import { currentUser } from "../../../../data/user"
 import type { BoardProps } from "../../../types"
 
 export default function BoardPreview({id, name, color, description, memberCount, postCount}: BoardProps) {
 
-    const { isLoggedIn } = useGlobalContext()
+    const { isLoggedIn, currentUser } = useGlobalContext()
 
     return (
         <Link 
@@ -28,7 +27,7 @@ export default function BoardPreview({id, name, color, description, memberCount,
                     </span>
                     <h2>b/{name}</h2>
                 </div>
-                {isLoggedIn && currentUser.joinedBoardNames.find((board) => board === name) &&
+                {isLoggedIn && currentUser && currentUser.joinedBoardNames.find((board) => board === name) &&
                     <span className="text-xs bg-(--accent) py-1 px-4 rounded-lg font-medium text-(--accent-text)">
                         Joined
                     </span>

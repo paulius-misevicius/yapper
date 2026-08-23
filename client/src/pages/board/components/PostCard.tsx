@@ -27,8 +27,8 @@ export default function PostCard({
     useBoardName
 }: PostCardProps) {
 
-    const { isLoggedIn, setAuthType, savedPostIds } = useGlobalContext()
-    const [isSaved, setIsSaved] = useState(savedPostIds.has(id))
+    const { isLoggedIn, setAuthType, currentUser } = useGlobalContext()
+    const [isSaved, setIsSaved] = useState(currentUser?.savedPostIds.includes(id) ?? false)
 
     return (
         <div 

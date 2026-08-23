@@ -21,7 +21,7 @@ export interface BoardRule {
 export interface Post {
     id: number
     color?: string
-    flair: string
+    flair?: string
     boardName?: string
     createdAt: string
     title: string
@@ -32,6 +32,7 @@ export interface Comment {
     id: number
     authorUsername: string
     parentCommentId: number
+    profilePictureUrl: string
     body: string
     createdAt: string
     score: number
@@ -43,6 +44,10 @@ export interface User {
     profilePictureUrl: string
     joinedAt: string
     postCount: number
+    commentCount: number
+    karma: number
+    savedPostIds: number
+    joinedBoardNames: string[]
 }
 export interface Username {
     username: string

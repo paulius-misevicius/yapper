@@ -1,4 +1,3 @@
-import { currentUser } from "../../data/user"
 import { useGlobalContext } from "../utils"
 import { Menu, Settings, UserRound, LogOut, ChevronDown } from "lucide-react"
 import ProfilePicture from "./ProfilePicture"
@@ -13,7 +12,7 @@ interface HeaderProps {
 
 export default function Header({setIsMenuOpen}: HeaderProps) {
 
-    const { isLoggedIn, setAuthType, theme } = useGlobalContext()
+    const { isLoggedIn, setAuthType, theme, currentUser } = useGlobalContext()
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const dropdownRef = useRef<HTMLInputElement>(null)
     const dropdownToggleRef = useRef<HTMLButtonElement>(null)
@@ -55,7 +54,7 @@ export default function Header({setIsMenuOpen}: HeaderProps) {
                 />
             </Link>
             <div className="hidden lg:block">
-                {isLoggedIn
+                {isLoggedIn && currentUser
                     ?
                         <div className="relative">
                             <button

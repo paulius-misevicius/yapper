@@ -13,6 +13,7 @@ commentsRouter.get("/:postId", async (req, res) => {
             SELECT 
                 c.id,
                 u.username AS "authorUsername",
+                u.profile_picture_url AS "profilePictureUrl",
                 c.parent_comment_id AS "parentCommentId",
                 c.body,
                 c.created_at AS "createdAt",

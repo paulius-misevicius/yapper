@@ -1,7 +1,6 @@
 import type { CommentWithReplies } from "../Post"
 import { useState } from "react"
 import { MoveRight } from "lucide-react"
-import { users } from "../../../../data/user"
 import ThreadDesktop from "./ThreadDesktop"
 import ThreadMobile from "./ThreadMobile"
 import MobileShelfModal from "../../../components/MobileShelfModal"
@@ -23,6 +22,7 @@ export default function CommentThread({
     parentCommentId, 
     authorUsername, 
     createdAt, 
+    profilePictureUrl,
     score, 
     body, 
     replies, 
@@ -36,10 +36,9 @@ export default function CommentThread({
     const { screenWidth } = useGlobalContext()
     const [isThreadOpen, setIsThreadOpen] = useState<boolean>(depth === 0 || (depth < 4 && score > 4))
     const [reply, setReply] = useState("")
-    const user = users.find(item => item.username === authorUsername)
 
     const childProps = {
-        profilePictureUrl: user?.profilePictureUrl,
+        profilePictureUrl,
         isThreadOpen,
         setIsThreadOpen,
         depth,
@@ -70,6 +69,7 @@ export default function CommentThread({
                         parentCommentId={item.parentCommentId}
                         postAuthor={postAuthor}
                         authorUsername={item.authorUsername}
+                        profilePictureUrl={item.profilePictureUrl}
                         createdAt={item.createdAt}
                         score={item.score}
                         body={item.body}
@@ -90,6 +90,7 @@ export default function CommentThread({
                                     id,
                                     postId,
                                     parentCommentId,
+                                    profilePictureUrl,
                                     authorUsername,
                                     createdAt,
                                     score,

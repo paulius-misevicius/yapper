@@ -121,7 +121,7 @@ authRouter.post("/login", async (req, res) => {
             })
         }
 
-        const isPasswordValid = bcrypt.compare(password, user.passwordHash)
+        const isPasswordValid = await bcrypt.compare(password, user.passwordHash)
 
         if (!isPasswordValid) {
             return res.status(401).json({
@@ -162,10 +162,44 @@ authRouter.get("/me", async (req, res) => {
                 u.profile_picture_url AS "profilePictureUrl",
                 u.joined_at AS "joinedAt",
                 (
-                    SELECT COUNT(*)::int 
-                    FROM posts p 
+                    SELECT COUNT(*)::int
+                    FROM posts p
                     WHERE u.id = p.user_id
-                ) AS "postCount"
+                ) AS "postCount",
+                (
+                    SELECT COUNT(*)::int
+                    FROM comments c
+                    WHERE u.id = c.user_id
+                ) AS "commentCount",
+                (
+                    SELECT COALESCE(SUM(v.value), 0)::int
+                    FROM votes v
+                    WHERE v.post_id IN (
+                        SELECT p.id
+                        FROM posts p
+                        WHERE p.user_id = u.id
+                    )
+                    OR v.comment_id IN (
+                        SELECT c.id
+                        FROM comments c
+                        WHERE c.user_id = u.id
+                    )
+                ) AS karma,
+                (
+                    SELECT ARRAY(
+                        SELECT sp.post_id
+                        FROM saved_posts sp
+                        WHERE sp.user_id = u.id
+                    )
+                ) AS "savedPostIds",
+                (
+                    SELECT ARRAY(
+                        SELECT b.name
+                        FROM boards b
+                        JOIN board_memberships bm ON bm.board_id = b.id
+                        WHERE bm.user_id = u.id
+                    )
+                ) AS "joinedBoardNames"
             FROM users u
             WHERE u.id = $1
         `, [userId])

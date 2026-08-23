@@ -9,8 +9,8 @@ import { useState } from "react"
 export default function PostBody({boardName, title, score, flair, authorUsername, createdAt, body, commentCount, id}: BoardPost) {
 
     const { boardInfo } = useOutletContext<BoardContext>()
-    const { isLoggedIn, setAuthType, savedPostIds } = useGlobalContext()
-    const [isSaved, setIsSaved] = useState(savedPostIds.has(id))
+    const { isLoggedIn, setAuthType, currentUser } = useGlobalContext()
+    const [isSaved, setIsSaved] = useState(currentUser?.savedPostIds.includes(id) ?? false)
 
     return (
         <>

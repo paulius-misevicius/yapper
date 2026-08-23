@@ -1,5 +1,3 @@
-import { ChevronRight, Moon, Sun } from "lucide-react"
-import { currentUser } from "../../../data/user"
 import { useNavigate } from "react-router"
 import { useGlobalContext } from "../../utils"
 import SettingInput from "./components/SettingInput"
@@ -9,7 +7,7 @@ export type InputType = "username" | "email" | "password" | "delete" | null
 
 export default function Settings() {
     
-    const { isLoggedIn, setAuthType, theme, setTheme } = useGlobalContext()
+    const { isLoggedIn, setAuthType, theme, setTheme, currentUser } = useGlobalContext()
     const [inputType, setInputType] = useState<InputType>(null)
     const [inputValue, setInputValue] = useState("")
 
@@ -35,7 +33,7 @@ export default function Settings() {
                             setInputType("username")
                             setInputValue("")
                         }}
-                        text={currentUser.username}
+                        text={currentUser?.username ?? ""}
                         name="Username"
                         id="username"
                         placeholder="Enter your new username..."
