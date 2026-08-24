@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-type Vote = 0 | 1 | -1
+export type Vote = 0 | 1 | -1
 type VoteType = "post" | "comment"
 
 export function useVote(targetId: number, type: VoteType, initialScore: number) {

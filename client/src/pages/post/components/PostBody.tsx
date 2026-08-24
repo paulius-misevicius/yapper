@@ -3,17 +3,82 @@ import { MoveLeft, Triangle, MessageSquare, Bookmark } from "lucide-react"
 import type { BoardContext } from "../../../components/BoardLayout"
 import { getTimeAgo } from "../../../utils/utils"
 import { useGlobalContext } from "../../../utils/utils"
-import { useState } from "react"
 import type { PostProps } from "../../../utils/types"
 import { useVote } from "../../../utils/useVote"
 
 export default function PostBody({boardName, title, flair, score, authorUsername, createdAt, body, commentCount, id}: PostProps) {
 
     const { boardInfo } = useOutletContext<BoardContext>()
-    const { isLoggedIn, setAuthType, currentUser } = useGlobalContext()
-    const [isSaved, setIsSaved] = useState(currentUser?.savedPostIds.includes(id) ?? false)
-    
+    const { isLoggedIn, setAuthType, currentUser, setCurrentUser } = useGlobalContext()
     const { finalScore, userVote, vote } = useVote(id, "post", score)
+    const isSaved = currentUser?.savedPostIds.includes(id) ?? false
+
+    async function savePost() {
+        try {
+            if (isSaved) {
+                unsavePost()
+                return
+            }
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/saved`, {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    postId: id
+                })
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.error)
+            }
+
+            setCurrentUser(prev => {
+                if (!prev) return prev
+
+                return {
+                    ...prev, 
+                    savedPostIds: [...prev.savedPostIds, id]
+                }
+            })
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    async function unsavePost() {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/saved`, {
+                method: "DELETE",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    postId: id
+                })
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.error)
+            }
+
+            setCurrentUser(prev => {
+                if (!prev) return prev
+
+                return {
+                    ...prev, 
+                    savedPostIds: prev.savedPostIds.filter(item => item !== id)
+                }
+            })
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     return (
         <>
@@ -132,8 +197,8 @@ export default function PostBody({boardName, title, flair, score, authorUsername
                             {commentCount} comments
                         </div>
                         <button 
-                            onClick={isLoggedIn 
-                                ?   () => console.log("Saved")
+                            onClick={isLoggedIn && currentUser
+                                ?   () => savePost()
                                 :   () => setAuthType("sign-up")
                             }
                             className={`group ${isSaved ? "text-(--text-secondary)" : "text-(--text-muted)"} active:text-(--text-secondary) lg:hover:text-(--text-secondary) flex items-center gap-2 text-sm ml-auto xs:ml-0`}

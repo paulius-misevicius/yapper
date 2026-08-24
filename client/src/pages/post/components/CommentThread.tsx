@@ -5,6 +5,7 @@ import ThreadDesktop from "./ThreadDesktop"
 import ThreadMobile from "./ThreadMobile"
 import MobileShelfModal from "../../../components/MobileShelfModal"
 import { useGlobalContext } from "../../../utils/utils"
+import { useVote } from "../../../utils/useVote"
 
 export interface CommentThreadProps extends CommentWithReplies {
     depth?: number
@@ -36,6 +37,7 @@ export default function CommentThread({
     const { screenWidth } = useGlobalContext()
     const [isThreadOpen, setIsThreadOpen] = useState<boolean>(depth === 0 || (depth < 4 && score > 4))
     const [reply, setReply] = useState("")
+    const { finalScore, userVote, vote } = useVote(id, "comment", score)
 
     const childProps = {
         profilePictureUrl,
@@ -49,6 +51,9 @@ export default function CommentThread({
         id,
         body,
         score,
+        finalScore,
+        userVote,
+        vote,
         replies,
         parentCommentId,
         replyBoxId,

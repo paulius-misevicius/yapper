@@ -8,6 +8,7 @@ import commentsRouter from "./routes/comments.ts"
 import authRouter from "./routes/auth.ts"
 import usersRouter from "./routes/users.ts"
 import votesRouter from "./routes/votes.ts"
+import savedRouter from "./routes/saved.ts"
 
 const PORT = 8000
 const app = express()
@@ -34,6 +35,7 @@ app.use("/api/users", usersRouter)
 app.use("/api/auth", authRouter)
 app.use("/api/posts", postsRouter)
 app.use("/api/votes", votesRouter)
+app.use("/api/saved", savedRouter)
 
 app.use((req, res) => {
     res.status(404).json({

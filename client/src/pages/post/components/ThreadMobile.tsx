@@ -4,13 +4,16 @@ import { MessageSquare, Triangle } from "lucide-react"
 import { useOutletContext, Link } from "react-router"
 import { getTimeAgo, useGlobalContext } from "../../../utils/utils"
 import ProfilePicture from "../../../components/ProfilePicture"
-import { useVote } from "../../../utils/useVote"
+import type { Vote } from "../../../utils/useVote"
 
 interface ThreadMobileProps extends CommentThreadProps {
     children: React.ReactNode
     isThreadOpen: boolean
     setIsThreadOpen: React.Dispatch<React.SetStateAction<boolean>>
     profilePictureUrl: string
+    finalScore: number
+    userVote: 0 | 1 | -1
+    vote: (value: Vote) => Promise<void>
 }
 
 export default function ThreadMobile({
@@ -24,13 +27,14 @@ export default function ThreadMobile({
     createdAt, 
     body, 
     id,
-    score,
+    finalScore,
+    userVote,
+    vote,
     setReplyBoxId
 }: ThreadMobileProps) {
 
     const { boardInfo } = useOutletContext<BoardContext>()
     const { isLoggedIn, setAuthType } = useGlobalContext()
-    const { finalScore, userVote, vote } = useVote(id, "comment", score)
 
     return (
         <div className={`flex my-2`}>

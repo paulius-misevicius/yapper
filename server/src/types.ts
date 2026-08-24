@@ -74,3 +74,8 @@ export interface Vote {
     commentId?: number
     value: number
 }
+export interface SavedPost {
+    id: number
+    user_id: number
+    post_id: number
+}

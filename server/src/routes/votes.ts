@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { pool } from "../db.ts"
-import type { Vote, VoteValue } from "../types.ts"
+import type { Id, Vote, VoteValue } from "../types.ts"
 
 const votesRouter = Router()
 
@@ -106,11 +106,18 @@ votesRouter.delete("/", async (req, res) => {
             })
         }
 
-        await pool.query(`
+        const result = await pool.query<Id>(`
             DELETE FROM votes
             WHERE user_id = $1
             AND ${idType} = $2
+            RETURNING id
         `, [userId, targetId])
+
+        if (!result.rows[0]) {
+            return res.status(404).json({
+                message: "Vote was not found."
+            })
+        }
 
         res.json({
             message: "Vote successfully removed."

@@ -4,13 +4,16 @@ import ProfilePicture from "../../../components/ProfilePicture"
 import { Plus, Minus, Triangle, MessageSquare } from "lucide-react"
 import { getTimeAgo, useGlobalContext } from "../../../utils/utils"
 import { useOutletContext, Link } from "react-router"
-import { useVote } from "../../../utils/useVote"
+import type { Vote } from "../../../utils/useVote"
 
 interface ThreadDesktopProps extends CommentThreadProps {
     children: React.ReactNode
     isThreadOpen: boolean
     setIsThreadOpen: React.Dispatch<React.SetStateAction<boolean>>
     profilePictureUrl: string
+    finalScore: number
+    userVote: 0 | 1 | -1
+    vote: (value: Vote) => Promise<void>
 }
 
 export default function ThreadDesktop({
@@ -24,14 +27,15 @@ export default function ThreadDesktop({
     createdAt, 
     id, 
     body, 
-    score, 
+    finalScore, 
+    userVote,
+    vote,
     replies, 
     setReplyBoxId
 }: ThreadDesktopProps) {
 
     const { boardInfo } = useOutletContext<BoardContext>()
     const { isLoggedIn, setAuthType } = useGlobalContext()
-    const { finalScore, userVote, vote } = useVote(id, "comment", score)
 
     return (
         <details 
