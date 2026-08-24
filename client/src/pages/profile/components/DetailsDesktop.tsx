@@ -1,4 +1,4 @@
-import { getMonthYear } from "../../../utils"
+import { getMonthYear } from "../../../utils/utils"
 import ProfilePicture from "../../../components/ProfilePicture"
 import { Camera, Triangle } from "lucide-react"
 import type { ProfileChildProps } from "../Profile"

@@ -3,8 +3,8 @@ import Header from "./Header"
 import NavSidebar from "./NavSidebar"
 import { Outlet, ScrollRestoration } from "react-router"
 import AuthModal from "./AuthModal"
-import { useGlobalContext } from "../utils"
-import type { BoardProps } from "../types"
+import { useGlobalContext } from "../utils/utils"
+import type { BoardProps } from "../utils/types"
 
 export interface AppLayoutContext {
     boards: BoardProps[]

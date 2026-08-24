@@ -1,9 +1,9 @@
-import { useGlobalContext, getTimeAgo } from "../../../utils"
+import { useGlobalContext, getTimeAgo } from "../../../utils/utils"
 import { Triangle, Bookmark, MessageSquare } from "lucide-react"
 import { Link } from "react-router"
 import { useState } from "react"
 
-import type { PostProps } from "../../../types"
+import type { PostProps } from "../../../utils/types"
 
 interface PostCardProps extends PostProps {
     color?: string

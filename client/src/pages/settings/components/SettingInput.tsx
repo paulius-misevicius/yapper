@@ -2,7 +2,7 @@ import { Mail, AtSign, Lock, Trash2, Moon, Sun, ChevronRight, Eye, EyeOff } from
 import { useState } from "react"
 import type { InputType } from "../Settings"
 import MobileShelfModal from "../../../components/MobileShelfModal"
-import { useGlobalContext } from "../../../utils"
+import { useGlobalContext } from "../../../utils/utils"
 
 interface SettingInputProps {
     name: string

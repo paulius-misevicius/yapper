@@ -2,7 +2,7 @@ import { createPortal } from "react-dom"
 import { FocusTrap } from "focus-trap-react"
 import { Eye, EyeOff, X } from "lucide-react"
 import { useState } from "react"
-import { useGlobalContext } from "../utils"
+import { useGlobalContext } from "../utils/utils"
 
 export default function AuthModal() {
 

@@ -1,7 +1,7 @@
 import { Link } from "react-router"
 import { UsersRound, StickyNotes } from "lucide-react"
-import { useGlobalContext } from "../../../utils"
-import type { BoardProps } from "../../../types"
+import { useGlobalContext } from "../../../utils/utils"
+import type { BoardProps } from "../../../utils/types"
 
 export default function BoardPreview({id, name, color, description, memberCount, postCount}: BoardProps) {
 

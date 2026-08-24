@@ -9,7 +9,7 @@ import CreatePost from "./pages/CreatePost"
 import Profile from "./pages/profile/Profile"
 import NotFound from "./pages/NotFound"
 import Settings from "./pages/settings/Settings"
-import type { UserProps } from "./types"
+import type { UserProps } from "./utils/types"
 import { TailSpin } from "react-loader-spinner"
 
 type AuthType = "sign-up" | "log-in" | null

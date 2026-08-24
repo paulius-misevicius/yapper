@@ -4,7 +4,7 @@ import { MoveRight } from "lucide-react"
 import ThreadDesktop from "./ThreadDesktop"
 import ThreadMobile from "./ThreadMobile"
 import MobileShelfModal from "../../../components/MobileShelfModal"
-import { useGlobalContext } from "../../../utils"
+import { useGlobalContext } from "../../../utils/utils"
 
 export interface CommentThreadProps extends CommentWithReplies {
     depth?: number

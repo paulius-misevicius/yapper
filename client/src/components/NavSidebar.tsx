@@ -1,10 +1,10 @@
 import { NavLink } from "react-router"
 import { FocusTrap } from "focus-trap-react"
 import { UserRound, House, X, Settings, LogOut } from "lucide-react"
-import { useGlobalContext } from "../utils"
+import { useGlobalContext } from "../utils/utils"
 import ProfilePicture from "./ProfilePicture"
 import { createPortal } from "react-dom"
-import type { BoardProps } from "../types"
+import type { BoardProps } from "../utils/types"
 import { useState } from "react"
 
 interface NavSidebarProps {

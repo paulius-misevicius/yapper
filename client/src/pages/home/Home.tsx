@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Search, X } from "lucide-react"
-import type { RecentPostProps } from "../../types.ts"
+import type { RecentPostProps } from "../../utils/types.ts"
 import BoardPreview from "./components/BoardPreview.tsx"
 import RecentPost from "./components/RecentPost.tsx"
 import { TailSpin } from "react-loader-spinner"

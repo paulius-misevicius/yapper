@@ -1,6 +1,6 @@
 import { Link, useOutletContext, useNavigate } from "react-router"
 import { useState, useEffect } from "react"
-import { useGlobalContext } from "../utils"
+import { useGlobalContext } from "../utils/utils"
 import type { BoardContext } from "../components/BoardLayout"
 
 interface NewPost {

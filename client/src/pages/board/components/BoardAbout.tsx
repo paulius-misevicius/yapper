@@ -1,5 +1,5 @@
-import { getMonthYear, useGlobalContext } from "../../../utils"
-import type { BoardProps } from "../../../types"
+import { getMonthYear, useGlobalContext } from "../../../utils/utils"
+import type { BoardProps } from "../../../utils/types"
 
 interface BoardAboutProps {
     boardInfo: BoardProps

@@ -1,4 +1,4 @@
-import { useGlobalContext } from "../utils"
+import { useGlobalContext } from "../utils/utils"
 import { Menu, Settings, UserRound, LogOut, ChevronDown } from "lucide-react"
 import ProfilePicture from "./ProfilePicture"
 import { Link } from "react-router"

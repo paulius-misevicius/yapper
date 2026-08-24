@@ -1,96 +1,19 @@
 import { useOutletContext, Link } from "react-router"
 import { MoveLeft, Triangle, MessageSquare, Bookmark } from "lucide-react"
 import type { BoardContext } from "../../../components/BoardLayout"
-import { getTimeAgo } from "../../../utils"
-import { useGlobalContext } from "../../../utils"
-import { useEffect, useState } from "react"
-import type { PostProps, Vote } from "../../../types"
+import { getTimeAgo } from "../../../utils/utils"
+import { useGlobalContext } from "../../../utils/utils"
+import { useState } from "react"
+import type { PostProps } from "../../../utils/types"
+import { useVote } from "../../../utils/useVote"
 
-export default function PostBody({boardName, title, score, flair, authorUsername, createdAt, body, commentCount, id}: PostProps) {
+export default function PostBody({boardName, title, flair, score, authorUsername, createdAt, body, commentCount, id}: PostProps) {
 
     const { boardInfo } = useOutletContext<BoardContext>()
     const { isLoggedIn, setAuthType, currentUser } = useGlobalContext()
     const [isSaved, setIsSaved] = useState(currentUser?.savedPostIds.includes(id) ?? false)
-    const [userVote, setUserVote] = useState<Vote>(0)
-    const [postScore, setPostScore] = useState(score)
-
-    useEffect(() => {
-        async function checkForVote() {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/votes/${id}?type=post`, {
-                    credentials: "include"
-                })
-
-                if (!response.ok) {
-                    const errorData = await response.json()
-                    throw new Error(errorData.error)
-                }
-
-                const data = await response.json()
-                setUserVote(data.value)
-            } catch (error) {
-                console.error(error)
-            }
-        }
-        checkForVote()
-    }, [])
-
-    async function voteOnPost(targetId: number, value: Vote) {
-        if (value === userVote) {
-            removeVoteFromPost(id)
-            return
-        }
-
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/votes?type=post`, {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    targetId, value
-                })
-            })
-
-            if (!response.ok) {
-                const errorData = await response.json()
-                throw new Error(errorData.message)
-            }
-
-            setUserVote(value)
-            setPostScore(prevScore => prevScore - userVote + value)
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
-    async function removeVoteFromPost(targetId: number) {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/votes?type=post`, {
-                method: "DELETE",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    targetId
-                })
-            })
-
-            if (!response.ok) {
-                const errorData = await response.json()
-                throw new Error(errorData.message)
-            }
-
-            const data = await response.json()
-
-            setUserVote(0)
-            setPostScore(prevScore => prevScore - userVote)
-        } catch (error) {
-            console.error(error)
-        }
-    }
+    
+    const { finalScore, userVote, vote } = useVote(id, "post", score)
 
     return (
         <>
@@ -105,7 +28,7 @@ export default function PostBody({boardName, title, score, flair, authorUsername
                 <div className="hidden xs:flex flex-col gap-2 items-center">
                     <button
                         onClick={isLoggedIn 
-                            ?   () => voteOnPost(id, 1)
+                            ?   () => vote(1)
                             :   () => setAuthType("sign-up")
                         }
                         aria-label={`Upvote post ${title}`}
@@ -118,11 +41,11 @@ export default function PostBody({boardName, title, score, flair, authorUsername
                         />
                     </button>
                     <p className="font-medium">
-                        {postScore}
+                        {finalScore}
                     </p>
                     <button
                         onClick={isLoggedIn 
-                            ?   () => voteOnPost(id, -1)
+                            ?   () => vote(-1)
                             :   () => setAuthType("sign-up")
                         }
                         aria-label={`Downvote post ${title}`}
@@ -174,7 +97,7 @@ export default function PostBody({boardName, title, score, flair, authorUsername
                         <div className="flex items-center gap-2 xs:hidden">
                             <button
                                 onClick={isLoggedIn 
-                                    ?   () => voteOnPost(id, 1)
+                                    ?   () => vote(1)
                                     :   () => setAuthType("sign-up")
                                 }
                                 aria-label={`Upvote post ${title}`}
@@ -187,11 +110,11 @@ export default function PostBody({boardName, title, score, flair, authorUsername
                                 />
                             </button>
                             <p className="font-medium">
-                                {postScore}
+                                {finalScore}
                             </p>
                             <button
                                 onClick={isLoggedIn 
-                                    ?   () => voteOnPost(id, -1)
+                                    ?   () => vote(-1)
                                     :   () => setAuthType("sign-up")
                                 }
                                 aria-label={`Downvote post ${title}`}

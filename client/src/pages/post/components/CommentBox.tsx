@@ -1,4 +1,4 @@
-import { useGlobalContext } from "../../../utils"
+import { useGlobalContext } from "../../../utils/utils"
 
 interface CommentBoxProps {
     isCommentBoxActive: boolean

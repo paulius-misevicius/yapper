@@ -2,7 +2,7 @@ import type { CommentThreadProps } from "./CommentThread"
 import type { BoardContext } from "../../../components/BoardLayout"
 import ProfilePicture from "../../../components/ProfilePicture"
 import { Plus, Minus, Triangle, MessageSquare } from "lucide-react"
-import { getTimeAgo, useGlobalContext } from "../../../utils"
+import { getTimeAgo, useGlobalContext } from "../../../utils/utils"
 import { useOutletContext, Link } from "react-router"
 
 interface ThreadDesktopProps extends CommentThreadProps {

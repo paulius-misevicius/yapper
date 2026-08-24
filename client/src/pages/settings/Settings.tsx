@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router"
-import { useGlobalContext } from "../../utils"
+import { useGlobalContext } from "../../utils/utils"
 import SettingInput from "./components/SettingInput"
 import { useState, useEffect } from "react"
 

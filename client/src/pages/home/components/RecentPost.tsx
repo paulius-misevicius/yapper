@@ -1,7 +1,7 @@
 import { Link } from "react-router"
 import { Triangle, MessageSquare } from "lucide-react"
-import type { RecentPostProps } from "../../../types"
-import { getTimeAgo } from "../../../utils"
+import type { RecentPostProps } from "../../../utils/types"
+import { getTimeAgo } from "../../../utils/utils"
 
 export default function RecentPost({id, color, boardName, createdAt, title, score, commentCount}: RecentPostProps) {
     return (

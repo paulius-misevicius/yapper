@@ -1,11 +1,11 @@
 import { useParams } from "react-router"
 import { useState, useRef, useEffect } from "react"
 import NotFound from "../NotFound"
-import { useGlobalContext } from "../../utils"
+import { useGlobalContext } from "../../utils/utils"
 import DetailsDesktop from "./components/DetailsDesktop"
 import DetailsMobile from "./components/DetailsMobile"
 import PostCard from "../board/components/PostCard"
-import type { PostProps, UserProfileProps } from "../../types"
+import type { PostProps, UserProfileProps } from "../../utils/types"
 import { TailSpin } from "react-loader-spinner"
 
 type ProfileTab = "posts" | "saved"

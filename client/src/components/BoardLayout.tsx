@@ -2,7 +2,7 @@ import { Outlet } from "react-router"
 import { useParams } from "react-router"
 import BoardAbout from "../pages/board/components/BoardAbout"
 import NotFound from "../pages/NotFound"
-import type { BoardProps } from "../types"
+import type { BoardProps } from "../utils/types"
 import { useEffect, useState } from "react"
 import { TailSpin } from "react-loader-spinner"
 
