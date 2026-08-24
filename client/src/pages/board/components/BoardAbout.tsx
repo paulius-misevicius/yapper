@@ -8,7 +8,75 @@ interface BoardAboutProps {
 
 export default function BoardAbout({boardInfo, sidebar}: BoardAboutProps) {
 
-    const { isLoggedIn, currentUser } = useGlobalContext()
+    const { isLoggedIn, currentUser, setCurrentUser } = useGlobalContext()
+    const isBoardJoined = currentUser?.joinedBoardNames.find(item => item === boardInfo.name) ?? false
+
+    async function joinBoard() {
+        try {
+            if (isBoardJoined) {
+                leaveBoard()
+                return
+            }
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/memberships`, {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    boardId: boardInfo.id
+                })
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.error)
+            }
+
+            setCurrentUser(prev => {
+                if (!prev) return prev
+
+                return {
+                    ...prev, 
+                    joinedBoardNames: [...prev.joinedBoardNames, boardInfo.name]
+                }
+            })
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    async function leaveBoard() {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/memberships`, {
+                method: "DELETE",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    boardId: boardInfo.id
+                })
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.error)
+            }
+
+            setCurrentUser(prev => {
+                if (!prev) return prev
+
+                return {
+                    ...prev, 
+                    joinedBoardNames: prev.joinedBoardNames.filter(item => item !== boardInfo.name)
+                }
+            })
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     return (
         <section className={sidebar ? "hidden md:flex md:flex-col fixed z-10 my-5 mr-5 lg:mr-10 right-0 w-(--sidebar-right-width) top-(--header-height) bottom-0 bg-(--surface-1) border border-(--border) rounded-2xl overflow-hidden shrink-0" : "mt-5 bg-(--surface-1) border border-(--border) rounded-2xl overflow-hidden md:hidden"}>
@@ -46,9 +114,11 @@ export default function BoardAbout({boardInfo, sidebar}: BoardAboutProps) {
                     </div>
                     {isLoggedIn &&
                         <button
+                            onClick={joinBoard}
+                            aria-label={isBoardJoined ? "Leave board" : "Join board"}
                             className="bg-(--primary-btn) text-(--primary-btn-text) text-sm w-full py-3 rounded-lg mt-4 font-medium active:bg-(--accent) lg:hover:bg-(--accent)"
                         >
-                            {isLoggedIn && currentUser && currentUser.joinedBoardNames.find(item => item === boardInfo.name)
+                            {isBoardJoined
                                 ?   "Leave board"
                                 :   "Join board"
                             }

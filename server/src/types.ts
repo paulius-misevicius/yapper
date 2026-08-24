@@ -79,3 +79,9 @@ export interface SavedPost {
     user_id: number
     post_id: number
 }
+export interface BoardMembership {
+    id: number
+    user_id: number
+    board_id: number
+    joined_at: string
+}

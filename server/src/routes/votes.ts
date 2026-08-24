@@ -37,7 +37,7 @@ votesRouter.post("/", async (req, res) => {
             })
         }
 
-        const result = await pool.query<Vote>(`
+        const result = await pool.query<Id>(`
             SELECT 
                 id
             FROM votes
