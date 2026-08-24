@@ -35,13 +35,12 @@ export default function AuthModal() {
                 throw new Error(errorData.message)
             }
             
-            const user = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
+            const userResponse = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
                 credentials: "include"
             })
-            const userData = await user.json()
+            const data = await userResponse.json()
 
-            setCurrentUser(userData)
-            setAuthType(null)
+            setCurrentUser(data.user)
         } catch (error) {
             if (error instanceof Error) {
                 setError(error.message)
@@ -69,12 +68,12 @@ export default function AuthModal() {
                 throw new Error(errorData.message)
             }
 
-            const user = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
+            const userResponse = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
                 credentials: "include"
             })
-            const userData = await user.json()
+            const data = await userResponse.json()
 
-            setCurrentUser(userData)
+            setCurrentUser(data.user)
             setAuthType(null)
         } catch (error) {
             if (error instanceof Error) {

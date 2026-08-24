@@ -150,7 +150,7 @@ authRouter.get("/me", async (req, res) => {
 
         if (!userId) {
             return res.json({
-                message: "User id not received."
+                user: null
             })
         }
 
@@ -204,7 +204,9 @@ authRouter.get("/me", async (req, res) => {
             WHERE u.id = $1
         `, [userId])
         
-        res.json(result.rows[0])
+        res.json({
+            user: result.rows[0]
+        })
     } catch (error) {
         console.error(error)
 

@@ -10,6 +10,7 @@ import Profile from "./pages/profile/Profile"
 import NotFound from "./pages/NotFound"
 import Settings from "./pages/settings/Settings"
 import type { UserProps } from "./types"
+import { TailSpin } from "react-loader-spinner"
 
 type AuthType = "sign-up" | "log-in" | null
 type Theme = "light" | "dark"
@@ -34,8 +35,35 @@ export default function App() {
   const [authType, setAuthType] = useState<AuthType>(null)
   const [theme, setTheme] = useState<Theme>("light")
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
+  const [isLoadingAuth, setIsLoadingAuth] = useState(false)
   const isLoggedIn = currentUser !== null
-  console.log(currentUser)
+
+  useEffect(() => {
+    async function checkForSession() {
+      try {
+        setIsLoadingAuth(true)
+
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
+            credentials: "include"
+        })
+
+        if (!response.ok) {
+            const errorData = await response.json()
+            throw new Error(errorData.error)
+        }
+
+        const data = await response.json()
+
+        setCurrentUser(data.user)
+        setAuthType(null)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setIsLoadingAuth(false)
+      }
+    }
+    checkForSession()
+  }, [])
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme)
@@ -65,6 +93,10 @@ export default function App() {
       ]
     }
   ])
+
+  if (isLoadingAuth) {
+    return <TailSpin wrapperClass="loader" color="var(--accent)"/>
+  }
 
   return (
     <GlobalContext.Provider value={{currentUser, setCurrentUser, authType, isLoggedIn, setAuthType, screenWidth, theme, setTheme}}>
