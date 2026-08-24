@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { pool } from "../db.ts"
-import type { Post } from "../types.ts"
+import type { Id, Post } from "../types.ts"
 
 const postsRouter = Router()
 
@@ -160,6 +160,53 @@ postsRouter.get("/saved", async (req, res) => {
         `, [userId])
 
         res.json(result.rows)
+    } catch (error) {
+        console.error(error)
+
+        return res.status(500).json({
+            error: "Internal server error"
+        })
+    }
+})
+
+postsRouter.post("/", async (req, res) => {
+    try {
+        const allowedFlairs = ["PSA", "News", "Review", "Discussion", "Question"]
+        const userId = req.session.userId
+
+        if (!userId) {
+            return res.status(401).json({
+                message: "You are not logged in."
+            })
+        }
+
+        const { boardId, title, body, flair } = req.body
+
+        if (!boardId || !title || !body || !flair) {
+            return res.status(400).json({
+                message: "Missing required fields."
+            })
+        }
+
+        if (!allowedFlairs.includes(flair)) {
+            return res.status(400).json({
+                message: "Invalid flair."
+            })
+        }
+
+        const result = await pool.query<Id>(`
+            INSERT INTO posts
+            (user_id, board_id, title, body, flair)
+            VALUES
+            ($1, $2, $3, $4, $5)
+            RETURNING id
+        `, [userId, boardId, title, body, flair])
+
+        res.status(201).json({
+            postId: result.rows[0].id,
+            message: "Post was successfully created!"
+        })
+
     } catch (error) {
         console.error(error)
 
