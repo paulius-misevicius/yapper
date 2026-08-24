@@ -123,9 +123,15 @@ postsRouter.get("/user/:username", async (req, res) => {
     }
 })
 
-postsRouter.get("/saved/:userId", async (req, res) => {
+postsRouter.get("/saved", async (req, res) => {
     try {
-        const userId = req.params.userId
+        const userId = req.session.userId
+
+        if (!userId) {
+            return res.status(401).json({
+                message: "You are not logged in."
+            })
+        }
 
         const result = await pool.query<Post>(`
             SELECT

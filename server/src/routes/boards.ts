@@ -98,6 +98,12 @@ boardsRouter.get("/:boardName/:postId", async (req, res) => {
     const boardName = req.params.boardName
     const postId = Number(req.params.postId)
 
+    if (Number.isNaN(postId)) {
+        return res.status(400).json({
+            message: "Invalid post id."
+        })
+    }
+
     try {
         const result = await pool.query<Post>(`
             SELECT

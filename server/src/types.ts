@@ -60,7 +60,17 @@ export interface Email {
 export interface Id {
     id: number
 }
+export interface VoteValue {
+    id: number
+}
 export interface UserLogin {
     id: number
     passwordHash: string
+}
+export interface Vote {
+    id: number
+    userId: number
+    postId?: number
+    commentId?: number
+    value: number
 }

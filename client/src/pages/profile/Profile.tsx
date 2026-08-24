@@ -86,7 +86,9 @@ export default function Profile() {
             try {
                 setIsLoadingSavedPosts(true)
 
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/posts/saved/${currentUser.id}`)
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/posts/saved`, {
+                    credentials: "include"
+                })
                 const data = await response.json()
                 
                 setSavedPosts(data)

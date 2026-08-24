@@ -2,15 +2,95 @@ import { useOutletContext, Link } from "react-router"
 import { MoveLeft, Triangle, MessageSquare, Bookmark } from "lucide-react"
 import type { BoardContext } from "../../../components/BoardLayout"
 import { getTimeAgo } from "../../../utils"
-import type { BoardPost } from "../../../../data/board"
 import { useGlobalContext } from "../../../utils"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import type { PostProps, Vote } from "../../../types"
 
-export default function PostBody({boardName, title, score, flair, authorUsername, createdAt, body, commentCount, id}: BoardPost) {
+export default function PostBody({boardName, title, score, flair, authorUsername, createdAt, body, commentCount, id}: PostProps) {
 
     const { boardInfo } = useOutletContext<BoardContext>()
     const { isLoggedIn, setAuthType, currentUser } = useGlobalContext()
     const [isSaved, setIsSaved] = useState(currentUser?.savedPostIds.includes(id) ?? false)
+    const [userVote, setUserVote] = useState<Vote>(0)
+    const [postScore, setPostScore] = useState(score)
+
+    useEffect(() => {
+        async function checkForVote() {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/votes/${id}?type=post`, {
+                    credentials: "include"
+                })
+
+                if (!response.ok) {
+                    const errorData = await response.json()
+                    throw new Error(errorData.error)
+                }
+
+                const data = await response.json()
+                setUserVote(data.value)
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        checkForVote()
+    }, [])
+
+    async function voteOnPost(targetId: number, value: Vote) {
+        if (value === userVote) {
+            removeVoteFromPost(id)
+            return
+        }
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/votes?type=post`, {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    targetId, value
+                })
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.message)
+            }
+
+            setUserVote(value)
+            setPostScore(prevScore => prevScore - userVote + value)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    async function removeVoteFromPost(targetId: number) {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/votes?type=post`, {
+                method: "DELETE",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    targetId
+                })
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.message)
+            }
+
+            const data = await response.json()
+
+            setUserVote(0)
+            setPostScore(prevScore => prevScore - userVote)
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     return (
         <>
@@ -25,26 +105,34 @@ export default function PostBody({boardName, title, score, flair, authorUsername
                 <div className="hidden xs:flex flex-col gap-2 items-center">
                     <button
                         onClick={isLoggedIn 
-                            ?   () => console.log("Upvoted")
+                            ?   () => voteOnPost(id, 1)
                             :   () => setAuthType("sign-up")
                         }
                         aria-label={`Upvote post ${title}`}
-                        className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                     >
-                        <Triangle className="size-4"/>
+                        <Triangle 
+                            className={`
+                                ${userVote === 1 ? "fill-(--text-secondary) text-(--text-secondary)!" : ""} 
+                                text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) size-4`
+                            }
+                        />
                     </button>
                     <p className="font-medium">
-                        {score}
+                        {postScore}
                     </p>
                     <button
                         onClick={isLoggedIn 
-                            ?   () => console.log("Downvoted")
+                            ?   () => voteOnPost(id, -1)
                             :   () => setAuthType("sign-up")
                         }
                         aria-label={`Downvote post ${title}`}
-                        className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                     >
-                        <Triangle className="size-4 triangle-down"/>
+                        <Triangle 
+                            className={`
+                                ${userVote === -1 ? "fill-(--text-secondary) text-(--text-secondary)!" : ""} 
+                                text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) size-4 triangle-down`
+                            }
+                        />
                     </button>
                 </div>
                 <div>
@@ -69,7 +157,13 @@ export default function PostBody({boardName, title, score, flair, authorUsername
                         <h2 className="line-clamp-3 text-lg leading-6 md:text-xl md:leading-7">
                             {title}
                         </h2>
-                        <span className={`block w-fit xs:hidden mt-2 text-xs px-3 py-0.5 font-medium rounded-sm`}>
+                        <span 
+                            className="block w-fit xs:hidden mt-2 text-xs px-3 py-0.5 font-medium rounded-sm"
+                            style={{
+                                backgroundColor: `rgba(${boardInfo.color}, 0.1)`,
+                                color: `rgba(${boardInfo.color}, 1)`
+                            }}
+                        >
                             {flair}
                         </span>
                         <p className="mt-2 whitespace-pre-line">
@@ -80,26 +174,34 @@ export default function PostBody({boardName, title, score, flair, authorUsername
                         <div className="flex items-center gap-2 xs:hidden">
                             <button
                                 onClick={isLoggedIn 
-                                    ?   () => console.log("Upvoted")
+                                    ?   () => voteOnPost(id, 1)
                                     :   () => setAuthType("sign-up")
                                 }
                                 aria-label={`Upvote post ${title}`}
-                                className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                             >
-                                <Triangle className="size-4"/>
+                                <Triangle 
+                                    className={`
+                                        ${userVote === 1 ? "fill-(--text-secondary) text-(--text-secondary)!" : ""} 
+                                        text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) size-4`
+                                    }
+                                />
                             </button>
                             <p className="font-medium">
-                                {score}
+                                {postScore}
                             </p>
                             <button
                                 onClick={isLoggedIn 
-                                    ?   () => console.log("Downvoted")
+                                    ?   () => voteOnPost(id, -1)
                                     :   () => setAuthType("sign-up")
                                 }
                                 aria-label={`Downvote post ${title}`}
-                                className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                             >
-                                <Triangle className="size-4 triangle-down"/>
+                                <Triangle 
+                                    className={`
+                                        ${userVote === -1 ? "fill-(--text-secondary) text-(--text-secondary)!" : ""} 
+                                        text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) size-4 triangle-down`
+                                    }
+                                />
                             </button>
                         </div>
                         <div className="text-(--text-muted) text-sm flex items-center gap-2">

@@ -100,7 +100,7 @@ export default function App() {
 
   return (
     <GlobalContext.Provider value={{currentUser, setCurrentUser, authType, isLoggedIn, setAuthType, screenWidth, theme, setTheme}}>
-      <RouterProvider router={router} />
+      <RouterProvider key={currentUser?.id ?? "logged-out"} router={router} />
     </GlobalContext.Provider>
   )
 }
