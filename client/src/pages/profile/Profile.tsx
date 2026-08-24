@@ -30,7 +30,7 @@ export default function Profile() {
     const [user, setUser] = useState<UserProfileProps>()
     const [userPosts, setUserPosts] = useState<PostProps[]>([])
     const [savedPosts, setSavedPosts] = useState<PostProps[]>([])
-    const [isLoadingUser, setIsLoadingUser] = useState(false)
+    const [isLoadingUser, setIsLoadingUser] = useState(true)
     const [isLoadingUserPosts, setIsLoadingUserPosts] = useState(false)
     const [isLoadingSavedPosts, setIsLoadingSavedPosts] = useState(false)
 

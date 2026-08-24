@@ -1,5 +1,6 @@
 import { Router } from "express"
 import { pool } from "../db.ts"
+import type { User } from "../types.ts"
 
 const usersRouter = Router()
 
@@ -7,7 +8,7 @@ usersRouter.get("/:username", async (req, res) => {
     try {
         const username = req.params.username
 
-        const result = await pool.query(`
+        const result = await pool.query<User>(`
             SELECT
                 u.id,
                 u.username,

@@ -214,4 +214,16 @@ authRouter.get("/me", async (req, res) => {
     }
 })
 
+authRouter.get("/logout", (req, res) => {
+    req.session.destroy(error => {
+        if (error) {
+            return res.status(500).json({ message: "Could not log out." });
+        }
+
+        res.json({
+            message: "User logged out."
+        })
+    })
+})
+
 export default authRouter

@@ -127,7 +127,7 @@ postsRouter.get("/saved/:userId", async (req, res) => {
     try {
         const userId = req.params.userId
 
-        const result = await pool.query(`
+        const result = await pool.query<Post>(`
             SELECT
                 p.id,
                 p.title,

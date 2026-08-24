@@ -5,6 +5,7 @@ import { useGlobalContext } from "../utils"
 import ProfilePicture from "./ProfilePicture"
 import { createPortal } from "react-dom"
 import type { BoardProps } from "../types"
+import { useState } from "react"
 
 interface NavSidebarProps {
     isMenuOpen: boolean
@@ -14,7 +15,27 @@ interface NavSidebarProps {
 
 export default function NavSidebar({isMenuOpen, setIsMenuOpen, boards}: NavSidebarProps) {
 
-    const { isLoggedIn, setAuthType, screenWidth, currentUser } = useGlobalContext()
+    const { isLoggedIn, setAuthType, screenWidth, currentUser, setCurrentUser } = useGlobalContext()
+    const [error, setError] = useState<string | null>(null)
+
+    async function logOutUser() {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
+                credentials: "include"
+            })
+            
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.message)
+            }
+
+            setCurrentUser(null)
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message)
+            }
+        }
+    }
     
     const myBoardCollection = currentUser?.joinedBoardNames.map(item => {
         const boardColor = boards.find(board => board.name === item)?.color ?? "bg-grey-700"
@@ -176,23 +197,34 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen, boards}: NavSideb
                                     </h4>
                                     {myBoardCollection}
                                 </nav>
-                                <nav className="flex flex-col mt-auto gap-2 border-t border-(--border) pt-5">
-                                    <NavLink
-                                        onClick={() => setIsMenuOpen(false)}
-                                        aria-label="Account settings"
-                                        to="/settings"
-                                    >
-                                        <Settings />
-                                        Settings
-                                    </NavLink>
-                                    <button
-                                        aria-label="Log out from account"
-                                        className="flex items-center gap-3 px-4 rounded-xl py-2 text-(--text-secondary) text-sm font-medium text-left active:bg-(--failure) w-full"
-                                    >
-                                        <LogOut className="size-4.5"/>
-                                        Log out
-                                    </button>
-                                </nav>
+                                <div className="mt-auto">
+                                    {error &&
+                                        <p
+                                            role="alert"
+                                            className="error mb-3"
+                                        >
+                                            {error}
+                                        </p>
+                                    }
+                                    <nav className="flex flex-col gap-2 border-t border-(--border) pt-5">
+                                        <NavLink
+                                            onClick={() => setIsMenuOpen(false)}
+                                            aria-label="Account settings"
+                                            to="/settings"
+                                        >
+                                            <Settings />
+                                            Settings
+                                        </NavLink>
+                                        <button
+                                            onClick={logOutUser}
+                                            aria-label="Log out from account"
+                                            className="flex items-center gap-3 px-4 rounded-xl py-2 text-(--text-secondary) text-sm font-medium text-left active:bg-(--failure) w-full"
+                                        >
+                                            <LogOut className="size-4.5"/>
+                                            Log out
+                                        </button>
+                                    </nav>
+                                </div>
                             </>
                         :
                             <div className="bg-(--accent) mt-5 py-3 px-4 rounded-xl">

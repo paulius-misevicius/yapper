@@ -22,6 +22,7 @@ export interface Post {
     id: number
     color?: string
     flair?: string
+    body: string
     boardName?: string
     createdAt: string
     title: string
@@ -46,8 +47,9 @@ export interface User {
     postCount: number
     commentCount: number
     karma: number
-    savedPostIds: number
-    joinedBoardNames: string[]
+    savedPostIds?: number
+    joinedBoardNames?: string[]
+    joinedBoardCount?: number
 }
 export interface Username {
     username: string

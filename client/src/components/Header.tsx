@@ -12,8 +12,9 @@ interface HeaderProps {
 
 export default function Header({setIsMenuOpen}: HeaderProps) {
 
-    const { isLoggedIn, setAuthType, theme, currentUser } = useGlobalContext()
+    const { isLoggedIn, setAuthType, theme, currentUser, setCurrentUser } = useGlobalContext()
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [error, setError] = useState<string | null>(null)
     const dropdownRef = useRef<HTMLInputElement>(null)
     const dropdownToggleRef = useRef<HTMLButtonElement>(null)
 
@@ -34,6 +35,25 @@ export default function Header({setIsMenuOpen}: HeaderProps) {
             document.removeEventListener('mousedown', handleClickOutside)
         }
     }, [isDropdownOpen])
+
+    async function logOutUser() {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
+                credentials: "include"
+            })
+            
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.message)
+            }
+
+            setCurrentUser(null)
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message)
+            }
+        }
+    }
 
     return (
         <header className="flex fiex z-20 fixed w-full justify-between items-center px-5 lg:px-10 h-(--header-height) border-b border-(--border) bg-(--surface-1)">
@@ -105,12 +125,21 @@ export default function Header({setIsMenuOpen}: HeaderProps) {
                                         </Link>
                                     </div>
                                     <button
+                                        onClick={logOutUser}
                                         aria-label="Log out from account"
                                         className="flex items-center gap-3 px-5 rounded-md py-2 text-(--text-secondary) text-sm font-medium text-left lg:hover:bg-(--failure)"
                                     >
                                         <LogOut className="size-4.5"/>
                                         Log out
                                     </button>
+                                    {error && 
+                                        <p 
+                                            role="alert"
+                                            className="error text-center"
+                                        >
+                                            {error}
+                                        </p>
+                                    }
                                 </div>
                             }
                         </div>

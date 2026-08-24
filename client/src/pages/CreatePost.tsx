@@ -1,5 +1,5 @@
 import { Link, useOutletContext, useNavigate } from "react-router"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useGlobalContext } from "../utils"
 import type { BoardContext } from "../components/BoardLayout"
 
@@ -13,24 +13,27 @@ interface NewPost {
 export default function CreatePost() {
 
     const { isLoggedIn, setAuthType, currentUser } = useGlobalContext()
-    
-    const navigate = useNavigate()
-    
-    if (!isLoggedIn || !currentUser) {
-        navigate("/", { replace: true })
-        setAuthType("sign-up")
-        return
-    }
-    
     const { boardInfo } = useOutletContext<BoardContext>()
     const [postDetails, setPostDetails] = useState<NewPost>(
         {
-            userId: currentUser.id, 
+            userId: currentUser?.id ?? 0, 
             flair: "", 
             title: "", 
             body: ""
         }
     )
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+        if (!isLoggedIn || !currentUser) {
+            navigate("/", { replace: true })
+            setAuthType("sign-up")
+        }
+    }, [isLoggedIn, currentUser])
+    
+    if (!isLoggedIn || !currentUser) {
+        return
+    }
 
     return (
         <div>

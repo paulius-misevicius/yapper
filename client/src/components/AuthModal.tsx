@@ -97,7 +97,7 @@ export default function AuthModal() {
         <>
             <div 
                 onClick={() => setAuthType(null)}
-                className="fixed inset-0 flex bg-black/60 z-50"
+                className="fixed inset-0 flex bg-black/60 z-100"
             />
             <FocusTrap
                 focusTrapOptions={{
@@ -143,7 +143,7 @@ export default function AuthModal() {
                                     value={username}
                                     onChange={event => setUsername(event.target.value)}
                                     id="username"
-                                    // required
+                                    required
                                     className="text-sm placeholder:font-medium bg-(--surface-2)! px-4 py-2 focus:bg-(--surface-1)!"
                                     placeholder={authType === "sign-up"
                                         ?   "Pick a unique username..."
@@ -164,7 +164,7 @@ export default function AuthModal() {
                                     onChange={event => setEmail(event.target.value)}
                                     id="email"
                                     type="email"
-                                    // required
+                                    required
                                     className="text-sm placeholder:font-medium bg-(--surface-2)! px-4 py-2 focus:bg-(--surface-1)!"
                                     placeholder="you@example.com"
                                 />
@@ -182,7 +182,7 @@ export default function AuthModal() {
                                     value={password}
                                     onChange={event => setPassword(event.target.value)}
                                     id="password"
-                                    // required
+                                    required
                                     type={isPasswordVisible ? "text" : "password"}
                                     className="text-sm placeholder:font-medium bg-(--surface-2)! pl-4 pr-10 py-2 focus:bg-(--surface-1)!"
                                     placeholder="*********"

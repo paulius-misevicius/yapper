@@ -15,7 +15,7 @@ export default function BoardLayout() {
     
     const { board } = useParams()
     const [boardInfo, setBoardInfo] = useState<BoardProps>()
-    const [isBoardInfoLoading, setIsBoardInfoLoading] = useState(false)
+    const [isBoardInfoLoading, setIsBoardInfoLoading] = useState(true)
     
     useEffect(() => {
         async function getBoardInfo() {

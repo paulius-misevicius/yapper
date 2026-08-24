@@ -22,7 +22,7 @@ export default function Post() {
 
     const postId = Number(useParams().postId)
     const { boardInfo } = useOutletContext<BoardContext>()
-    const [isLoadingPost, setIsLoadingPost] = useState(false)
+    const [isLoadingPost, setIsLoadingPost] = useState(true)
     const [isLoadingComments, setIsLoadingComments] = useState(false)
     const [post, setPost] = useState<PostProps>()
     const [isCommentBoxActive, setIsCommentBoxActive] = useState(false)

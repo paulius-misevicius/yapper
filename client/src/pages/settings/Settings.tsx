@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router"
 import { useGlobalContext } from "../../utils"
 import SettingInput from "./components/SettingInput"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export type InputType = "username" | "email" | "password" | "delete" | null
 
@@ -13,9 +13,15 @@ export default function Settings() {
 
     const navigate = useNavigate()
 
-    if (!isLoggedIn) {
-        navigate("/", { replace: true })
-        setAuthType("sign-up")
+    useEffect(() => {
+        if (!isLoggedIn || !currentUser) {
+            navigate("/", { replace: true })
+            setAuthType("sign-up")
+        }
+    }, [isLoggedIn, currentUser])
+    
+    if (!isLoggedIn || !currentUser) {
+        return
     }
 
     return (
