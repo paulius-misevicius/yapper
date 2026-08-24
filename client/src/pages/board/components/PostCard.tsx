@@ -4,6 +4,7 @@ import { Link } from "react-router"
 import { useState } from "react"
 
 import type { PostProps } from "../../../utils/types"
+import { useVote } from "../../../utils/useVote"
 
 interface PostCardProps extends PostProps {
     color?: string
@@ -29,6 +30,7 @@ export default function PostCard({
 
     const { isLoggedIn, setAuthType, currentUser } = useGlobalContext()
     const [isSaved, setIsSaved] = useState(currentUser?.savedPostIds.includes(id) ?? false)
+    const { finalScore, userVote, vote } = useVote(id, "post", score)
 
     return (
         <div 
@@ -38,26 +40,34 @@ export default function PostCard({
             <div className="hidden xs:flex flex-col gap-2 items-center">
                 <button 
                     onClick={isLoggedIn 
-                        ?   () => console.log("Upvoted")
+                        ?   () => vote(1)
                         :   () => setAuthType("sign-up")
                     }
                     aria-label={`Upvote post ${title}`} 
-                    className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                 >
-                    <Triangle className="size-4"/>
+                    <Triangle 
+                        className={`
+                            ${userVote === 1 ? "fill-(--text-secondary) text-(--text-secondary)!" : ""} 
+                            text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) size-4`
+                        }
+                    />
                 </button>
                 <p className="font-medium text-normal!">
-                    {score}
+                    {finalScore}
                 </p>
                 <button 
                     onClick={isLoggedIn 
-                        ?   () => console.log("Downvoted")
+                        ?   () => vote(-1)
                         :   () => setAuthType("sign-up")
                     }
                     aria-label={`Downvote post ${title}`} 
-                    className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                 >
-                    <Triangle className="size-4 triangle-down"/>
+                    <Triangle 
+                        className={`
+                            ${userVote === -1 ? "fill-(--text-secondary) text-(--text-secondary)!" : ""} 
+                            text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) size-4 triangle-down`
+                        }
+                    />
                 </button>
             </div>
             <div>
@@ -99,26 +109,34 @@ export default function PostCard({
                     <div className="flex items-center gap-2 xs:hidden">
                         <button 
                             onClick={isLoggedIn 
-                                ?   () => console.log("Upvoted")
+                                ?   () => vote(1)
                                 :   () => setAuthType("sign-up")
                             }
                             aria-label={`Upvote post ${title}`} 
-                            className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                         >
-                            <Triangle className="size-4"/>
+                            <Triangle 
+                                className={`
+                                    ${userVote === 1 ? "fill-(--text-secondary) text-(--text-secondary)!" : ""} 
+                                    text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) size-4`
+                                }
+                            />
                         </button>
                         <p className="font-medium">
                             {score}
                         </p>
                         <button 
                             onClick={isLoggedIn 
-                                ?   () => console.log("Downvoted")
+                                ?   () => vote(-1)
                                 :   () => setAuthType("sign-up")
                             }
                             aria-label={`Downvote post ${title}`} 
-                            className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                         >
-                            <Triangle className="size-4 triangle-down"/>
+                            <Triangle 
+                                className={`
+                                    ${userVote === -1 ? "fill-(--text-secondary) text-(--text-secondary)!" : ""} 
+                                    text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) size-4 triangle-down`
+                                }
+                            />
                         </button>
                     </div>
                     <Link 

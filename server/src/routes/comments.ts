@@ -18,7 +18,7 @@ commentsRouter.get("/:postId", async (req, res) => {
                 c.body,
                 c.created_at AS "createdAt",
                 (
-                    SELECT SUM(v.value)::int 
+                    SELECT COALESCE(SUM(v.value), 0)::int 
                     FROM votes v 
                     WHERE c.id = v.comment_id
                 ) AS score

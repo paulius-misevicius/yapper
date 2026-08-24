@@ -4,12 +4,13 @@ import ProfilePicture from "../../../components/ProfilePicture"
 import { Plus, Minus, Triangle, MessageSquare } from "lucide-react"
 import { getTimeAgo, useGlobalContext } from "../../../utils/utils"
 import { useOutletContext, Link } from "react-router"
+import { useVote } from "../../../utils/useVote"
 
 interface ThreadDesktopProps extends CommentThreadProps {
     children: React.ReactNode
     isThreadOpen: boolean
     setIsThreadOpen: React.Dispatch<React.SetStateAction<boolean>>
-    profilePictureUrl: string | undefined
+    profilePictureUrl: string
 }
 
 export default function ThreadDesktop({
@@ -30,6 +31,7 @@ export default function ThreadDesktop({
 
     const { boardInfo } = useOutletContext<BoardContext>()
     const { isLoggedIn, setAuthType } = useGlobalContext()
+    const { finalScore, userVote, vote } = useVote(id, "comment", score)
 
     return (
         <details 
@@ -108,26 +110,34 @@ export default function ThreadDesktop({
                     <div className="flex items-center gap-2">
                         <button
                             onClick={isLoggedIn 
-                                ?   () => {}
+                                ?   () => vote(1)
                                 :   () => setAuthType("sign-up")
                             }
                             aria-label={`Upvote comment`}
-                            className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                         >
-                            <Triangle className="size-3.5"/>
+                            <Triangle 
+                                className={`
+                                    ${userVote === 1 ? "fill-(--text-secondary) text-(--text-secondary)!" : ""} 
+                                    text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) size-3.5`
+                                }
+                            />
                         </button>
                         <p className="text-xs! text-(--text-muted)!">
-                            {score}
+                            {finalScore}
                         </p>
                         <button
                             onClick={isLoggedIn 
-                                ?   () => {}
+                                ?   () => vote(-1)
                                 :   () => setAuthType("sign-up")
                             }
                             aria-label={`Downvote comment`}
-                            className="text-(--text-muted) active:text-(--text-primary) lg:hover:text-(--text-primary)"
                         >
-                            <Triangle className="size-3.5 triangle-down"/>
+                            <Triangle 
+                                className={`
+                                    ${userVote === -1 ? "fill-(--text-secondary) text-(--text-secondary)!" : ""} 
+                                    text-(--text-muted) active:text-(--text-secondary) lg:hover:text-(--text-secondary) size-3.5 triangle-down`
+                                }
+                            />
                         </button>
                     </div>
                     <button

@@ -35,8 +35,8 @@ export default function RecentPost({id, color, boardName, createdAt, title, scor
             </Link>
             <div className="flex gap-4">
                 <p className="flex items-center gap-1 text-(--text-muted)! text-xs!">
-                    <Triangle className="size-3"/>
-                    {score} {score >= 0 ? "upvotes" : "downvotes"}
+                    <Triangle className={`${score < 0 ? "triangle-down" : ""} size-3`}/>
+                    {score} {score >= 0} score
                 </p>
                 <p className="flex items-center gap-1.5 text-(--text-muted)! text-xs!">
                     <MessageSquare className="size-3"/>
