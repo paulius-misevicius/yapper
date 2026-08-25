@@ -21,6 +21,10 @@ export interface ProfileChildProps {
     setBio: React.Dispatch<React.SetStateAction<string>>
     profilePicRef: React.RefObject<HTMLInputElement | null>
     isCurrentUser: boolean
+    isUpdating: boolean
+    updateProfile: () => void
+    error: string | null
+    setError: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 export default function Profile() {
@@ -33,6 +37,8 @@ export default function Profile() {
     const [isLoadingUser, setIsLoadingUser] = useState(true)
     const [isLoadingUserPosts, setIsLoadingUserPosts] = useState(false)
     const [isLoadingSavedPosts, setIsLoadingSavedPosts] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const [isUpdating, setIsUpdating] = useState(false)
 
     useEffect(() => {
         async function getUser() {
@@ -108,6 +114,13 @@ export default function Profile() {
     const profilePicRef = useRef<HTMLInputElement>(null)
     const isTabLoading = openTab === "posts" ? isLoadingUserPosts : isLoadingSavedPosts
 
+    useEffect(() => {
+        if (!user) return
+
+        setBio(user.bio ?? "")
+        setProfilePic(user.profilePictureUrl ?? "")
+    }, [user])
+    
     if (isLoadingUser) {
         return <TailSpin wrapperClass="loader" color="var(--accent)"/>
     }
@@ -128,9 +141,13 @@ export default function Profile() {
         bio, 
         setBio,
         profilePicRef,
-        isCurrentUser
+        isCurrentUser,
+        updateProfile,
+        isUpdating,
+        error,
+        setError
     }
-    
+
     function previewProfilePic(event: React.ChangeEvent<HTMLInputElement>) {
         const file = event.target.files?.[0]
         
@@ -142,13 +159,56 @@ export default function Profile() {
     
     function discardChanges() {
         setIsEditing(false)
-        setBio(user!.bio)
+        setBio(user?.bio ?? "")
         setProfilePic(user!.profilePictureUrl)
         if (profilePic?.startsWith("blob:")) {
             URL.revokeObjectURL(profilePic)
         }
+        setError(null)
     }
-    
+
+    async function updateProfile() {
+        if (bio === user?.bio) {
+            setIsEditing(false)
+            return
+        }
+        setError(null)
+
+        try {
+            setIsUpdating(true)
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
+                method: "PATCH",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({bio})
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.error)
+            }
+
+            setUser(prev => {
+                if (!prev) return prev
+
+                return ({
+                    ...prev,
+                    bio
+                })
+            })
+
+            setIsEditing(false)
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message)
+            }
+        } finally {
+            setIsUpdating(false)
+        }
+    }
 
     return (
         <div className="py-5 w-full flex flex-col">

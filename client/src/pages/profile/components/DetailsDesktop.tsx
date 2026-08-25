@@ -2,21 +2,27 @@ import { getMonthYear } from "../../../utils/utils"
 import ProfilePicture from "../../../components/ProfilePicture"
 import { Camera, Triangle } from "lucide-react"
 import type { ProfileChildProps } from "../Profile"
+import { TailSpin } from "react-loader-spinner"
 
 export default function DetailsDesktop({
     discardChanges, 
-    previewProfilePic,
+    // previewProfilePic,
+    // profilePic, 
+    // profilePicRef, 
     isEditing, 
     setIsEditing, 
-    profilePic, 
     user, 
     bio, 
     setBio,
-    profilePicRef, 
-    isCurrentUser
+    isCurrentUser,
+    isUpdating,
+    updateProfile,
+    error,
+    setError
 }: ProfileChildProps) {
     return (
         <div className="flex gap-8 bg-(--surface-1) px-8 py-6 border border-(--border) rounded-2xl">
+            {/* Decide if profile pics or avatars
             {isEditing
                 ?
                     <div>
@@ -39,11 +45,11 @@ export default function DetailsDesktop({
                             <Camera className="size-8 rounded-full p-1.5 absolute bottom-0 right-0 bg-(--primary-btn)"/>
                         </button>
                     </div>
-                :
+                : */}
                     <div>
                         <ProfilePicture size="size-23" userSrc={user.profilePictureUrl} />
                     </div>
-            }
+            {/* } */}
             <div className="w-full min-w-0">
                 <div className="flex items-center justify-between gap-5">
                     <div className="flex min-w-0 w-full items-center gap-4">
@@ -67,6 +73,14 @@ export default function DetailsDesktop({
                     {isEditing && isCurrentUser
                         ?
                             <div className="flex gap-2 items-center">
+                                {error &&
+                                    <p
+                                        role="alert"
+                                        className="error text-xs! mr-1 text-nowrap"
+                                    >
+                                        {error}
+                                    </p>
+                                }
                                 <button
                                     onClick={discardChanges}
                                     aria-label="Discard changes"
@@ -75,11 +89,14 @@ export default function DetailsDesktop({
                                     Cancel
                                 </button>
                                 <button
-                                    onClick={() => setIsEditing(false)}
+                                    onClick={updateProfile}
                                     aria-label="Save changes"
                                     className="w-fit action-btn bg-(--primary-btn) text-(--primary-btn-text) lg:hover:bg-(--accent) active:bg-(--accent) text-xs!"
                                 >
-                                    Save
+                                    {isUpdating 
+                                        ?   <TailSpin wrapperClass="loader" color="var(--primary-btn-text)" height="15.5" width="15.5"/>
+                                        :   "Save"
+                                    }
                                 </button>
                             </div>
                         :
@@ -104,7 +121,10 @@ export default function DetailsDesktop({
                             </label>
                             <textarea 
                                 value={bio}
-                                onChange={event => setBio(event.target.value)}
+                                onChange={event => {
+                                    setBio(event.target.value)
+                                    setError(null)
+                                }}
                                 id="profile-bio"
                                 placeholder="Write something interesting about yourself..."
                                 rows={3}

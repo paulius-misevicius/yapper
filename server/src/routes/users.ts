@@ -64,4 +64,41 @@ usersRouter.get("/:username", async (req, res) => {
     }
 })
 
+usersRouter.patch("/", async (req, res) => {
+    try {
+        const userId = req.session.userId
+
+        if (!userId) {
+            return res.status(401).json({
+                message: "You are not logged in."
+            })
+        }
+
+        const bio = req.body.bio
+
+        if (bio == null) {
+            return res.status(400).json({
+                message: "Missing required fields."
+            })
+        }
+
+        await pool.query(`
+            UPDATE users
+            SET bio = $1
+            WHERE id = $2
+        `, [bio, userId])
+
+        res.json({
+            message: "User's profile was successfully updated!"
+        })
+
+    } catch (error) {
+        console.error(error)
+
+        return res.status(500).json({
+            error: "Internal server error"
+        })
+    }
+})
+
 export default usersRouter
