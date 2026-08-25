@@ -6,6 +6,7 @@ import ThreadMobile from "./ThreadMobile"
 import MobileShelfModal from "../../../components/MobileShelfModal"
 import { useGlobalContext } from "../../../utils/utils"
 import { useVote } from "../../../utils/useVote"
+import { TailSpin } from "react-loader-spinner"
 
 export interface CommentThreadProps extends CommentWithReplies {
     depth?: number
@@ -34,10 +35,82 @@ export default function CommentThread({
     depth = 0 
 }: CommentThreadProps) {
 
-    const { screenWidth } = useGlobalContext()
+    const { screenWidth, currentUser } = useGlobalContext()
     const [isThreadOpen, setIsThreadOpen] = useState<boolean>(depth === 0 || (depth < 4 && score > 4))
     const [reply, setReply] = useState("")
     const { finalScore, userVote, vote } = useVote(id, "comment", score)
+    const [isSubmiting, setIsSubmitting] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const [info, setInfo] = useState<string | null>(null)
+    
+    async function createComment() {
+        setError(null)
+        setInfo(null)
+
+        if (!reply) {
+            setError("Missing comment body.")
+            return
+        }
+
+        try {
+            if (!currentUser) return
+
+            setIsSubmitting(true)
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/comments/${postId}`, {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    parentCommentId: id,
+                    body: reply
+                })
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.message)
+            }
+
+            const data = await response.json()
+
+            const newReply = {
+                authorUsername: currentUser.username,
+                body: reply,
+                id: data.commentId,
+                postId,
+                parentCommentId: id,
+                createdAt: new Date().toISOString(),
+                profilePictureUrl: currentUser.profilePictureUrl,
+                replies: [],
+                score: 0
+            }
+
+            function addReply(comments: CommentWithReplies[]): CommentWithReplies[] {
+                return comments.map(item => {
+                    if (item.id === id) {
+                        return { ...item, replies: [...item.replies, newReply] }
+                    }
+                    if (item.replies.length > 0) {
+                        return { ...item, replies: addReply(item.replies) }
+                    }
+                    return item
+                })
+            }
+
+            setCommentTree(prev => addReply(prev))
+            setReply("")
+            setInfo("Comment created!")
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message)
+            }
+        } finally {
+            setIsSubmitting(false)
+        }
+    }
 
     const childProps = {
         profilePictureUrl,
@@ -70,7 +143,7 @@ export default function CommentThread({
                     <CommentThread
                         key={item.id}
                         id={item.id}
-                        postId={item.postId}
+                        postId={postId}
                         parentCommentId={item.parentCommentId}
                         postAuthor={postAuthor}
                         authorUsername={item.authorUsername}
@@ -134,6 +207,22 @@ export default function CommentThread({
                         className="bg-(--surface-1) mt-3 min-h-14 max-h-40 px-3 py-2 rounded-md border border-(--border)"
                     />
                     <div className="flex gap-2 self-end items-center mt-3">
+                        {error &&
+                            <p
+                                role="alert"
+                                className="error text-xs! mr-1"
+                            >
+                                {error}
+                            </p>
+                        }
+                        {info &&
+                            <p
+                                role="status"
+                                className="font-medium text-xs! mr-1"
+                            >
+                                {info}
+                            </p>
+                        }
                         <button
                             onClick={() => setReplyBoxId(0)}
                             aria-label="Cancel reply"
@@ -142,10 +231,14 @@ export default function CommentThread({
                             Cancel
                         </button>
                         <button
+                            onClick={createComment}
                             aria-label="Submit reply"
                             className="w-fit action-btn bg-(--primary-btn) text-(--primary-btn-text) lg:hover:bg-(--accent) active:bg-(--accent) text-xs!"
                         >
-                            Reply
+                            {isSubmiting 
+                                ?   <TailSpin wrapperClass="loader" color="var(--primary-btn-text)" height="15.5" width="15.5"/>
+                                :   "Reply"
+                            }
                         </button>
                     </div>
                 </div>
@@ -179,11 +272,31 @@ export default function CommentThread({
                             rows={4}
                             className="bg-(--surface-1) mt-5 min-h-16 max-h-40 px-3 py-2 rounded-md border border-(--border) w-full"
                         />
+                        {error &&
+                            <p
+                                role="alert"
+                                className="error text-center mt-2 mr-1"
+                            >
+                                {error}
+                            </p>
+                        }
+                        {info &&
+                            <p
+                                role="status"
+                                className="font-medium text-center mt-2 mr-1"
+                            >
+                                {info}
+                            </p>
+                        }
                         <button
+                            onClick={createComment}
                             aria-label="Submit reply"
                             className="w-full mt-3 py-3! action-btn bg-(--primary-btn) text-(--primary-btn-text) lg:hover:bg-(--accent) active:bg-(--accent)"
                         >
-                            Reply
+                            {isSubmiting 
+                                ?   <TailSpin wrapperClass="loader" color="var(--primary-btn-text)" height="22" width="22"/>
+                                :   "Reply"
+                            }
                         </button>
                     </div>
                 </MobileShelfModal>

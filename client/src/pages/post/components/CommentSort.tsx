@@ -1,4 +1,4 @@
-import type { Sort } from "../../../utils/utils"
+import type { Sort } from "../../../utils/types"
 import { Hourglass, ChartNoAxesColumn } from "lucide-react"
 
 interface CommentSortProps {

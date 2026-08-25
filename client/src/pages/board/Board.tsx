@@ -15,7 +15,7 @@ type MobileTab = "feed" | "about"
 
 export default function Board() {
 
-    const [filter, setFilter] = useState<Filter>("all time")
+    const [filter, setFilter] = useState<Filter>("all-time")
     const [sort, setSort] = useState<Sort>("top")
     const [isMobileSettingsOpen, setIsMobileSettingsOpen] = useState(false)
     const [mobileTab, setMobileTab] = useState<MobileTab>("feed")
@@ -29,7 +29,9 @@ export default function Board() {
             try {
                 setIsLoading(true)
 
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/posts/board/${boardInfo.name}`)
+                const response = await fetch(
+                    `${import.meta.env.VITE_API_URL}/posts/board/${boardInfo.name}?sort=${sort}&filter=${filter}`
+                )
                 const data = await response.json()
                 setPosts(data)
             } catch (error) {
@@ -39,7 +41,7 @@ export default function Board() {
             }
         }
         getBoardPosts()
-    }, [boardInfo])
+    }, [boardInfo, sort, filter])
 
     return (
         <>
@@ -100,11 +102,11 @@ export default function Board() {
                         aria-label="Filter board posts"
                         className="text-(--text-muted) border border-(--border) focus-visible:text-(--accent-text)! focus-visible:bg-(--accent)! focus-visible:border-(--accent-text)! active:bg-(--accent-hover) active:border-(--border-strong) lg:hover:border-(--border-strong) lg:hover:bg-(--accent-hover)"
                     >
-                        <option value="all time">All time</option>
+                        <option value="all-time">All time</option>
                         <option value="today">Today</option>
-                        <option value="this week">This week</option>
-                        <option value="this month">This month</option>
-                        <option value="this year">This year</option>
+                        <option value="this-week">This week</option>
+                        <option value="this-month">This month</option>
+                        <option value="this-year">This year</option>
                     </select>
                 </div>
                 <button 

@@ -55,6 +55,25 @@ postsRouter.get("/board/:boardName", async (req, res) => {
 
     const board = req.params.boardName
 
+    let sort = "p.id"
+
+    if (req.query.sort === "new") {
+        sort = "p.created_at DESC"
+    }
+    if (req.query.sort === "top") {
+        sort = "score DESC"
+    }
+
+    const filterOptions: Record<string, string> = {
+        "today": "1 day",
+        "this-week": "7 days",
+        "this-month": "1 month",
+        "this-year": "1 year"
+    }
+
+    const interval = filterOptions[req.query.filter as string]
+    const dateFilter = interval ? `AND p.created_at >= NOW() - INTERVAL '${interval}'` : ""
+
     try {
         const result = await pool.query<Post>(`
             SELECT
@@ -78,11 +97,17 @@ postsRouter.get("/board/:boardName", async (req, res) => {
             JOIN boards b ON p.board_id = b.id
             JOIN users u ON p.user_id = u.id
             WHERE b.name = $1
+            ${dateFilter}
+            ORDER BY ${sort}
         `, [board])
 
         res.json(result.rows)
     } catch (error) {
         console.error(error)
+
+        return res.status(500).json({
+            error: "Internal server error"
+        })
     }
 })
 

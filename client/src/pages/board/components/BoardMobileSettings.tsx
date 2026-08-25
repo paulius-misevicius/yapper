@@ -48,9 +48,9 @@ export default function BoardMobileSettings({setIsMobileSettingsOpen, sort, setS
                     className="flex flex-col mt-3 gap-2"
                 >
                     <button
-                        onClick={() => setFilter("all time")}
+                        onClick={() => setFilter("all-time")}
                         className={`
-                            ${filter === "all time" ? "text-(--accent-text)! bg-(--accent)! border-(--accent-text)!" : ""}
+                            ${filter === "all-time" ? "text-(--accent-text)! bg-(--accent)! border-(--accent-text)!" : ""}
                             flex text-sm border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
                         `}
                     >
@@ -66,27 +66,27 @@ export default function BoardMobileSettings({setIsMobileSettingsOpen, sort, setS
                         Today
                     </button>
                     <button
-                        onClick={() => setFilter("this week")}
+                        onClick={() => setFilter("this-week")}
                         className={`
-                            ${filter === "this week" ? "text-(--accent-text)! bg-(--accent)! border-(--accent-text)!" : ""}
+                            ${filter === "this-week" ? "text-(--accent-text)! bg-(--accent)! border-(--accent-text)!" : ""}
                             flex text-sm border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
                         `}
                     >
                         This week
                     </button>
                     <button
-                        onClick={() => setFilter("this month")}
+                        onClick={() => setFilter("this-month")}
                         className={`
-                            ${filter === "this month" ? "text-(--accent-text)! bg-(--accent)! border-(--accent-text)!" : ""}
+                            ${filter === "this-month" ? "text-(--accent-text)! bg-(--accent)! border-(--accent-text)!" : ""}
                             flex text-sm border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
                         `}
                     >
                         This month
                     </button>
                     <button
-                        onClick={() => setFilter("this year")}
+                        onClick={() => setFilter("this-year")}
                         className={`
-                            ${filter === "this year" ? "text-(--accent-text)! bg-(--accent)! border-(--accent-text)!" : ""}
+                            ${filter === "this-year" ? "text-(--accent-text)! bg-(--accent)! border-(--accent-text)!" : ""}
                             flex text-sm border border-(--border-strong) flex-1 justify-center items-center text-(--text-muted) gap-2 font-medium py-2 px-2 rounded-md active:bg-(--accent-hover)
                         `}
                     >

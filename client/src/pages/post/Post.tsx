@@ -31,9 +31,8 @@ export default function Post() {
     const [isNested, setIsNested] = useState(false)
     const [reset, setReset] = useState(0)
     const [replyBoxId, setReplyBoxId] = useState<number>(0)
-    const [newComment, setNewComment] = useState("")
     const { screenWidth } = useGlobalContext()
-
+    
     useEffect(() => {
         async function getPost() {
             try {
@@ -133,8 +132,8 @@ export default function Post() {
             <CommentBox 
                 isCommentBoxActive={isCommentBoxActive}
                 setIsCommentBoxActive={setIsCommentBoxActive}
-                newComment={newComment}
-                setNewComment={setNewComment}
+                postId={postId}
+                setCommentTree={setCommentTree}
             />
             <CommentSort 
                 commentCount={post.commentCount}

@@ -32,7 +32,7 @@ export default function AppLayout() {
             }
         }
         getBoardPreviews()
-    })
+    }, [])
 
     useEffect(() => {
         if (isMenuOpen || authType) {
