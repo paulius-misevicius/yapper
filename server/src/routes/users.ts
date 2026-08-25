@@ -101,4 +101,41 @@ usersRouter.patch("/", async (req, res) => {
     }
 })
 
+usersRouter.patch("/theme", async (req, res) => {
+    try {
+        const userId = req.session.userId
+
+        if (!userId) {
+            return res.status(401).json({
+                message: "You are not logged in."
+            })
+        }
+
+        const theme = req.body.theme
+
+        if (theme !== "light" && theme !== "dark") {
+            return res.status(400).json({
+                message: "Invalid request."
+            })
+        }
+
+        await pool.query(`
+            UPDATE users
+            SET theme = $1
+            WHERE id = $2
+        `, [theme, userId])
+
+        res.json({
+            message: "Theme preference updated!"
+        })
+
+    } catch (error) {
+        console.error(error)
+
+        return res.status(500).json({
+            error: "Internal server error"
+        })
+    }
+})
+
 export default usersRouter

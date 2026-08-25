@@ -80,6 +80,30 @@ export default function Settings() {
             setIsUpdating(false)
         }
     }
+
+    async function updateTheme(newTheme: "light" | "dark") {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/users/theme`, {
+                method: "PATCH",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    theme: newTheme
+                })
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.message)
+            }
+
+            setTheme(newTheme)
+        } catch (error) {
+            console.error(error)
+        }
+    }
     
     if (!isLoggedIn || !currentUser) {
         return
@@ -158,9 +182,9 @@ export default function Settings() {
                         inputType={inputType}
                         setInputType={setInputType}
                         btnClick={() => {
+                            updateTheme(theme === "light" ? "dark" : "light")
                             setInputType(null)
                             setInputValue("")
-                            setTheme(theme === "light" ? "dark" : "light")
                             setError(null)
                             setInfo(null)
                         }}
