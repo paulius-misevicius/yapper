@@ -87,7 +87,7 @@ export default function DetailsDesktop({
                                 <button
                                     onClick={discardChanges}
                                     aria-label="Discard changes"
-                                    className="bg-white text-(--text-muted) action-btn text-center border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover) text-xs!"
+                                    className="bg-(--surface-1) text-(--text-muted) action-btn text-center border-(--border)! active:bg-(--accent-hover) lg:hover:bg-(--accent-hover) text-xs!"
                                 >
                                     Cancel
                                 </button>

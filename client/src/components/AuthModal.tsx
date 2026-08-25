@@ -60,7 +60,7 @@ export default function AuthModal() {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    username, email, password
+                    username, password
                 })
             })
 
@@ -236,6 +236,20 @@ export default function AuthModal() {
                             {authType === "sign-up" ? "Log in" : "Sign up"}
                         </button>
                     </p>
+                    <div className="w-full flex justify-center">
+                        <button
+                            onClick={() => {
+                                setAuthType("log-in")
+                                setUsername("demo_account")
+                                setPassword("DemoAccount123")
+                            }}
+                            type="submit"
+                            aria-label="Use demo account"
+                            className="text-xs text-(--text-muted) mt-3 underline active:font-medium lg:hover:font-medium"
+                        >
+                            Use demo account
+                        </button>
+                    </div>
                 </form>
             </FocusTrap>
         </>,
