@@ -37,6 +37,12 @@ votesRouter.post("/", async (req, res) => {
             })
         }
 
+        if (value !== 1 && value !== -1) {
+            return res.status(400).json({
+                message: "Invalid vote value."
+            })
+        }
+
         const result = await pool.query<Id>(`
             SELECT 
                 id

@@ -139,29 +139,35 @@ export default function Board() {
             </div>
 
             {mobileTab === "feed" 
-                    ?
-                        isLoading ? <TailSpin wrapperClass="loader" color="var(--accent)"/> :
-                            <div className="flex flex-col gap-4 mt-5">
-                                {posts.map(item =>
-                                    <PostCard 
-                                        key={item.id}
-                                        id={item.id}
-                                        title={item.title}
-                                        score={item.score}
-                                        body={item.body}
-                                        authorUsername={item.authorUsername}
-                                        createdAt={item.createdAt}
-                                        commentCount={item.commentCount}
-                                        flair={item.flair}
-                                        boardName={boardInfo.name}
-                                        color={boardInfo.color}
-                                    />
-                                )}
-                            </div>
-                    :
-                        isBoardInfoLoading 
-                            ?   <TailSpin wrapperClass="loader" color="var(--accent)"/> 
-                            :   <BoardAbout boardInfo={boardInfo} />
+                ?
+                    isLoading ? <TailSpin wrapperClass="loader" color="var(--accent)"/> :
+                        posts.length > 0
+                            ?
+                                <div className="flex flex-col gap-4 mt-5">
+                                    {posts.map(item =>
+                                        <PostCard 
+                                            key={item.id}
+                                            id={item.id}
+                                            title={item.title}
+                                            score={item.score}
+                                            body={item.body}
+                                            authorUsername={item.authorUsername}
+                                            createdAt={item.createdAt}
+                                            commentCount={item.commentCount}
+                                            flair={item.flair}
+                                            boardName={boardInfo.name}
+                                            color={boardInfo.color}
+                                        />
+                                    )}
+                                </div>
+                            :
+                                <div className="flex grow justify-center items-center">
+                                    <p className="text-center font-medium">No posts found!</p>
+                                </div>
+                :
+                    isBoardInfoLoading 
+                        ?   <TailSpin wrapperClass="loader" color="var(--accent)"/> 
+                        :   <BoardAbout boardInfo={boardInfo} />
                         
             }
         </>

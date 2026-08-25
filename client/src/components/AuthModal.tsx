@@ -41,6 +41,7 @@ export default function AuthModal() {
             const data = await userResponse.json()
 
             setCurrentUser(data.user)
+            setAuthType(null)
         } catch (error) {
             if (error instanceof Error) {
                 setError(error.message)

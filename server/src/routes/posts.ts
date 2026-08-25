@@ -145,6 +145,10 @@ postsRouter.get("/user/:username", async (req, res) => {
         res.json(result.rows)
     } catch (error) {
         console.error(error)
+
+        return res.status(500).json({
+            error: "Internal server error"
+        })
     }
 })
 

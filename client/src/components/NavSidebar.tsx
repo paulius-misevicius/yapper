@@ -97,7 +97,12 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen, boards}: NavSideb
                         >
                             MY BOARDS
                         </h4>
-                        {myBoardCollection}
+                        {currentUser && currentUser.joinedBoardNames.length > 0
+                            ?   myBoardCollection
+                            :   <p className="text-xs! mt-2 text-(--text-muted)!">
+                                    No joined boards yet.
+                                </p>
+                        }
                     </nav>
                 :
                     <div className="bg-(--accent) mt-5 py-3 px-4 rounded-xl">
@@ -195,7 +200,12 @@ export default function NavSidebar({isMenuOpen, setIsMenuOpen, boards}: NavSideb
                                     >
                                         MY BOARDS
                                     </h4>
-                                    {myBoardCollection}
+                                    {currentUser && currentUser.joinedBoardNames.length > 0
+                                        ?   myBoardCollection
+                                        :   <p className="text-xs! mt-2 text-(--text-muted)!">
+                                                No joined boards yet.
+                                            </p>
+                                    }
                                 </nav>
                                 <div className="mt-auto">
                                     {error &&

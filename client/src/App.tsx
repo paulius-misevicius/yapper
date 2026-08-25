@@ -54,8 +54,10 @@ export default function App() {
 
         const data = await response.json()
 
-        setCurrentUser(data.user)
-        setTheme(data.user.theme)
+        if (data.user) {
+          setCurrentUser(data.user)
+          setTheme(data.user.theme)
+        }
         setAuthType(null)
       } catch (error) {
         console.error(error)

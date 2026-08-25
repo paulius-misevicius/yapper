@@ -11,8 +11,10 @@ import votesRouter from "./routes/votes.ts"
 import savedRouter from "./routes/saved.ts"
 import membershipsRouter from "./routes/memberships.ts"
 
-const PORT = 8000
+const PORT = Number(process.env.PORT)
 const app = express()
+
+app.set("trust proxy", 1)
 
 app.use(session({
     secret: process.env.SESSION_SECRET!,
@@ -20,8 +22,8 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax"
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
     }
 }))
 app.use(cors({
