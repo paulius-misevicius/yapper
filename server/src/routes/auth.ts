@@ -172,6 +172,7 @@ authRouter.get("/me", async (req, res) => {
                 u.username,
                 u.bio,
                 u.email,
+                u.theme,
                 u.profile_picture_url AS "profilePictureUrl",
                 u.joined_at AS "joinedAt",
                 (

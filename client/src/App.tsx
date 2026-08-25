@@ -33,7 +33,7 @@ export default function App() {
 
   const [currentUser, setCurrentUser] = useState<UserProps | null>(null)
   const [authType, setAuthType] = useState<AuthType>(null)
-  const [theme, setTheme] = useState<Theme>("light")
+  const [theme, setTheme] = useState<Theme>(currentUser?.theme ?? "light")
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
   const [isLoadingAuth, setIsLoadingAuth] = useState(false)
   const isLoggedIn = currentUser !== null
@@ -55,6 +55,7 @@ export default function App() {
         const data = await response.json()
 
         setCurrentUser(data.user)
+        setTheme(data.user.theme)
         setAuthType(null)
       } catch (error) {
         console.error(error)

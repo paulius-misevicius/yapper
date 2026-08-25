@@ -45,6 +45,7 @@ export interface UserProps {
     username: string
     bio: string
     email: string
+    theme: "light" | "dark"
     profilePictureUrl: string
     joinedAt: string
     postCount: number

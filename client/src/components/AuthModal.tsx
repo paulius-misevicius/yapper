@@ -13,7 +13,7 @@ export default function AuthModal() {
     const [error, setError] = useState<string | null>(null)
 
     const rootPortal = document.getElementById("portal")
-    const { isLoggedIn, authType, setAuthType, setCurrentUser } = useGlobalContext()
+    const { isLoggedIn, authType, setAuthType, setCurrentUser, setTheme } = useGlobalContext()
 
     async function registerUser(event: React.SubmitEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -74,6 +74,7 @@ export default function AuthModal() {
             const data = await userResponse.json()
 
             setCurrentUser(data.user)
+            setTheme(data.user.theme)
             setAuthType(null)
         } catch (error) {
             if (error instanceof Error) {

@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
     joined_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
     email VARCHAR(240) UNIQUE NOT NULL,
     password_hash VARCHAR(60) NOT NULL
+    theme VARCHAR(5) NOT NULL DEFAULT 'light' CHECK (theme IN ('light', 'dark'))
 );
 
 CREATE TABLE IF NOT EXISTS boards (

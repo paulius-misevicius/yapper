@@ -45,6 +45,7 @@ export interface User {
     profilePictureUrl: string
     joinedAt: string
     email: string
+    theme: "light" | "dark"
     postCount: number
     commentCount: number
     karma: number
