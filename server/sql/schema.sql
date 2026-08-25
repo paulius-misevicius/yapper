@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(240) UNIQUE NOT NULL,
     password_hash VARCHAR(60) NOT NULL
     theme VARCHAR(5) NOT NULL DEFAULT 'light' CHECK (theme IN ('light', 'dark'))
+    is_deleted BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS boards (

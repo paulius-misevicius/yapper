@@ -111,6 +111,7 @@ authRouter.post("/login", async (req, res) => {
                 u.password_hash as "passwordHash"
             FROM users u
             WHERE u.username = $1
+            AND u.is_deleted IS FALSE
         `, [username])
 
         const user = result.rows[0]
@@ -350,6 +351,66 @@ authRouter.patch("/me", async (req, res) => {
     } catch (error) {
         console.error(error)
 
+        return res.status(500).json({
+            message: "Internal server error"
+        })
+    }
+})
+
+authRouter.delete("/delete", async (req, res) => {
+    try {
+        const userId = req.session.userId
+
+        if (!userId) {
+            return res.json({
+                user: null
+            })
+        }
+
+        const username = req.body.username
+
+        if (!username) {
+            return res.status(400).json({
+                message: "Missing required fields."
+            })
+        }
+
+        const result = await pool.query<Id>(`
+            UPDATE users
+            SET
+                username = 'deleted_user_' || id,
+                email = 'deleted_user_' || id || '@deleted.local',
+                bio = NULL,
+                profile_picture_url = NULL,
+                is_deleted = TRUE
+            WHERE id = $1
+            AND username = $2
+            RETURNING id
+        `, [userId, username])
+
+        if (!result.rows[0]) {
+            return res.status(400).json({
+                message: "Incorrect username."
+            })
+        }
+
+        req.session.destroy(error => {
+            if (error) {
+                console.error(error)
+
+                return res.status(500).json({
+                    message: "Account was deleted, but session cleanup failed."
+                })
+            }
+
+            res.json({
+                message: "Account was successfully deleted."
+            })
+        })
+
+    } catch (error) {
+        console.error(error)
+        
         return res.status(500).json({
             message: "Internal server error"
         })

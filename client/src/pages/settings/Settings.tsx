@@ -22,7 +22,8 @@ export default function Settings() {
         info,
         setError,
         setInfo,
-        updateAuth
+        updateAuth,
+        deleteAccount
     }
 
     useEffect(() => {
@@ -102,6 +103,44 @@ export default function Settings() {
             setTheme(newTheme)
         } catch (error) {
             console.error(error)
+        }
+    }
+
+    async function deleteAccount() {
+        if (inputType !== "delete" || !inputValue) {
+            setError("Missing required fields.")
+            return
+        }
+
+        try {
+            if (!currentUser) return
+
+            setIsUpdating(true)
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/delete`, {
+                method: "DELETE",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: inputValue
+                })
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.message)
+            }
+
+            setCurrentUser(null)
+            setAuthType("sign-up")
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message)
+            }
+        } finally {
+            setIsUpdating(false)
         }
     }
     

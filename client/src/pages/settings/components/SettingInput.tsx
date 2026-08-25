@@ -22,6 +22,7 @@ interface SettingInputProps {
     setError: React.Dispatch<React.SetStateAction<string | null>>
     setInfo: React.Dispatch<React.SetStateAction<string | null>>
     updateAuth: () => void
+    deleteAccount: () => void
 }
 
 export default function SettingInput({
@@ -40,7 +41,8 @@ export default function SettingInput({
     setError,
     info,
     setInfo,
-    updateAuth
+    updateAuth,
+    deleteAccount
 }: SettingInputProps) {
 
     const { screenWidth } = useGlobalContext()
@@ -118,7 +120,10 @@ export default function SettingInput({
                         </p>
                     }
                     <button
-                        onClick={() => updateAuth()}
+                        onClick={id === "delete"
+                            ?   () => deleteAccount()
+                            :   () => updateAuth()
+                        }
                         aria-label="Save changes"
                         className={`w-full mt-5 action-btn ${id === "delete" ? "bg-(--failure-text) lg:hover:bg-(--failure) active:bg-(--failure)" : "bg-(--primary-btn) lg:hover:bg-(--accent) active:bg-(--accent)"} text-(--primary-btn-text)`}
                     >
@@ -206,7 +211,10 @@ export default function SettingInput({
                                         Cancel
                                     </button>
                                     <button
-                                        onClick={() => updateAuth()}
+                                        onClick={id === "delete"
+                                            ?   () => deleteAccount()
+                                            :   () => updateAuth()
+                                        }
                                         aria-label="Save changes"
                                         className={`w-fit action-btn ${id === "delete" ? "bg-(--failure-text) lg:hover:bg-(--failure) active:bg-(--failure)" : "bg-(--primary-btn) lg:hover:bg-(--accent) active:bg-(--accent)"} text-(--primary-btn-text)`}
                                     >
