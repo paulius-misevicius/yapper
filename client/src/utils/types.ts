@@ -44,6 +44,7 @@ export interface UserProps {
     id: number
     username: string
     bio: string
+    email: string
     profilePictureUrl: string
     joinedAt: string
     postCount: number

@@ -44,6 +44,7 @@ export interface User {
     bio: string
     profilePictureUrl: string
     joinedAt: string
+    email: string
     postCount: number
     commentCount: number
     karma: number

@@ -144,6 +144,18 @@ authRouter.post("/login", async (req, res) => {
     }
 })
 
+authRouter.get("/logout", (req, res) => {
+    req.session.destroy(error => {
+        if (error) {
+            return res.status(500).json({ message: "Could not log out." });
+        }
+
+        res.json({
+            message: "User logged out."
+        })
+    })
+})
+
 authRouter.get("/me", async (req, res) => {
     try {
         const userId = req.session.userId
@@ -159,6 +171,7 @@ authRouter.get("/me", async (req, res) => {
                 u.id,
                 u.username,
                 u.bio,
+                u.email,
                 u.profile_picture_url AS "profilePictureUrl",
                 u.joined_at AS "joinedAt",
                 (
@@ -216,16 +229,130 @@ authRouter.get("/me", async (req, res) => {
     }
 })
 
-authRouter.get("/logout", (req, res) => {
-    req.session.destroy(error => {
-        if (error) {
-            return res.status(500).json({ message: "Could not log out." });
+authRouter.patch("/me", async (req, res) => {
+    try {
+        const userId = req.session.userId
+
+        if (!userId) {
+            return res.json({
+                user: null
+            })
         }
 
-        res.json({
-            message: "User logged out."
+        const type = req.query.type
+
+        if (type !== "username" && type !== "email" && type !== "password") {
+            return res.status(400).json({
+                message: "Invalid type."
+            })
+        }
+
+        const newValue = req.body.newValue
+
+        if (!newValue) {
+            return res.status(400).json({
+                message: "Missing required fields."
+            })
+        }
+
+        if (type === "username") {
+            const username = newValue.trim()
+
+            const usernameError = checkUsernameRegex(username)
+
+            if (usernameError) {
+                return res.status(400).json({
+                    message: usernameError
+                })
+            }
+
+            const result = await pool.query<Id>(`
+                SELECT id
+                FROM users
+                WHERE username = $1
+            `, [username])
+
+            if (result.rows[0]) {
+                return res.status(400).json({
+                    message: "Username already taken."
+                })
+            }
+
+            await pool.query(`
+                UPDATE users
+                SET username = $1
+                WHERE id = $2
+            `, [username, userId])
+
+            return res.json({
+                username,
+                message: "Your username was successfully updated!"
+            })
+        }
+
+        if (type === "email") {
+            const email = newValue.trim().toLowerCase()
+
+            if (!validator.isEmail(email)) {
+                return res.status(400).json({
+                    message: "Invalid email format."
+                })
+            }
+
+            const result = await pool.query<Id>(`
+                SELECT id
+                FROM users
+                WHERE email = $1
+            `, [email])
+
+            if (result.rows[0]) {
+                return res.status(400).json({
+                    message: "Account with this email address already exists."
+                })
+            }
+
+            await pool.query(`
+                UPDATE users
+                SET email = $1
+                WHERE id = $2
+            `, [email, userId])
+
+            return res.json({
+                email,
+                message: `Your email address was successfully updated!`
+            })
+        }
+
+        if (type === "password") {
+            const password = newValue
+            const passwordError = checkPasswordRegex(password)
+
+            if (passwordError) {
+                return res.status(400).json({
+                    message: passwordError
+                })
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10)
+
+            await pool.query(`
+                UPDATE users
+                SET password_hash = $1
+                WHERE id = $2
+            `, [hashedPassword, userId])
+
+            return res.json({
+                message: `Your password was successfully updated!`
+            })
+        }
+
+    } catch (error) {
+        console.error(error)
+
+        return res.status(500).json({
+            message: "Internal server error"
         })
-    })
+    }
 })
 
 export default authRouter

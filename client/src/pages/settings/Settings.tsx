@@ -7,11 +7,23 @@ export type InputType = "username" | "email" | "password" | "delete" | null
 
 export default function Settings() {
     
-    const { isLoggedIn, setAuthType, theme, setTheme, currentUser } = useGlobalContext()
+    const { isLoggedIn, setAuthType, theme, setTheme, currentUser, setCurrentUser } = useGlobalContext()
     const [inputType, setInputType] = useState<InputType>(null)
     const [inputValue, setInputValue] = useState("")
+    const [error, setError] = useState<string | null>(null)
+    const [info, setInfo] = useState<string | null>(null)
+    const [isUpdating, setIsUpdating] = useState(false)
 
     const navigate = useNavigate()
+
+    const childProps = {
+        isUpdating,
+        error,
+        info,
+        setError,
+        setInfo,
+        updateAuth
+    }
 
     useEffect(() => {
         if (!isLoggedIn || !currentUser) {
@@ -19,6 +31,55 @@ export default function Settings() {
             setAuthType("sign-up")
         }
     }, [isLoggedIn, currentUser])
+
+    async function updateAuth() {
+        if (!inputValue || !inputType) {
+            setError("Missing required fields.")
+            return
+        }
+
+        try {
+            if (!currentUser) return
+            setIsUpdating(true)
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/me?type=${inputType}`, {
+                method: "PATCH",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    newValue: inputValue
+                })
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.message)
+            }
+
+            const data = await response.json()
+
+            if (inputType === "username" || inputType === "email") {
+                setCurrentUser(prev => {
+                    if (!prev) return prev
+
+                    return ({
+                    ...prev,
+                    [inputType]: data[inputType]
+                    })
+                })
+            }
+            
+            setInfo(data.message)
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message)
+            }
+        } finally {
+            setIsUpdating(false)
+        }
+    }
     
     if (!isLoggedIn || !currentUser) {
         return
@@ -38,6 +99,8 @@ export default function Settings() {
                         btnClick={() => {
                             setInputType("username")
                             setInputValue("")
+                            setError(null)
+                            setInfo(null)
                         }}
                         text={currentUser?.username ?? ""}
                         name="Username"
@@ -46,6 +109,7 @@ export default function Settings() {
                         inputValue={inputValue}
                         setInputValue={setInputValue}
                         ariaLabel="Change username"
+                        {...childProps}
                     />
                     <SettingInput 
                         inputType={inputType}
@@ -53,14 +117,17 @@ export default function Settings() {
                         btnClick={() => {
                             setInputType("email")
                             setInputValue("")
+                            setError(null)
+                            setInfo(null)
                         }}
-                        text="email@address.com"
+                        text={`${currentUser.email}`}
                         name="Email address"
                         id="email"
                         placeholder="Enter your new email address..."
                         inputValue={inputValue}
                         setInputValue={setInputValue}
                         ariaLabel="Change email address"
+                        {...childProps}
                     />
                     <SettingInput 
                         inputType={inputType}
@@ -68,6 +135,8 @@ export default function Settings() {
                         btnClick={() => {
                             setInputType("password")
                             setInputValue("")
+                            setError(null)
+                            setInfo(null)
                         }}
                         text="Change your password"
                         name="Password"
@@ -76,6 +145,7 @@ export default function Settings() {
                         inputValue={inputValue}
                         setInputValue={setInputValue}
                         ariaLabel="Change password"
+                        {...childProps}
                     />
                 </div>
             </div>
@@ -91,6 +161,8 @@ export default function Settings() {
                             setInputType(null)
                             setInputValue("")
                             setTheme(theme === "light" ? "dark" : "light")
+                            setError(null)
+                            setInfo(null)
                         }}
                         text="Click to change themes"
                         name="Theme"
@@ -98,6 +170,7 @@ export default function Settings() {
                         inputValue={inputValue}
                         setInputValue={setInputValue}
                         ariaLabel={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+                        {...childProps}
                     />
                 </div>
             </div>
@@ -112,6 +185,8 @@ export default function Settings() {
                         btnClick={() => {
                             setInputType("delete")
                             setInputValue("")
+                            setError(null)
+                            setInfo(null)
                         }}
                         text="Permanently delete your account and all data"
                         name="Delete account"
@@ -120,6 +195,7 @@ export default function Settings() {
                         inputValue={inputValue}
                         setInputValue={setInputValue}
                         ariaLabel="Delete account"
+                        {...childProps}
                     />
                 </div>
             </div>

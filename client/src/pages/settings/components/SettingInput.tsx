@@ -3,6 +3,7 @@ import { useState } from "react"
 import type { InputType } from "../Settings"
 import MobileShelfModal from "../../../components/MobileShelfModal"
 import { useGlobalContext } from "../../../utils/utils"
+import { TailSpin } from "react-loader-spinner"
 
 interface SettingInputProps {
     name: string
@@ -15,6 +16,12 @@ interface SettingInputProps {
     inputValue: string
     setInputValue: React.Dispatch<React.SetStateAction<string>>
     ariaLabel: string
+    isUpdating: boolean
+    error: string | null
+    info: string | null
+    setError: React.Dispatch<React.SetStateAction<string | null>>
+    setInfo: React.Dispatch<React.SetStateAction<string | null>>
+    updateAuth: () => void
 }
 
 export default function SettingInput({
@@ -27,7 +34,13 @@ export default function SettingInput({
     id, 
     placeholder, 
     inputValue, 
-    setInputValue
+    setInputValue,
+    isUpdating,
+    error,
+    setError,
+    info,
+    setInfo,
+    updateAuth
 }: SettingInputProps) {
 
     const { screenWidth } = useGlobalContext()
@@ -62,7 +75,11 @@ export default function SettingInput({
                     <div className="relative w-full">
                         <input
                             value={inputValue}
-                            onChange={event => setInputValue(event.target.value)}
+                            onChange={event => {
+                                setInputValue(event.target.value)
+                                setError(null)
+                                setInfo(null)
+                            }}
                             id={id}
                             className="text-sm placeholder:font-medium bg-(--surface-2)! px-4 py-2 focus:bg-(--surface-1)! w-full"
                             placeholder={placeholder}
@@ -84,16 +101,31 @@ export default function SettingInput({
                             </button>
                         }
                     </div>
+                    {error &&
+                        <p
+                            role="alert"
+                            className="error text-center mt-2 mr-1"
+                        >
+                            {error}
+                        </p>
+                    }
+                    {info &&
+                        <p
+                            role="status"
+                            className="font-medium text-center mt-2 mr-1"
+                        >
+                            {info}
+                        </p>
+                    }
                     <button
-                        onClick={() => {
-                            console.log("submitted", inputValue)
-                            setInputType(null)
-                            setInputValue("")
-                        }}
+                        onClick={() => updateAuth()}
                         aria-label="Save changes"
                         className={`w-full mt-5 action-btn ${id === "delete" ? "bg-(--failure-text) lg:hover:bg-(--failure) active:bg-(--failure)" : "bg-(--primary-btn) lg:hover:bg-(--accent) active:bg-(--accent)"} text-(--primary-btn-text)`}
                     >
-                        Confirm
+                        {isUpdating 
+                            ?   <TailSpin wrapperClass="loader" color="var(--primary-btn-text)" height="22" width="22"/>
+                            :   "Confirm"
+                        }
                     </button>
                 </MobileShelfModal>
             }
@@ -107,6 +139,22 @@ export default function SettingInput({
                                         <h2 className={id === "delete" ? "text-(--failure-text)!" : ""}>
                                             {name}
                                         </h2>
+                                        {error &&
+                                            <p
+                                                role="alert"
+                                                className="error mt-2 text-nowrap"
+                                            >
+                                                {error}
+                                            </p>
+                                        }
+                                        {info &&
+                                            <p
+                                                role="status"
+                                                className="font-medium mt-2 text-nowrap"
+                                            >
+                                                {info}
+                                            </p>
+                                        }
                                         <div className="flex flex-col gap-2 w-full mt-2">
                                             <label
                                                 className="text-sm sr-only font-medium text-(--text-secondary)"
@@ -117,7 +165,11 @@ export default function SettingInput({
                                             <div className="max-w-80 relative">
                                                 <input
                                                     value={inputValue}
-                                                    onChange={event => setInputValue(event.target.value)}
+                                                    onChange={event => {
+                                                        setInputValue(event.target.value)
+                                                        setError(null)
+                                                        setInfo(null)
+                                                    }}
                                                     id={id}
                                                     className="text-sm placeholder:font-medium bg-(--surface-2)! px-4 py-2 focus:bg-(--surface-1)! w-full"
                                                     placeholder={placeholder}
@@ -154,15 +206,14 @@ export default function SettingInput({
                                         Cancel
                                     </button>
                                     <button
-                                        onClick={() => {
-                                            console.log("submitted", inputValue)
-                                            setInputType(null)
-                                            setInputValue("")
-                                        }}
+                                        onClick={() => updateAuth()}
                                         aria-label="Save changes"
                                         className={`w-fit action-btn ${id === "delete" ? "bg-(--failure-text) lg:hover:bg-(--failure) active:bg-(--failure)" : "bg-(--primary-btn) lg:hover:bg-(--accent) active:bg-(--accent)"} text-(--primary-btn-text)`}
                                     >
-                                        Confirm
+                                        {isUpdating 
+                                            ?   <TailSpin wrapperClass="loader" color="var(--primary-btn-text)" height="20.5" width="20.5"/>
+                                            :   "Confirm"
+                                        }
                                     </button>
                                 </div>
                             </div>
