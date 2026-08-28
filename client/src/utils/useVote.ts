@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useGlobalContext } from "./utils"
 
 export type Vote = 0 | 1 | -1
 type VoteType = "post" | "comment"
@@ -7,12 +8,15 @@ export function useVote(targetId: number, type: VoteType, initialScore: number) 
 
     const [userVote, setUserVote] = useState<Vote>(0)
     const [finalScore, setFinalScore] = useState(initialScore)
+    const { currentUser } = useGlobalContext()
 
     const API_URL = import.meta.env.VITE_API_URL
 
     useEffect(() => {
         async function checkForVote() {
             try {
+                if (!currentUser) return
+
                 const response = await fetch(`${API_URL}/votes/${targetId}?type=${type}`, {
                     credentials: "include"
                 })
@@ -32,6 +36,8 @@ export function useVote(targetId: number, type: VoteType, initialScore: number) 
     }, [type, targetId])
 
     async function vote(value: Vote) {
+        if (!currentUser) return
+        
         if (value === userVote) {
             await removeVote()
             return
@@ -63,6 +69,8 @@ export function useVote(targetId: number, type: VoteType, initialScore: number) 
 
     async function removeVote() {
         try {
+            if (!currentUser) return
+
             const response = await fetch(`${API_URL}/votes?type=${type}`, {
                 method: "DELETE",
                 credentials: "include",

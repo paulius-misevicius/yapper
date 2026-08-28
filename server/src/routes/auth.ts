@@ -4,6 +4,7 @@ import { pool } from "../db.ts"
 import validator from "validator"
 import bcrypt from "bcryptjs"
 import type { Email, Id, User, UserLogin, Username } from "../types.ts"
+import requireAuth from "../helpers/requireAuth.ts"
 
 const authRouter = Router()
 
@@ -231,16 +232,9 @@ authRouter.get("/me", async (req, res) => {
     }
 })
 
-authRouter.patch("/me", async (req, res) => {
+authRouter.patch("/me", requireAuth, async (req, res) => {
     try {
         const userId = req.session.userId
-
-        if (!userId) {
-            return res.json({
-                user: null
-            })
-        }
-
         const type = req.query.type
 
         if (type !== "username" && type !== "email" && type !== "password") {
@@ -357,16 +351,9 @@ authRouter.patch("/me", async (req, res) => {
     }
 })
 
-authRouter.delete("/delete", async (req, res) => {
+authRouter.delete("/delete", requireAuth, async (req, res) => {
     try {
         const userId = req.session.userId
-
-        if (!userId) {
-            return res.json({
-                user: null
-            })
-        }
-
         const username = req.body.username
 
         if (!username) {

@@ -1,6 +1,7 @@
 import { Router } from "express"
 import { pool } from "../db.ts"
 import type { User } from "../types.ts"
+import requireAuth from "../helpers/requireAuth.ts"
 
 const usersRouter = Router()
 
@@ -64,16 +65,9 @@ usersRouter.get("/:username", async (req, res) => {
     }
 })
 
-usersRouter.patch("/", async (req, res) => {
+usersRouter.patch("/", requireAuth, async (req, res) => {
     try {
         const userId = req.session.userId
-
-        if (!userId) {
-            return res.status(401).json({
-                message: "You are not logged in."
-            })
-        }
-
         const bio = req.body.bio
 
         if (bio == null) {
@@ -101,16 +95,9 @@ usersRouter.patch("/", async (req, res) => {
     }
 })
 
-usersRouter.patch("/theme", async (req, res) => {
+usersRouter.patch("/theme", requireAuth, async (req, res) => {
     try {
         const userId = req.session.userId
-
-        if (!userId) {
-            return res.status(401).json({
-                message: "You are not logged in."
-            })
-        }
-
         const theme = req.body.theme
 
         if (theme !== "light" && theme !== "dark") {

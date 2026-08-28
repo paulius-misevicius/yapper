@@ -1,6 +1,7 @@
 import { Router } from "express"
 import { pool } from "../db.ts"
 import type { Id, Post } from "../types.ts"
+import requireAuth from "../helpers/requireAuth.ts"
 
 const postsRouter = Router()
 
@@ -152,16 +153,9 @@ postsRouter.get("/user/:username", async (req, res) => {
     }
 })
 
-postsRouter.get("/saved", async (req, res) => {
+postsRouter.get("/saved", requireAuth, async (req, res) => {
     try {
         const userId = req.session.userId
-
-        if (!userId) {
-            return res.status(401).json({
-                message: "You are not logged in."
-            })
-        }
-
         const result = await pool.query<Post>(`
             SELECT
                 p.id,
@@ -198,16 +192,10 @@ postsRouter.get("/saved", async (req, res) => {
     }
 })
 
-postsRouter.post("/", async (req, res) => {
+postsRouter.post("/", requireAuth, async (req, res) => {
     try {
         const allowedFlairs = ["PSA", "News", "Review", "Discussion", "Question"]
         const userId = req.session.userId
-
-        if (!userId) {
-            return res.status(401).json({
-                message: "You are not logged in."
-            })
-        }
 
         const { boardId, title, body, flair } = req.body
 

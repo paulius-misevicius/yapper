@@ -1,19 +1,13 @@
 import { Router } from "express"
 import { pool } from "../db.ts"
 import type { Id, SavedPost } from "../types.ts"
+import requireAuth from "../helpers/requireAuth.ts"
 
 const savedRouter = Router()
 
-savedRouter.post("/", async (req, res) => {
+savedRouter.post("/", requireAuth, async (req, res) => {
     try {
         const userId = req.session.userId
-
-        if (!userId) {
-            return res.status(401).json({
-                message: "You are not logged in."
-            })
-        }
-
         const postId = req.body.postId
 
         if (!postId) {
@@ -55,16 +49,9 @@ savedRouter.post("/", async (req, res) => {
     }
 })
 
-savedRouter.delete("/", async (req, res) => {
+savedRouter.delete("/", requireAuth, async (req, res) => {
     try {
         const userId = req.session.userId
-
-        if (!userId) {
-            return res.status(401).json({
-                message: "You are not logged in."
-            })
-        }
-
         const postId = req.body.postId
 
         if (!postId) {

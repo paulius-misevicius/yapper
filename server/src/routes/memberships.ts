@@ -1,19 +1,13 @@
 import { Router } from "express"
 import { pool } from "../db.ts"
 import type { BoardMembership, Id } from "../types.ts"
+import requireAuth from "../helpers/requireAuth.ts"
 
 const membershipsRouter = Router()
 
-membershipsRouter.post("/", async (req, res) => {
+membershipsRouter.post("/", requireAuth, async (req, res) => {
     try {
         const userId = req.session.userId
-        
-        if (!userId) {
-            return res.status(401).json({
-                message: "You are not logged in."
-            })
-        }
-
         const boardId = req.body.boardId
 
         if (!boardId) {
@@ -54,16 +48,9 @@ membershipsRouter.post("/", async (req, res) => {
     }
 })
 
-membershipsRouter.delete("/", async (req, res) => {
+membershipsRouter.delete("/", requireAuth, async (req, res) => {
     try {
         const userId = req.session.userId
-
-        if (!userId) {
-            return res.status(401).json({
-                message: "You are not logged in."
-            })
-        }
-
         const boardId = req.body.boardId
 
         if (!boardId) {

@@ -1,6 +1,7 @@
 import { Router } from "express"
 import { pool } from "../db.ts"
 import type { Comment, Id } from "../types.ts"
+import requireAuth from "../helpers/requireAuth.ts"
 
 const commentsRouter = Router()
 
@@ -43,17 +44,10 @@ commentsRouter.get("/:postId", async (req, res) => {
     }
 })
 
-commentsRouter.post("/:postId", async (req, res) => {
+commentsRouter.post("/:postId", requireAuth, async (req, res) => {
     try {
 
         const userId = req.session.userId
-        
-        if (!userId) {
-            return res.status(401).json({
-                message: "You are not logged in."
-            })
-        }
-
         const postId = Number(req.params.postId)
 
         if (Number.isNaN(postId)) {

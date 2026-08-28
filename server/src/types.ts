@@ -63,7 +63,7 @@ export interface Id {
     id: number
 }
 export interface VoteValue {
-    id: number
+    value: 0 | -1 | 1
 }
 export interface UserLogin {
     id: number

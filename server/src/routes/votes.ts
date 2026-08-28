@@ -1,20 +1,14 @@
 import { Router } from "express"
 import { pool } from "../db.ts"
-import type { Id, Vote, VoteValue } from "../types.ts"
+import type { Id, VoteValue } from "../types.ts"
+import requireAuth from "../helpers/requireAuth.ts"
 
 const votesRouter = Router()
 
-votesRouter.post("/", async (req, res) => {
+votesRouter.post("/", requireAuth, async (req, res) => {
     try {
 
         const userId = req.session.userId
-
-        if (!userId) {
-            return res.status(401).json({
-                message: "You are not logged in."
-            })
-        }
-
         const type = req.query.type
 
         let idType: "comment_id" | "post_id"
@@ -80,16 +74,9 @@ votesRouter.post("/", async (req, res) => {
     }
 })
 
-votesRouter.delete("/", async (req, res) => {
+votesRouter.delete("/", requireAuth, async (req, res) => {
     try {
         const userId = req.session.userId
-
-        if (!userId) {
-            return res.status(401).json({
-                message: "You are not logged in."
-            })
-        }
-
         const type = req.query.type
 
         let idType: "comment_id" | "post_id"
@@ -138,7 +125,7 @@ votesRouter.delete("/", async (req, res) => {
     }
 })
 
-votesRouter.get("/:targetId", async (req, res) => {
+votesRouter.get("/:targetId", requireAuth, async (req, res) => {
     try {
 
         const targetId = Number(req.params.targetId)
@@ -150,11 +137,6 @@ votesRouter.get("/:targetId", async (req, res) => {
         }
 
         const userId = req.session.userId
-
-        if (!userId) {
-            return res.json({})
-        }
-
         const type = req.query.type
 
         let idType: "comment_id" | "post_id"
